@@ -1401,98 +1401,57 @@ html, body {
 
 
 /* ===================================
-   🌤 HANDONG LIGHT PREMIUM (덮어쓰기)
+   🤍 HANDONG WHITE PREMIUM
    =================================== */
 
-/* 1️⃣ 배경 오버레이를 검정 → 흰색으로 변경 */
-#screenLogin.handong .login-bg::before{
-  background: rgba(255,255,255,0.65) !important;
+/* 1️⃣ 로그인 배경 완전 밝게 */
+#screenLogin.handong.login-bg{
+  background: #f6f9ff !important;
 }
 
-/* 2️⃣ 로그인 카드 더 밝게 */
+/* 검정 오버레이 완전 제거 */
+#screenLogin.handong.login-bg::before{
+  background: none !important;
+}
+
+/* 2️⃣ 카드 완전 흰색 + 얇은 그림자 */
 #screenLogin.handong .card.hero{
-  background: rgba(255,255,255,0.96) !important;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 12px 35px rgba(0,0,0,.12);
+  background: #ffffff !important;
+  backdrop-filter: none;
+  border-radius: 26px;
+  border: 1px solid #eef2f7;
+  box-shadow: 0 8px 30px rgba(15,23,42,.06);
 }
 
-/* 3️⃣ 타이틀 그림자 제거 */
-#screenLogin.handong .hero-title,
-#screenLogin.handong .title-main,
-#screenLogin.handong .title-sub{
+/* 3️⃣ 제목 진한 네이비 */
+#screenLogin.handong .title-main{
   color:#0f172a !important;
   text-shadow:none !important;
 }
 
-/* 4️⃣ 설명 텍스트 진한 회청색 */
-#screenLogin.handong .hero-desc{
-  color:#334155 !important;
+#screenLogin.handong .title-sub{
+  color:#1e293b !important;
   text-shadow:none !important;
 }
 
-/* 5️⃣ 라벨도 어둡게 */
+/* 4️⃣ 설명 */
+#screenLogin.handong .hero-desc{
+  color:#475569 !important;
+}
+
+/* 5️⃣ 라벨 */
 #screenLogin.handong .label{
   color:#334155 !important;
 }
 
-/* 6️⃣ 로그인 버튼 더 세련되게 */
-#screenLogin.handong .btn.primary{
-  background: linear-gradient(135deg,#1e3a8a,#2563eb) !important;
-  box-shadow:0 8px 20px rgba(37,99,235,.25);
-}
-
-
-/* ===================================
-   🔵 HANDONG PREMIUM v2 (북포항 감성 유지)
-   =================================== */
-
-/* 배경 어둡게 말고 블루톤 깊이 */
-#screenLogin.handong.login-bg{
-  background: 
-    linear-gradient(180deg, rgba(11,78,162,.85), rgba(6,52,111,.95)),
-    url("./login_bg.png") center/cover no-repeat !important;
-}
-
-/* 검정 오버레이 제거 */
-#screenLogin.handong.login-bg::before{
-  background: rgba(0,0,0,0.15) !important;
-}
-
-/* 카드 유리 느낌 */
-#screenLogin.handong .card.hero{
-  background: rgba(255,255,255,.12) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,.25);
-  box-shadow: 0 20px 50px rgba(0,0,0,.35);
-}
-
-/* 제목 흰색 유지 + 고급 그림자 */
-#screenLogin.handong .title-main,
-#screenLogin.handong .title-sub{
-  color:#ffffff !important;
-  text-shadow: 0 8px 24px rgba(0,0,0,.45);
-}
-
-/* 설명 */
-#screenLogin.handong .hero-desc{
-  color: rgba(255,255,255,.92) !important;
-  text-shadow:none;
-}
-
-/* 라벨 */
-#screenLogin.handong .label{
-  color: rgba(255,255,255,.9) !important;
-}
-
-/* 입력창 유리 느낌 */
+/* 6️⃣ 입력창 더 깔끔하게 */
 #screenLogin.handong .input{
-  background: rgba(255,255,255,.85);
-  border: none;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
 }
 
-/* 버튼 북포항 느낌 유지 */
+/* 7️⃣ 버튼 고급 블루 */
 #screenLogin.handong .btn.primary{
   background: linear-gradient(135deg,#1e3a8a,#2563eb) !important;
-  box-shadow: 0 10px 25px rgba(37,99,235,.4);
+  box-shadow:0 6px 18px rgba(37,99,235,.25);
 }
