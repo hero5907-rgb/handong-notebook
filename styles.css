@@ -597,7 +597,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
   line-height: 1.15;
 
   /* 🔥 핵심: 화면폭 기준 자동 스케일 */
-  font-size: clamp(18px, 6.8vw, 32px);
+font-size: clamp(15px, 5vw, 24px);
   letter-spacing: -0.4px;
 }
 
