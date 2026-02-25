@@ -1397,3 +1397,46 @@ html, body {
     0 8px 20px rgba(11,78,162,.08),
     0 2px 6px rgba(0,0,0,.04);
 }
+
+
+
+/* ===================================
+   🌤 HANDONG LIGHT PREMIUM (덮어쓰기)
+   =================================== */
+
+/* 1️⃣ 배경 오버레이를 검정 → 흰색으로 변경 */
+#screenLogin.handong .login-bg::before{
+  background: rgba(255,255,255,0.65) !important;
+}
+
+/* 2️⃣ 로그인 카드 더 밝게 */
+#screenLogin.handong .card.hero{
+  background: rgba(255,255,255,0.96) !important;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 12px 35px rgba(0,0,0,.12);
+}
+
+/* 3️⃣ 타이틀 그림자 제거 */
+#screenLogin.handong .hero-title,
+#screenLogin.handong .title-main,
+#screenLogin.handong .title-sub{
+  color:#0f172a !important;
+  text-shadow:none !important;
+}
+
+/* 4️⃣ 설명 텍스트 진한 회청색 */
+#screenLogin.handong .hero-desc{
+  color:#334155 !important;
+  text-shadow:none !important;
+}
+
+/* 5️⃣ 라벨도 어둡게 */
+#screenLogin.handong .label{
+  color:#334155 !important;
+}
+
+/* 6️⃣ 로그인 버튼 더 세련되게 */
+#screenLogin.handong .btn.primary{
+  background: linear-gradient(135deg,#1e3a8a,#2563eb) !important;
+  box-shadow:0 8px 20px rgba(37,99,235,.25);
+}
