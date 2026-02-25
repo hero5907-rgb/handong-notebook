@@ -1438,3 +1438,66 @@ html, body {
 #screenLogin.handong .hero-desc{
   color:#475569 !important;
 }
+
+
+
+
+/* =====================================
+   🤍 HANDONG PREMIUM FINAL
+   ===================================== */
+
+/* 배경 그대로 사용 */
+#screenLogin.handong.login-bg{
+  background: url('./login_bg.png') center top / cover no-repeat !important;
+}
+
+/* 카드 - 유리 프리미엄 */
+#screenLogin.handong .card.hero{
+  background: rgba(255,255,255,0.72) !important;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-radius: 36px;
+  border: 1px solid rgba(255,255,255,0.9);
+  box-shadow:
+    0 20px 60px rgba(15,23,42,.08),
+    0 2px 0 rgba(255,255,255,.9) inset;
+  padding: 40px 28px;
+}
+
+/* 타이틀 - 대학 느낌 네이비 */
+#screenLogin.handong .title-main{
+  color:#0b2545 !important;
+  font-weight:800;
+  letter-spacing:-0.5px;
+}
+
+#screenLogin.handong .title-sub{
+  color:#1e293b !important;
+  font-weight:600;
+}
+
+/* 설명 */
+#screenLogin.handong .hero-desc{
+  color:#475569 !important;
+  font-size:15px;
+}
+
+/* 입력창 - 더 고급스럽게 */
+#screenLogin.handong .input{
+  background: rgba(255,255,255,0.9);
+  border:1px solid rgba(15,23,42,.08);
+  border-radius:16px;
+}
+
+/* 버튼 - 은은한 고급 블루 */
+#screenLogin.handong .btn.primary{
+  background: linear-gradient(135deg,#1e3a8a,#2563eb) !important;
+  box-shadow:0 10px 25px rgba(37,99,235,.35);
+  border-radius:18px;
+}
+
+/* 하단 새로고침 - 보이게 */
+#screenLogin.handong .reload-link{
+  color:#1e3a8a !important;
+  font-weight:600;
+}
