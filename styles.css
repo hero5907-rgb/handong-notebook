@@ -1535,3 +1535,13 @@ html, body {
 .tile-title{
   color: var(--text) !important;
 }
+
+
+
+
+/* ✅ 로그인 라벨(휴대폰번호/접속코드) 네이비로 강제 */
+#screenLogin.handong .label{
+  color:#0b2545 !important;   /* 타이틀(main) 네이비 */
+  text-shadow:none !important;
+  opacity:1 !important;
+}
