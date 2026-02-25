@@ -1515,3 +1515,18 @@ html, body {
   box-shadow: 0 0 0 1px rgba(255,255,255,0.6) inset;
   pointer-events:none;
 }
+
+/* 🔽 로그인 화면 하단 겹침 해결 */
+#screenLogin a{
+  display:block;
+  margin-top:40px;   /* 위쪽 여백 */
+  margin-bottom:20px;
+}
+
+#screenLogin img{
+  display:block;
+  margin:0 auto;
+  margin-top:20px;   /* 로고 위 여백 */
+  width:140px;
+  opacity:0.9;
+}
