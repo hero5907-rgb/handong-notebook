@@ -7,7 +7,7 @@ window.APP_CONFIG = {
 
   address: "경상북도 포항시 북구 흥해읍 달전로5번길 52-29 제2라이온스회관",
 
-  phone: "054-262-5222",
+  phone: "054-262-522",
 
   copyright: "Developed by 한동회 55기 황문기",
 
@@ -17,3 +17,4 @@ window.APP_CONFIG = {
 
 
 };
+
