@@ -5,9 +5,9 @@ window.APP_CONFIG = {
   clubName: "한동회",
   district: "한동대학교 최고경영자과정",
 
-  address: "경상북도 포항시 북구 흥해읍 달전로5번길 52-29 제2라이온스회관",
+  address: "37554 경북 포항시 북구 흥해읍 한동로 558 한동대학교",
 
-  phone: "054-262-522",
+  phone: "054-260-1111",
 
   copyright: "Developed by 한동회 55기 황문기",
 
@@ -17,4 +17,3 @@ window.APP_CONFIG = {
 
 
 };
-
