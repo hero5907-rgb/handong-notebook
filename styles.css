@@ -1453,9 +1453,9 @@ html, body {
 
 /* 카드 - 유리 프리미엄 */
 #screenLogin.handong .card.hero{
-  background: rgba(255,255,255,0.72) !important;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.82) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 36px;
   border: 1px solid rgba(255,255,255,0.9);
   box-shadow:
