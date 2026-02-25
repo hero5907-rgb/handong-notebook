@@ -546,8 +546,8 @@ function formatTerm(term, generation) {
 function setBrand(settings) {
   const cfg = window.APP_CONFIG || {};
 
-  const district = (settings?.district || cfg.district || "국제라이온스협회 356-E지구");
-  const clubName = (settings?.clubName || cfg.clubName || "북포항라이온스클럽");
+  const district = (settings?.district || cfg.district || "한동회");
+  const clubName = (settings?.clubName || cfg.clubName || "한동대학교 최고경영자과정");
 
   if (el("districtText2")) el("districtText2").textContent = district;
 
