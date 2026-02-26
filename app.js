@@ -683,7 +683,13 @@ function renderMembers(list) {
     row.innerHTML = `
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">
-        <div class="row-title">${esc(m.name)} ${m.position ? `<span class="badge">${esc(m.position)}</span>` : ""}</div>
+        <div class="row-title">
+
+  ${esc(m.name)} 
+  ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
+  ${m.position ? `<span class="badge">${esc(m.position)}</span>` : ""}
+</div>
+
         <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone)].filter(Boolean).join(" / "))}</div>
 
         <div class="actions">
@@ -887,10 +893,11 @@ if (nameBox && state.me?.name) {
 
 
     // 정렬
-    state.members.sort((a, b) =>
-      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
-      (a.name || "").localeCompare(b.name || "", "ko")
-    );
+state.members.sort((a, b) =>
+  (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
+  (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) || // 2️⃣ 정렬순서
+  (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
+);
 
     renderLatest();
     renderAnnouncements();
@@ -2073,10 +2080,11 @@ function reloadMembers() {
       .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
 
     // ✅ 정렬 (로그인 때와 동일)
-    state.members.sort((a, b) =>
-      (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) ||
-      (a.name || "").localeCompare(b.name || "", "ko")
-    );
+state.members.sort((a, b) =>
+  (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
+  (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) || // 2️⃣ 정렬순서
+  (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
+);
 
     // ✅ 검색어 초기화
     const input = el("memberSearch");
