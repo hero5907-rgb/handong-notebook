@@ -293,8 +293,13 @@ function openMyPage(){
 
   el("myPhoto").src = m.photoUrl || "";
 
-  el("myName").textContent = m.name || "";
-  el("myPosition").textContent = m.position || "";
+// 🔵 이름 + 기수 표시
+el("myName").textContent =
+  m.name + (m.gisu ? ` (${m.gisu}기)` : "");
+
+// 직위 유지
+el("myPosition").textContent = m.position || "";
+
   el("myGroup").textContent = m.group || "";
 
   // 직장 + 주소
@@ -1482,7 +1487,11 @@ if(IS_IOS){
 }
 
   // 이름(굵게) + 직위(지금처럼)
-el("modalName").textContent = m.name || "";
+// 🔵 이름 + 기수 표시
+el("modalName").textContent =
+  m.name + (m.gisu ? ` (${m.gisu}기)` : "");
+
+// 기존 직위 유지
 el("modalPosition").textContent = m.position || "";
 
 const groupEl = el("modalGroup");
