@@ -1656,3 +1656,20 @@ html, body {
   color: #fff;
 }
 
+/* 🔵 슬라이드 상시 스와이프 표시 */
+.class-slide-panel {
+  position: relative;
+}
+
+.swipe-indicator {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: 18px;
+  font-weight: 600;
+  color: rgba(0,0,0,.35);
+
+  pointer-events: none;  /* 터치 방해 금지 */
+}

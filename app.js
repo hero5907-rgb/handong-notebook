@@ -2280,10 +2280,16 @@ btnClassFilter.addEventListener("click", () => {
 }
 
 function closeClassSlide() {
+  const panel = classSlide.querySelector(".class-slide-panel");
+
   classSlide.classList.remove("show");
+
+  // 🔥 스와이프 중 transform 초기화
+  if (panel) panel.style.transform = "";
+
   setTimeout(() => {
     classSlide.hidden = true;
-    document.body.style.overflow = "";   // 🔥 스크롤 복구
+    document.body.style.overflow = "";   // 스크롤 복구
   }, 250);
 }
 
@@ -2347,6 +2353,54 @@ function buildClassList() {
     listEl.appendChild(item);
   });
 }
+
+
+// 🔥 슬라이드 좌로 밀어 닫기
+(function(){
+
+  const slide = document.getElementById("classSlide");
+  const panel = slide?.querySelector(".class-slide-panel");
+  if (!slide || !panel) return;
+
+  let startX = 0;
+  let currentX = 0;
+  let dragging = false;
+
+  panel.addEventListener("touchstart", (e)=>{
+    startX = e.touches[0].clientX;
+    dragging = true;
+  }, { passive:true });
+
+  panel.addEventListener("touchmove", (e)=>{
+    if (!dragging) return;
+
+    currentX = e.touches[0].clientX;
+    const diff = currentX - startX;
+
+    // 🔵 오른쪽에서 왼쪽으로 밀 때만
+    if (diff < 0) {
+      panel.style.transform = `translateX(${diff}px)`;
+    }
+  }, { passive:true });
+
+  panel.addEventListener("touchend", ()=>{
+    dragging = false;
+
+    const diff = currentX - startX;
+
+    // 🔥 60px 이상 밀면 닫기
+    if (diff < -60) {
+      closeClassSlide();
+    } else {
+      panel.style.transform = "";
+    }
+
+    currentX = 0;
+  });
+
+})();
+
+
 
 
 
