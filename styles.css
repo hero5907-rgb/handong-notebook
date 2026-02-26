@@ -1673,3 +1673,20 @@ html, body {
 
   pointer-events: none;  /* 터치 방해 금지 */
 }
+
+
+
+/* 🔥 기수 슬라이드 내부 스크롤 강제 허용 */
+.class-slide-panel {
+  height: 100vh;
+  overflow: hidden;   /* 패널 자체는 고정 */
+}
+
+.class-slide-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;  /* iOS 부드러운 스크롤 */
+  touch-action: pan-y;                 /* 세로 스크롤 허용 */
+}
+
+
