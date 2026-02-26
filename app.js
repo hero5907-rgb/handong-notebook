@@ -2257,12 +2257,13 @@ const btnClassFilter = document.getElementById("btnClassFilter");
 const classSlide = document.getElementById("classSlide");
 
 if (btnClassFilter) {
-  btnClassFilter.addEventListener("click", () => {
-    classSlide.hidden = false;
-    requestAnimationFrame(() => {
-      classSlide.classList.add("show");
-    });
+btnClassFilter.addEventListener("click", () => {
+  document.body.style.overflow = "hidden";   // 🔥 배경 스크롤 잠금
+  classSlide.hidden = false;
+  requestAnimationFrame(() => {
+    classSlide.classList.add("show");
   });
+});
 }
 
 function closeClassSlide() {
