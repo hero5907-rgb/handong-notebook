@@ -936,7 +936,7 @@ else localStorage.removeItem(LS_KEY);
 
 state.navStack = ["members"];
 showScreen("members");
-renderMembers(state.members);
+
 
 
 
@@ -1015,11 +1015,26 @@ function bindNav() {
       const pdfBtn = el("btnBylawsPdf");
       if (pdfBtn) pdfBtn.hidden = true;
 
-      if (target === "members") {
-        pushNav("members");
-        if (el("memberSearch")) el("memberSearch").value = "";
-        renderMembers(state.members);
+if (target === "members") {
 
+  // 🔵 로그인 사용자 기수 기본 적용 (혹시 초기화됐을 경우 대비)
+  if (currentClassFilter === null && state.me?.gisu) {
+    currentClassFilter = Number(state.me.gisu);
+  }
+
+  // 🔵 버튼 텍스트 갱신
+  const btnClass = el("btnClassFilter");
+  if (btnClass) {
+    btnClass.textContent = currentClassFilter
+      ? `${currentClassFilter}기 ▼`
+      : "전체 ▼";
+  }
+
+  pushNav("members");
+
+  if (el("memberSearch")) el("memberSearch").value = "";
+
+  renderMembers(state.members);
 } else if (target === "announcements") {
   pushNav("announcements");
   renderAnnouncements();
