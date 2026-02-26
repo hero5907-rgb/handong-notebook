@@ -1488,8 +1488,14 @@ if(IS_IOS){
 
   // 이름(굵게) + 직위(지금처럼)
 // 🔵 이름 + 기수 표시
-el("modalName").textContent =
-  m.name + (m.gisu ? ` (${m.gisu}기)` : "");
+const nameEl = el("modalName");
+
+if (nameEl) {
+  nameEl.innerHTML = `
+    ${m.gisu ? `<span class="gisu-badge">${m.gisu}기</span>` : ""}
+    <span class="name-text">${m.name || ""}</span>
+  `;
+}
 
 // 기존 직위 유지
 el("modalPosition").textContent = m.position || "";
