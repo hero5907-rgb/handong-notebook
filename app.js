@@ -2283,6 +2283,7 @@ function closeClassSlide() {
   classSlide.classList.remove("show");
   setTimeout(() => {
     classSlide.hidden = true;
+    document.body.style.overflow = "";   // 🔥 스크롤 복구
   }, 250);
 }
 
