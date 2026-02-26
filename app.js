@@ -2252,4 +2252,25 @@ function isKakaoInApp() {
 }
 
 
+// 🔵 기수 슬라이드 열기
+const btnClassFilter = document.getElementById("btnClassFilter");
+const classSlide = document.getElementById("classSlide");
+
+if (btnClassFilter) {
+  btnClassFilter.addEventListener("click", () => {
+    classSlide.hidden = false;
+    requestAnimationFrame(() => {
+      classSlide.classList.add("show");
+    });
+  });
+}
+
+function closeClassSlide() {
+  classSlide.classList.remove("show");
+  setTimeout(() => {
+    classSlide.hidden = true;
+  }, 250);
+}
+
+
 
