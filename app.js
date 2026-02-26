@@ -871,6 +871,9 @@ state.me = {
   isAdmin: isAdmin === true
 };
 
+// 🔵 로그인 사용자 기수 기본 필터값 설정
+currentClassFilter = Number(state.me?.gisu || 0);
+
 
 setAdminButton(state.me?.isAdmin === true);
 
@@ -934,9 +937,9 @@ else localStorage.removeItem(LS_KEY);
 // ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
 
 
-state.navStack = ["members"];
-showScreen("members");
-
+// 🔵 로그인 성공 → 홈 화면으로 이동
+state.navStack = ["home"];
+showScreen("home");
 
 
 
