@@ -148,6 +148,9 @@ function stopCeremony(){
 
 let modalCtx = { list: [], index: -1 };
 
+
+let gisuSortDesc = true; // true = 최신기수 위, false = 오래된기수 위
+
 let swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
 
 // 🍎 iOS 감지 (아이폰/아이패드)
@@ -689,6 +692,15 @@ function renderMembers(list) {
     return;
   }
 
+// 🔥 기수 정렬 적용
+list.sort((a, b) => {
+  const ga = Number(a.gisu || 0);
+  const gb = Number(b.gisu || 0);
+  return gisuSortDesc ? gb - ga : ga - gb;
+});
+
+
+
  for (let i = 0; i < list.length; i++) {
   const m = list[i];
     const row = document.createElement("div");
@@ -922,8 +934,11 @@ else localStorage.removeItem(LS_KEY);
 // ✅ 로그인 성공 → 홈 화면으로 이동 (이 줄들이 빠져 있었음)
 
 
-state.navStack = ["home"];
-showScreen("home");
+state.navStack = ["members"];
+showScreen("members");
+renderMembers(state.members);
+
+
 
 __popupPromise.then(res=>{
   if (!res || res.ok !== true) return;
@@ -2085,6 +2100,19 @@ function reloadMembers() {
     state.members = onlyRealMembers(json.members || [])
       .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
 
+// 🔵 로그인한 사용자 기수로 기본 필터 설정
+currentClassFilter = Number(state.me?.gisu || 0);
+
+// 🔵 기수 버튼 텍스트도 변경
+const btnClass = el("btnClassFilter");
+if (btnClass) {
+  btnClass.textContent = currentClassFilter
+    ? `${currentClassFilter}기 ▼`
+    : "전체 ▼";
+}
+
+
+
     // ✅ 정렬 (로그인 때와 동일)
 state.members.sort((a, b) =>
   (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
@@ -2401,7 +2429,16 @@ function buildClassList() {
 })();
 
 
+// 🔥 기수 정렬 토글
+const gisuSortBtn = document.getElementById("gisuSortBtn");
 
+if (gisuSortBtn) {
+  gisuSortBtn.addEventListener("click", () => {
+    gisuSortDesc = !gisuSortDesc;
+    gisuSortBtn.textContent = gisuSortDesc ? "최신기수순" : "오래된기수순";
+    renderMembers(currentMemberList); // 🔥 기존 리스트 다시 렌더
+  });
+}
 
 
 
