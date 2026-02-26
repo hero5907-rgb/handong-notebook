@@ -1392,14 +1392,7 @@ btnA?.addEventListener("click", async () => {
 
 
 
-  // ❌ 크롬이 아닌 환경 (네이버, 카카오, 다음, 기타 인앱)
-  if (!/Chrome/i.test(ua) || /KAKAOTALK|NAVER|Daum/i.test(ua)) {
-    showHint(`
-      ⚠️ 이 브라우저에서는 앱 설치가 불가능합니다.<br><br>
-      <b>반드시 Chrome 브라우저에서 설치</b>해 주세요.
-    `);
-    return;
-  }
+
 
 
 btnI?.addEventListener("click", () => {
