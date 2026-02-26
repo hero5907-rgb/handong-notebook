@@ -156,6 +156,9 @@ const IS_IOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
 let homeBackTimer = null;
 
+let currentClassFilter = null;   // 🔵 현재 선택된 기수 (null = 전체)
+
+
 function getAuthSafe(){
   // 1) state에 있으면 그걸 우선
   let phone = normalizePhone(state?._authPhone || state?.me?.phone || "");
@@ -664,7 +667,17 @@ function formatPhone(p){
 
 
 function renderMembers(list) {
+
+
+
+  // 🔵 기수 필터 추가 (이 4줄만 추가)
+  if (currentClassFilter !== null) {
+    list = list.filter(m => Number(m.gisu || 0) === currentClassFilter);
+  }
+
   const pill = el("memberCountPill");
+
+
   if (pill) pill.textContent = `${list.length}명`;
 
   const wrap = el("memberList");
@@ -901,7 +914,7 @@ state.members.sort((a, b) =>
 
     renderLatest();
     renderAnnouncements();
-
+    buildClassList();
 
 if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
 else localStorage.removeItem(LS_KEY);
@@ -2272,6 +2285,70 @@ function closeClassSlide() {
     classSlide.hidden = true;
   }, 250);
 }
+
+
+function buildClassList() {
+
+  const listEl = document.getElementById("classSlideList");
+  if (!listEl) return;
+
+  const members = state.members || [];
+
+  // 🔵 기수 수집
+  const set = new Set();
+  members.forEach(m => {
+    const g = Number(m.gisu || 0);
+    set.add(g);
+  });
+
+  let arr = Array.from(set);
+
+  // 🔵 정렬: 최신 위 / 0기 맨 아래
+  arr.sort((a,b)=>{
+    if (a === 0) return 1;
+    if (b === 0) return -1;
+    return b - a;
+  });
+
+  listEl.innerHTML = "";
+
+  // 🔵 전체 버튼
+  const allItem = document.createElement("div");
+  allItem.className = "class-item";
+  allItem.textContent = "전체";
+  if (currentClassFilter === null) allItem.classList.add("active");
+
+  allItem.onclick = () => {
+    currentClassFilter = null;
+    document.getElementById("btnClassFilter").textContent = "전체 ▾";
+    closeClassSlide();
+    renderMembers(state.members);
+  };
+
+  listEl.appendChild(allItem);
+
+  // 🔵 기수 버튼들
+  arr.forEach(g => {
+
+    const item = document.createElement("div");
+    item.className = "class-item";
+    item.textContent = g + "기";
+
+    if (currentClassFilter === g) item.classList.add("active");
+
+    item.onclick = () => {
+      currentClassFilter = g;
+      document.getElementById("btnClassFilter").textContent = g + "기 ▾";
+      closeClassSlide();
+      renderMembers(state.members);
+    };
+
+    listEl.appendChild(item);
+  });
+}
+
+
+
 
 
 
