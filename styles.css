@@ -1572,3 +1572,23 @@ html, body {
 
 
 
+/* 🔵 기수 필터 버튼 */
+.class-filter-btn {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid #d6deea;
+  background: #f3f6fb;
+  color: #0b4ea2;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .15s ease;
+}
+
+.class-filter-btn:hover {
+  background: #e8effa;
+}
+
+.class-filter-btn:active {
+  transform: scale(.96);
+}
