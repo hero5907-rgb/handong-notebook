@@ -294,8 +294,14 @@ function openMyPage(){
   el("myPhoto").src = m.photoUrl || "";
 
 // 🔵 이름 + 기수 표시
-el("myName").textContent =
-  m.name + (m.gisu ? ` (${m.gisu}기)` : "");
+const myNameEl = el("myName");
+
+if (myNameEl) {
+  myNameEl.innerHTML = `
+    ${m.gisu ? `<span class="gisu-medal">${m.gisu}기</span>` : ""}
+    <span class="name-text">${m.name || ""}</span>
+  `;
+}
 
 // 직위 유지
 el("myPosition").textContent = m.position || "";
@@ -1492,7 +1498,7 @@ const nameEl = el("modalName");
 
 if (nameEl) {
   nameEl.innerHTML = `
-    ${m.gisu ? `<span class="gisu-badge">${m.gisu}기</span>` : ""}
+    ${m.gisu ? `<span class="gisu-medal">${m.gisu}기</span>` : ""}
     <span class="name-text">${m.name || ""}</span>
   `;
 }

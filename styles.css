@@ -1707,4 +1707,34 @@ html, body {
 }
 
 
+.gisu-medal{
+  display:inline-block;
+  padding:5px 12px;
+  margin-right:10px;
+  font-size:0.85rem;
+  font-weight:700;
+  border-radius:999px;
 
+  /* 고급 골드 그라데이션 */
+  background:linear-gradient(
+    145deg,
+    #fff6d5 0%,
+    #f5d88a 40%,
+    #e6b85c 70%,
+    #c9972c 100%
+  );
+
+  color:#5c3d00;
+
+  /* 입체감 */
+  box-shadow:
+    0 2px 4px rgba(0,0,0,0.15),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+
+  letter-spacing:0.5px;
+}
+
+.name-text{
+  font-weight:700;
+  font-size:1.2rem;
+}
