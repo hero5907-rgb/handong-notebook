@@ -1958,11 +1958,12 @@ if (!need.length) {
       start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
       end: e.endTime ? `${e.date}T${e.endTime}` : null,
       extendedProps: {
-        date: e.date,
-        startTime: e.startTime,
-        place: e.place,
-        desc: e.desc
-      }
+  date: e.date,
+  startTime: e.startTime,
+  place: e.place,
+  desc: e.desc,
+  gisu: Number(e.gisu || 0)   // ⭐ 이 줄 추가
+}
     }));
 
     calendarCache[k] = list;
@@ -2028,12 +2029,21 @@ if (calendar) {
       return { html: String(arg.date.getDate()) };
     },
 
-    // 달력 칸에는 제목만
-    eventContent(arg) {
-      return {
-        html: `<span class="fc-title-only">${arg.event.title}</span>`
-      };
-    },
+    // 달력 칸에는 제목만  전체일정 빨간색 처리 포함
+eventContent(arg) {
+
+  const gisu = Number(arg.event.extendedProps?.gisu || 0);
+
+  const colorStyle = (gisu === 0)
+    ? 'style="color:#d60000;font-weight:700;"'
+    : '';
+
+  return {
+    html: `<span class="fc-title-only" ${colorStyle}>
+             ${arg.event.title}
+           </span>`
+  };
+},
 
     // 날짜 클릭 → 팝업
     dateClick(info){
@@ -2475,7 +2485,7 @@ if (gisuSortBtn) {
   gisuSortBtn.addEventListener("click", () => {
     gisuSortDesc = !gisuSortDesc;
     gisuSortBtn.textContent = gisuSortDesc ? "최신기수순" : "오래된기수순";
-    renderMembers(currentMemberList); // 🔥 기존 리스트 다시 렌더
+    renderMembers(state.members);
   });
 }
 
