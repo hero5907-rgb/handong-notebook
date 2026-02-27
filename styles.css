@@ -1772,3 +1772,8 @@ html, body {
 
   pointer-events:none;
 }
+
+
+.screen[hidden]{
+  display:none !important;
+}
