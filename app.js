@@ -161,8 +161,6 @@ let homeBackTimer = null;
 
 let currentClassFilter = null;   // 🔵 현재 선택된 기수 (null = 전체)
 
-let classWheelReady = false;
-
 
 function getAuthSafe(){
   // 1) state에 있으면 그걸 우선
@@ -1126,14 +1124,6 @@ setAdminButton(false);
   setBrand(null);
   bindNav();
   bindSearch();
-
-
-
-// 🔵 기수 버튼 클릭 → 휠 열기
-const btnClass = el("btnClassFilter");
-if (btnClass){
-  btnClass.addEventListener("click", openClassWheel);
-}
 
 
 // 🔵 상단 로그인 사용자 이름 → 마이페이지
@@ -2499,116 +2489,6 @@ if (gisuSortBtn) {
   });
 }
 
-
-function openClassWheel(){
-
-  const modal = el("classWheelModal");
-  const scroller = el("classWheelScroller");
-
-  if (!modal || !scroller) return;
-
-  modal.hidden = false;
-
-  if (!classWheelReady){
-    buildClassWheel();
-    classWheelReady = true;
-  }
-
-  setTimeout(()=> centerToCurrentClass(), 50);
-
-  modal.querySelector(".class-wheel-backdrop")
-    .onclick = ()=> modal.hidden = true;
-}
-
-function buildClassWheel(){
-
-  const scroller = el("classWheelScroller");
-  scroller.innerHTML = "";
-
-  const max = 50;
-  const repeat = 30;
-
-  const nums = Array.from({length:max},(_,i)=> `${i+1}기`);
-  const items = Array.from({length:repeat},()=>nums).flat();
-
-  scroller.innerHTML = items.map((t,i)=>`
-    <div class="wheel-item" data-label="${t}" data-index="${i}">
-      ${t}
-    </div>
-  `).join("");
-
-  scroller.addEventListener("scroll", onWheelScroll, { passive:true });
-
-  el("classWheelSelect").onclick = applyWheelSelection;
-  el("classWheelAll").onclick = ()=>{
-    currentClassFilter = null;
-    updateClassButton();
-    renderMembers(state.members);
-    el("classWheelModal").hidden = true;
-  };
-}
-
-function onWheelScroll(){
-  const scroller = el("classWheelScroller");
-  const items = scroller.querySelectorAll(".wheel-item");
-
-  const rect = scroller.getBoundingClientRect();
-  const center = rect.top + rect.height/2;
-
-  let best = null;
-  let bestDist = 99999;
-
-  items.forEach(el=>{
-    const r = el.getBoundingClientRect();
-    const y = r.top + r.height/2;
-    const d = Math.abs(y - center);
-    if (d < bestDist){
-      bestDist = d;
-      best = el;
-    }
-  });
-
-  items.forEach(el=> el.classList.remove("active"));
-  if (best) best.classList.add("active");
-}
-
-function applyWheelSelection(){
-  const scroller = el("classWheelScroller");
-  const active = scroller.querySelector(".wheel-item.active");
-  if (!active) return;
-
-  const label = active.dataset.label;
-  const num = Number(label.replace("기",""));
-
-  currentClassFilter = num;
-
-  updateClassButton();
-  renderMembers(state.members);
-
-  el("classWheelModal").hidden = true;
-}
-
-function updateClassButton(){
-  const btn = el("btnClassFilter");
-  if (!btn) return;
-
-  btn.textContent = currentClassFilter
-    ? `${currentClassFilter}기 ▼`
-    : "전체 ▼";
-}
-
-function centerToCurrentClass(){
-  const scroller = el("classWheelScroller");
-  const items = scroller.querySelectorAll(".wheel-item");
-
-  if (currentClassFilter == null) return;
-
-  const label = `${currentClassFilter}기`;
-  const target = Array.from(items).find(el=> el.dataset.label === label);
-  if (target){
-    target.scrollIntoView({ block:"center" });
-  }
-}
 
 
 
