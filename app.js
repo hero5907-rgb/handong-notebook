@@ -2371,64 +2371,40 @@ function closeClassSlide() {
 }
 
 
-function buildClassList() {
+function buildClassList(){
 
-  const listEl = document.getElementById("classSlideList");
-  if (!listEl) return;
+  const list = document.getElementById("classSlideList");
+  list.innerHTML = "";
 
   const members = state.members || [];
 
-  // 🔵 기수 수집
   const set = new Set();
-  members.forEach(m => {
-    const g = Number(m.gisu || 0);
-    set.add(g);
+  members.forEach(m=>{
+    set.add(Number(m.gisu || 0));
   });
 
   let arr = Array.from(set);
 
-  // 🔵 정렬: 최신 위 / 0기 맨 아래
   arr.sort((a,b)=>{
-    if (a === 0) return 1;
-    if (b === 0) return -1;
-    return b - a;
+    if(a===0) return 1;
+    if(b===0) return -1;
+    return b-a;
   });
 
-  listEl.innerHTML = "";
+  arr.forEach(g=>{
+    const div = document.createElement("div");
+    div.className="class-slide-item";
+    div.textContent = g===0 ? "전체" : g+"기";
 
-  // 🔵 전체 버튼
-  const allItem = document.createElement("div");
-  allItem.className = "class-item";
-  allItem.textContent = "전체";
-  if (currentClassFilter === null) allItem.classList.add("active");
-
-  allItem.onclick = () => {
-    currentClassFilter = null;
-    document.getElementById("btnClassFilter").textContent = "전체 ▾";
-    closeClassSlide();
-    renderMembers(state.members);
-  };
-
-  listEl.appendChild(allItem);
-
-  // 🔵 기수 버튼들
-  arr.forEach(g => {
-
-    const item = document.createElement("div");
-    item.className = "class-item";
-    item.textContent = g + "기";
-
-    if (currentClassFilter === g) item.classList.add("active");
-
-    item.onclick = () => {
-      currentClassFilter = g;
-      document.getElementById("btnClassFilter").textContent = g + "기 ▾";
+    div.onclick=()=>{
+      currentClassFilter = (g===0?null:g);
       closeClassSlide();
       renderMembers(state.members);
     };
 
-    listEl.appendChild(item);
+    list.appendChild(div);
   });
+
 }
 
 
