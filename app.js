@@ -2475,7 +2475,25 @@ const items = Array.from({length:MAX_REPEAT}, ()=>loopNums).flat();
 
   const itemEls = Array.from(scroller.querySelectorAll(".wheel-item"));
 
+// 🔥 wheel-item 클릭 이벤트 추가
+itemEls.forEach(elItem => {
+  elItem.addEventListener("click", () => {
 
+    const label = elItem.dataset.label;
+
+    if (label === "전체") {
+      currentClassFilter = null;
+      document.getElementById("btnClassFilter").textContent = "전체 ▼";
+    } else {
+      const gisu = Number(label.replace("기",""));
+      currentClassFilter = gisu;
+      document.getElementById("btnClassFilter").textContent = `${gisu}기 ▼`;
+    }
+
+    closeClassSlide();
+    renderMembers(state.members);
+  });
+});
 
 
 
