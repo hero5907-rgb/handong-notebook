@@ -2494,30 +2494,23 @@ function snapToAll(){
 
 function snapToIndex(idx, smooth=true){
 
-clearTimeout(t);
+  clearTimeout(t);
+
   const elItem = itemEls[idx];
   if(!elItem) return;
 
-  const scrollerRect = scroller.getBoundingClientRect();
-  const itemRect = elItem.getBoundingClientRect();
-
-  const currentScroll = scroller.scrollTop;
-
-  const offset =
-    (itemRect.top - scrollerRect.top) -
-    (scrollerRect.height / 2 - itemRect.height / 2);
-
-  const target = currentScroll + offset;
-  const roundedTarget = Math.round(target);
+  const target =
+    elItem.offsetTop -
+    (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
 
   scroller.scrollTo({
-    top: roundedTarget,
+    top: target,
     behavior: smooth ? "smooth" : "auto"
   });
 
   setActive(idx);
-if(idx === 0) return;  // 🔥 전체는 재보정 금지
 
+  if(idx === 0) return;
 }
 
   function recenterIfNeeded(){
