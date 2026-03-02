@@ -1138,6 +1138,32 @@ setAdminButton(false);
   bindSearch();
 
 
+
+
+(function init() {
+
+  setAdminButton(false);
+
+  setBrand(null);
+  bindNav();
+  bindSearch();
+
+  // 🔥 여기다 붙여넣는다 (정확히 이 위치)
+  const btnSelectAll = document.getElementById("btnSelectAll");
+
+  if (btnSelectAll) {
+    btnSelectAll.addEventListener("click", () => {
+      if (window.__snapClassWheelToAll) {
+        window.__snapClassWheelToAll();
+      }
+    });
+  }
+
+  // 🔵 상단 로그인 사용자 이름 → 마이페이지
+  const nameBox = el("loginUserName");
+
+
+
 // 🔵 상단 로그인 사용자 이름 → 마이페이지
 const nameBox = el("loginUserName");
 if (nameBox) {
@@ -2375,7 +2401,8 @@ btnClassFilter.addEventListener("click", () => {
 }
 
 
-const btnSelectAll = document.getElementById("btnSelectAll")
+
+
 
 
 function closeClassSlide() {
@@ -2624,16 +2651,6 @@ function buildClassList() {
   let dragging = false;
 
   panel.addEventListener("touchstart", (e)=>{
-
-
-
-  // 🔥 버튼을 누른 경우는 스와이프 시작 금지
-  if (e.target.closest("#btnSelectAll")) return;
-  if (e.target.closest("#highlightBtn")) return;
-  if (e.target.closest(".wheel-item")) return;
-
-
-
     startX = e.touches[0].clientX;
     dragging = true;
   }, { passive:true });
@@ -2650,18 +2667,7 @@ function buildClassList() {
     }
   }, { passive:true });
 
-  panel.addEventListener("touchend", (e)=>{
-
-  // 🔥 버튼 터치면 닫기 로직 무시
-  if (e.target.closest("#btnSelectAll")) return;
-  if (e.target.closest("#highlightBtn")) return;
-  if (e.target.closest(".wheel-item")) return;
-
-
-
-
-
-
+  panel.addEventListener("touchend", ()=>{
     dragging = false;
 
     const diff = currentX - startX;
