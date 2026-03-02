@@ -1757,7 +1757,7 @@ html, body {
   position:absolute;
   left:0; right:0;
   height:80px;
-  z-index:3;
+  z-index:10;
   pointer-events:none;
 }
 /* ===== Stronger Fade ===== */
@@ -1794,18 +1794,15 @@ html, body {
   height:48px;
   border-radius:16px;
 
-  background: rgba(255,255,255,.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background:#ffffff;   /* 🔥 완전 불투명 */
 
   border:1.5px solid rgba(11,78,162,.35);
 
   box-shadow:
-    0 6px 18px rgba(11,78,162,.15),
-    inset 0 1px 0 rgba(255,255,255,.8);
+    0 6px 18px rgba(11,78,162,.15);
 
   z-index:5;
-  pointer-events:none;   /* 🔥 이 줄 추가 */
+  pointer-events:none;
 }
 
 .scroller{
