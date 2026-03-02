@@ -1811,3 +1811,18 @@ html, body {
   opacity:.5;
   transform:scale(.95);
 }
+
+
+/* ===== 기수 선택 화면 전체 확장 ===== */
+.class-picker-panel{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+.class-picker-body{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
