@@ -1609,20 +1609,22 @@ html, body {
 }
 
 .class-slide-panel {
-  position: absolute;
+  position: fixed;      /* 🔥 absolute → fixed */
   left: 0;
   top: 0;
-  bottom: 0;
+  height: 100vh;        /* 🔥 bottom 제거하고 vh 사용 */
   width: 260px;
+
   background: #fff;
   box-shadow: 8px 0 30px rgba(0,0,0,.15);
   padding: 16px;
+
   transform: translateX(-100%);
   transition: transform .25s ease;
+
   display: flex;
   flex-direction: column;
 }
-
 .class-slide.show .class-slide-panel {
   transform: translateX(0);
 }
@@ -1812,17 +1814,3 @@ html, body {
   transform:scale(.95);
 }
 
-
-/* ===== 기수 선택 화면 전체 확장 ===== */
-.class-picker-panel{
-  height:100vh;
-  display:flex;
-  flex-direction:column;
-}
-
-.class-picker-body{
-  flex:1;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
