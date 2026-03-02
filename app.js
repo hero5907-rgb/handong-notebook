@@ -2388,14 +2388,13 @@ const classSlide = document.getElementById("classSlide");
 if (btnClassFilter) {
 btnClassFilter.addEventListener("click", () => {
 
+  buildClassWheel();   // 🔥 반드시 먼저 호출
+
   document.body.style.overflow = "hidden";
   classSlide.hidden = false;
 
   requestAnimationFrame(() => {
     classSlide.classList.add("show");
-
-
-
   });
 
 });
