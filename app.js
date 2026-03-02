@@ -2380,19 +2380,12 @@ const btnSelectAll = document.getElementById("btnSelectAll");
 if (btnSelectAll) {
   btnSelectAll.addEventListener("click", () => {
 
-    currentClassFilter = null;
-
-    renderMembers(state.members);
-
-    if (btnClassFilter) {
-      btnClassFilter.textContent = "전체 ▼";
-    }
-
+    // 🔥 휠만 전체로 이동
     if (window.__snapClassWheelToAll) {
       window.__snapClassWheelToAll();
     }
 
-    closeClassSlide();
+
   });
 }
 
