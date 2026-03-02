@@ -2438,8 +2438,8 @@ function buildClassWheel(){
 
   if(!scroller) return;
 
-
-  const MAX_REPEAT = 40;
+const MAX_REPEAT = 40;
+  let isSnapping = false;   // 🔥 스냅 중복 방지용
 
   let base = [...new Set(
   state.members
@@ -2498,8 +2498,6 @@ function snapToAll(){
 
 function snapToIndex(idx, smooth=true){
 
-  clearTimeout(t);
-
   const elItem = itemEls[idx];
   if(!elItem) return;
 
@@ -2507,15 +2505,20 @@ function snapToIndex(idx, smooth=true){
     elItem.offsetTop -
     (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
 
-if (smooth) {
-  scroller.scrollTo({ top: target, behavior: "smooth" });
-} else {
-  scroller.scrollTop = target;   // 🔥 scrollTo 말고 직접 대입
-}
+  isSnapping = true;   // 🔥 스냅 잠금 시작
+
+  if (smooth) {
+    scroller.scrollTo({ top: target, behavior: "smooth" });
+  } else {
+    scroller.scrollTop = target;
+  }
 
   setActive(idx);
 
-  if(idx === 0) return;
+  // 🔥 120ms 후 잠금 해제
+  setTimeout(()=>{
+    isSnapping = false;
+  }, 120);
 }
 
   function recenterIfNeeded(){
@@ -2563,14 +2566,21 @@ requestAnimationFrame(()=>{
 
   let t = null;
 scroller.addEventListener("scroll", ()=>{
+
+  if (isSnapping) return;   // 🔥 스냅 중이면 무시
+
   clearTimeout(t);
+
   const idx = getNearestIndex();
   setActive(idx);
 
   t = setTimeout(()=>{
+
+    if (isSnapping) return;   // 🔥 다시 한번 보호
+
     const idx2 = getNearestIndex();
 
-    if(idx2 === 0){          // 🔥 전체면 재스냅 금지
+    if(idx2 === 0){
       snapToIndex(0,false);
       return;
     }
@@ -2579,6 +2589,7 @@ scroller.addEventListener("scroll", ()=>{
     setTimeout(recenterIfNeeded,160);
 
   },110);
+
 },{passive:true});
 
 // 가운데 탭 적용
