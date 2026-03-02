@@ -2428,6 +2428,11 @@ function closeClassSlide() {
 
 function buildClassWheel(){
 
+  // 🔥 로그인 완료 전 실행 차단
+  if (!state || !Array.isArray(state.members) || state.members.length === 0) {
+    return;
+  }
+
   const scroller = document.getElementById("classScroller");
   const highlightBtn = document.getElementById("highlightBtn");
 
@@ -2576,7 +2581,7 @@ scroller.addEventListener("scroll", ()=>{
 },{passive:true});
 
 // 가운데 탭 적용
-highlightBtn.addEventListener("click", ()=>{
+highlightBtn?.addEventListener("click", ()=>{
 
   const idx = getNearestIndex();
   const label = items[idx];
