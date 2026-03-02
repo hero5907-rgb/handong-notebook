@@ -940,9 +940,15 @@ state.members.sort((a, b) =>
   (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
 );
 
-    renderLatest();
-    renderAnnouncements();
-    buildClassWheel();
+renderLatest();
+renderAnnouncements();
+
+// 🔥 먼저 기수값 보장
+currentClassFilter = state.me?.gisu
+  ? Number(state.me.gisu)
+  : null;
+
+buildClassWheel();
 
 if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
 else localStorage.removeItem(LS_KEY);
