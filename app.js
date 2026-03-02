@@ -2551,7 +2551,9 @@ if (currentClassFilter === null) {
 }
 
 requestAnimationFrame(()=>{
-  snapToIndex(initialIdx, false);
+  requestAnimationFrame(()=>{
+    snapToIndex(initialIdx, false);
+  });
 });
 
   let t = null;
