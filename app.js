@@ -883,7 +883,9 @@ state.me = {
 };
 
 // 🔵 로그인 사용자 기수 기본 필터값 설정
-currentClassFilter = Number(state.me?.gisu || 0);
+currentClassFilter = state.me?.gisu
+  ? Number(state.me.gisu)
+  : null;
 
 
 setAdminButton(state.me?.isAdmin === true);
@@ -2179,7 +2181,9 @@ function reloadMembers() {
       .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
 
 // 🔵 로그인한 사용자 기수로 기본 필터 설정
-currentClassFilter = Number(state.me?.gisu || 0);
+currentClassFilter = state.me?.gisu
+  ? Number(state.me.gisu)
+  : null;
 
 // 🔵 기수 버튼 텍스트도 변경
 const btnClass = el("btnClassFilter");
