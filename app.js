@@ -2375,7 +2375,6 @@ btnClassFilter.addEventListener("click", () => {
 }
 
 
-// 🔵 슬라이드 상단 "전체" 버튼 (btnSelectAll)
 const btnSelectAll = document.getElementById("btnSelectAll");
 
 if (btnSelectAll) {
@@ -2389,22 +2388,11 @@ if (btnSelectAll) {
       btnClassFilter.textContent = "전체 ▼";
     }
 
-
-  // 🔥 여기서 바로 휠 이동
-  if (window.__snapClassWheelToAll) {
-    window.__snapClassWheelToAll();
-  }
-
-
-
-    closeClassSlide();
-
     if (window.__snapClassWheelToAll) {
-      setTimeout(() => {
-        window.__snapClassWheelToAll();
-      }, 50);
+      window.__snapClassWheelToAll();
     }
 
+    closeClassSlide();
   });
 }
 
@@ -2501,6 +2489,9 @@ function snapToAll(){
 
   function recenterIfNeeded(){
     const idx = getNearestIndex();
+
+    if (idx === 0) return; // 🔥 전체 보호
+
     const label = items[idx];
     if(label === "전체") return;
 
@@ -2518,10 +2509,22 @@ function snapToAll(){
     }
   }
 
-  // 초기 중앙 배치
-  const centerBlock = Math.floor(MAX_REPEAT/2);
-  const centerStart = 1 + centerBlock * base.length;
-  snapToIndex(centerStart,false);
+// 🔥 초기 위치를 현재 선택된 기수로 맞춤
+const centerBlock = Math.floor(MAX_REPEAT/2);
+const centerStart = 1 + centerBlock * base.length;
+
+let initialIdx = centerStart; // 기본값
+
+if (currentClassFilter === null) {
+  initialIdx = 0; // 전체
+} else {
+  const pos = base.indexOf(Number(currentClassFilter));
+  if (pos >= 0) {
+    initialIdx = centerStart + pos;
+  }
+}
+
+snapToIndex(initialIdx, false);
 
   let t = null;
   scroller.addEventListener("scroll", ()=>{
