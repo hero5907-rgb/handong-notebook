@@ -2431,16 +2431,8 @@ function buildClassWheel(){
 
   const MAX_REPEAT = 40;
 
-
-let base = [
-  ...new Set(
-    state.members
-      .map(m => Number(m.gisu))
-      .filter(g => !isNaN(g) && g > 0)
-  )
-];
-
-base.sort((a,b)=> b-a);
+  let base = [...new Set(state.members.map(m=>m.gisu).filter(Boolean))];
+  base.sort((a,b)=> b-a);
 
   if(base.length === 0) return;
 
@@ -2460,8 +2452,7 @@ base.sort((a,b)=> b-a);
 
 
 function snapToAll(){
-  // "전체"는 항상 index 0
-  snapToIndex(0, true);
+  snapToIndex(0, false);   // 🔥 smooth 금지
 }
 
 
@@ -2491,6 +2482,8 @@ function snapToAll(){
   }
 
 function snapToIndex(idx, smooth=true){
+
+clearTimeout(t);
   const elItem = itemEls[idx];
   if(!elItem) return;
 
@@ -2512,6 +2505,8 @@ function snapToIndex(idx, smooth=true){
   });
 
   setActive(idx);
+if(idx === 0) return;  // 🔥 전체는 재보정 금지
+
 }
 
   function recenterIfNeeded(){
@@ -2556,17 +2551,24 @@ requestAnimationFrame(()=>{
 });
 
   let t = null;
-  scroller.addEventListener("scroll", ()=>{
-    clearTimeout(t);
-    const idx = getNearestIndex();
-    setActive(idx);
+scroller.addEventListener("scroll", ()=>{
+  clearTimeout(t);
+  const idx = getNearestIndex();
+  setActive(idx);
 
-    t = setTimeout(()=>{
-      const idx2 = getNearestIndex();
-      snapToIndex(idx2,true);
-      setTimeout(recenterIfNeeded,160);
-    },110);
-  },{passive:true});
+  t = setTimeout(()=>{
+    const idx2 = getNearestIndex();
+
+    if(idx2 === 0){          // 🔥 전체면 재스냅 금지
+      snapToIndex(0,false);
+      return;
+    }
+
+    snapToIndex(idx2,true);
+    setTimeout(recenterIfNeeded,160);
+
+  },110);
+},{passive:true});
 
 // 가운데 탭 적용
 highlightBtn.addEventListener("click", ()=>{
