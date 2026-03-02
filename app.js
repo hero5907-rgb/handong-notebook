@@ -2557,9 +2557,10 @@ highlightBtn.addEventListener("click", ()=>{
   }
 
   // 🔥 슬라이드 닫기
-  if (typeof closeClassSlide === "function") {
-    closeClassSlide();
-  }
+// 🔥 슬라이드 닫기 (전체는 제외)
+if (typeof closeClassSlide === "function" && label !== "전체") {
+  closeClassSlide();
+}
 });
 
 
