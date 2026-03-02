@@ -2428,7 +2428,7 @@ function buildClassWheel(){
 
   if(!scroller) return;
 
-  const ITEM_H = 44;
+
   const MAX_REPEAT = 40;
 
   let base = [...new Set(state.members.map(m=>m.gisu).filter(Boolean))];
@@ -2489,12 +2489,17 @@ function snapToIndex(idx, smooth=true){
   const scrollerRect = scroller.getBoundingClientRect();
   const itemRect = elItem.getBoundingClientRect();
 
+  const currentScroll = scroller.scrollTop;
+
   const offset =
     (itemRect.top - scrollerRect.top) -
     (scrollerRect.height / 2 - itemRect.height / 2);
 
-  scroller.scrollBy({
-    top: offset,
+  const target = currentScroll + offset;
+  const roundedTarget = Math.round(target);
+
+  scroller.scrollTo({
+    top: roundedTarget,
     behavior: smooth ? "smooth" : "auto"
   });
 
@@ -2538,7 +2543,9 @@ if (currentClassFilter === null) {
   }
 }
 
-snapToIndex(initialIdx, false);
+requestAnimationFrame(()=>{
+  snapToIndex(initialIdx, false);
+});
 
   let t = null;
   scroller.addEventListener("scroll", ()=>{
