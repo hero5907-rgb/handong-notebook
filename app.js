@@ -2487,7 +2487,7 @@ function snapToAll(){
   const blockSize = base.length + 1;   // 전체 포함
   const centerStart = centerBlock * blockSize;
 
-  snapToIndex(centerStart, false);  // 🔥 중앙 블록의 "전체"로 이동
+  snapToIndex(centerStart, true);  // 🔥 중앙 블록의 "전체"로 이동
 }
 
   function getNearestIndex(){
