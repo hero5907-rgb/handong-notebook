@@ -1760,25 +1760,53 @@ html, body {
   z-index:3;
   pointer-events:none;
 }
+/* ===== Stronger Fade ===== */
 .wheel::before{
   top:0;
-  background:linear-gradient(180deg,#fff 0%,rgba(255,255,255,.6) 60%,transparent);
+  background:linear-gradient(
+    180deg,
+    #ffffff 0%,
+    rgba(255,255,255,.9) 40%,
+    rgba(255,255,255,.4) 70%,
+    transparent 100%
+  );
 }
+
 .wheel::after{
   bottom:0;
-  background:linear-gradient(0deg,#fff 0%,rgba(255,255,255,.6) 60%,transparent);
+  background:linear-gradient(
+    0deg,
+    #ffffff 0%,
+    rgba(255,255,255,.9) 40%,
+    rgba(255,255,255,.4) 70%,
+    transparent 100%
+  );
 }
 
 /* 가운데 선택 영역 */
+/* ===== iOS Glass Highlight ===== */
 .highlightBtn{
   position:absolute;
-  left:12px; right:12px;
+  left:14px;
+  right:14px;
   top:50%;
   transform:translateY(-50%);
-  height:44px;
-  border-radius:14px;
-  background:rgba(11,78,162,.08);
-  border:1px solid rgba(11,78,162,.22);
+  height:48px;
+  border-radius:16px;
+
+  /* 🔥 유리 느낌 */
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  /* 🔥 네이비 라인 */
+  border:1.5px solid rgba(11,78,162,.35);
+
+  /* 🔥 안쪽 하이라이트 */
+  box-shadow:
+    0 6px 18px rgba(11,78,162,.15),
+    inset 0 1px 0 rgba(255,255,255,.8);
+
   z-index:2;
   cursor:pointer;
 }
@@ -1807,11 +1835,12 @@ html, body {
 
 .wheel-item[data-active="1"]{
   color:#0b4ea2;
-  transform:scale(1.05);
+  transform:scale(1.08);
+  opacity:1;
 }
 .wheel-item[data-active="0"]{
-  opacity:.5;
-  transform:scale(.95);
+  opacity:.35;
+  transform:scale(.90);
 }
 
 
