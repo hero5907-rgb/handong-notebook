@@ -2443,7 +2443,7 @@ function buildClassWheel(){
     .filter(g => !isNaN(g))
 )];
 
-  base.sort((a,b)=> b-a);
+  base.sort((a,b)=> a-b);
 
   if(base.length === 0) return;
 
