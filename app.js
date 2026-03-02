@@ -941,6 +941,8 @@ state.members.sort((a, b) =>
     renderLatest();
     renderAnnouncements();
     buildClassWheel();
+    
+    setTimeout(()=> buildClassWheel(), 50);
 
 if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
 else localStorage.removeItem(LS_KEY);
@@ -2482,20 +2484,28 @@ function buildClassWheel(){
     },110);
   },{passive:true});
 
-  // 가운데 탭 적용
-  highlightBtn.addEventListener("click", ()=>{
-    const idx = getNearestIndex();
-    const label = items[idx];
+highlightBtn.addEventListener("click", ()=>{
+  const idx = getNearestIndex();
+  const label = items[idx];
 
-    if(label === "전체"){
-      currentClassFilter = null;
-    }else{
-      currentClassFilter = Number(label.replace("기",""));
-    }
+  if(label === "전체"){
+    currentClassFilter = null;
+  }else{
+    currentClassFilter = Number(label.replace("기",""));
+  }
 
-    renderMembers(state.members);
-  });
-}
+  renderMembers(state.members);
+
+  // 🔥 추가
+  const btnClass = el("btnClassFilter");
+  if(btnClass){
+    btnClass.textContent = label === "전체"
+      ? "전체 ▼"
+      : label + " ▼";
+  }
+
+  closeClassSlide();   // 🔥 이 줄 추가
+});
 
 
 
