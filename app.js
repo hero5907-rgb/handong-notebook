@@ -1140,15 +1140,18 @@ setAdminButton(false);
 
 
   // 🔥 여기다 붙여넣는다 (정확히 이 위치)
-  const btnSelectAll = document.getElementById("btnSelectAll");
+ const btnSelectAll = document.getElementById("btnSelectAll");
 
-  if (btnSelectAll) {
-    btnSelectAll.addEventListener("click", () => {
-      if (window.__snapClassWheelToAll) {
-        window.__snapClassWheelToAll();
-      }
-    });
-  }
+if (btnSelectAll) {
+  btnSelectAll.addEventListener("click", (e) => {
+
+    e.stopPropagation();   // 🔥 이 한 줄 추가 (핵심)
+
+    if (window.__snapClassWheelToAll) {
+      window.__snapClassWheelToAll();
+    }
+  });
+}
 
 
 
