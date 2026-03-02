@@ -2686,7 +2686,6 @@ if (gisuSortBtn) {
     renderMembers(state.members);
   });
 }
-}
 
 
 
