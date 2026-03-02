@@ -2624,6 +2624,16 @@ function buildClassList() {
   let dragging = false;
 
   panel.addEventListener("touchstart", (e)=>{
+
+
+
+  // 🔥 버튼을 누른 경우는 스와이프 시작 금지
+  if (e.target.closest("#btnSelectAll")) return;
+  if (e.target.closest("#highlightBtn")) return;
+  if (e.target.closest(".wheel-item")) return;
+
+
+
     startX = e.touches[0].clientX;
     dragging = true;
   }, { passive:true });
@@ -2640,7 +2650,18 @@ function buildClassList() {
     }
   }, { passive:true });
 
-  panel.addEventListener("touchend", ()=>{
+  panel.addEventListener("touchend", (e)=>{
+
+  // 🔥 버튼 터치면 닫기 로직 무시
+  if (e.target.closest("#btnSelectAll")) return;
+  if (e.target.closest("#highlightBtn")) return;
+  if (e.target.closest(".wheel-item")) return;
+
+
+
+
+
+
     dragging = false;
 
     const diff = currentX - startX;
