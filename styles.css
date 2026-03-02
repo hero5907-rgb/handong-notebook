@@ -1738,3 +1738,54 @@ html, body {
   font-weight:700;
   font-size:1.2rem;
 }
+
+
+
+/* ===== iOS 스타일 휠 ===== */
+
+.wheel-wrapper{
+  position: relative;
+  height: 280px;
+  overflow: hidden;
+}
+
+.wheel{
+  height: 100%;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  padding: 120px 0; /* 중앙 맞추기용 */
+}
+
+.wheel::-webkit-scrollbar{
+  display:none;
+}
+
+.wheel-item{
+  height: 44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  font-weight:600;
+  scroll-snap-align: center;
+  color:#1e3a8a;
+  transition: transform .15s ease, opacity .15s ease;
+}
+
+.wheel-highlight{
+  position:absolute;
+  top:50%;
+  left:0;
+  right:0;
+  height:44px;
+  transform:translateY(-50%);
+  border-top:1px solid rgba(0,0,0,.15);
+  border-bottom:1px solid rgba(0,0,0,.15);
+  pointer-events:none;
+}
+
+.wheel-item.active{
+  font-size:20px;
+  font-weight:800;
+  color:#0b4ea2;
+}

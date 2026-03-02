@@ -940,7 +940,7 @@ state.members.sort((a, b) =>
 
     renderLatest();
     renderAnnouncements();
-    buildClassList();
+    buildClassWheel();
 
 if (keep) localStorage.setItem(LS_KEY, JSON.stringify({ phone, code }));
 else localStorage.removeItem(LS_KEY);
@@ -2382,6 +2382,65 @@ function closeClassSlide() {
   }, 250);
 }
 
+
+
+
+
+function buildClassWheel(){
+
+  const wheel = el("classWheel");
+  if (!wheel) return;
+
+  wheel.innerHTML = "";
+
+  const classes = ["전체"];
+
+  const gisuSet = [...new Set(state.members.map(m => m.gisu).filter(Boolean))];
+
+  gisuSet.sort((a,b)=> b-a);
+
+  gisuSet.forEach(g => classes.push(`${g}기`));
+
+  classes.forEach(text=>{
+    const div = document.createElement("div");
+    div.className = "wheel-item";
+    div.textContent = text;
+    wheel.appendChild(div);
+  });
+
+  // 스크롤 감지
+  wheel.addEventListener("scroll", ()=>{
+    const items = wheel.querySelectorAll(".wheel-item");
+    const center = wheel.scrollTop + wheel.clientHeight/2;
+
+    let closest = null;
+    let minDiff = Infinity;
+
+    items.forEach(item=>{
+      const box = item.offsetTop + item.offsetHeight/2;
+      const diff = Math.abs(box - center);
+      if(diff < minDiff){
+        minDiff = diff;
+        closest = item;
+      }
+      item.classList.remove("active");
+    });
+
+    if(closest){
+      closest.classList.add("active");
+
+      const text = closest.textContent;
+      if(text === "전체"){
+        currentClassFilter = null;
+      }else{
+        currentClassFilter = Number(text.replace("기",""));
+      }
+
+      renderMembers(state.members);
+    }
+  });
+
+}
 
 function buildClassList() {
 
