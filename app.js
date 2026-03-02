@@ -2427,6 +2427,11 @@ function buildClassWheel(){
   const itemEls = Array.from(scroller.querySelectorAll(".wheel-item"));
 
 
+
+
+
+
+
 function snapToAll(){
   // "전체"는 항상 index 0
   snapToIndex(0, true);
@@ -2651,7 +2656,7 @@ if (gisuSortBtn) {
     renderMembers(state.members);
   });
 }
-
+}
 
 
 
