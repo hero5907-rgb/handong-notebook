@@ -2521,27 +2521,7 @@ function snapToIndex(idx, smooth=true){
   }, 120);
 }
 
-  function recenterIfNeeded(){
-    const idx = getNearestIndex();
 
-    if (idx === 0) return; // 🔥 전체 보호
-
-    const label = items[idx];
-    if(label === "전체") return;
-
-    const centerBlock = Math.floor(MAX_REPEAT/2);
-    const centerStart = 1 + centerBlock * base.length;
-
-    const g = label.replace("기","");
-    const pos = base.indexOf(Number(g));
-    if(pos < 0) return;
-
-    const targetIdx = centerStart + pos;
-
-    if(Math.abs(idx - targetIdx) > base.length * 5){
-      snapToIndex(targetIdx,false);
-    }
-  }
 
 // 🔥 초기 위치를 현재 선택된 기수로 맞춤
 const centerBlock = Math.floor(MAX_REPEAT/2);
@@ -2585,8 +2565,7 @@ scroller.addEventListener("scroll", ()=>{
       return;
     }
 
-    snapToIndex(idx2,false);
-    setTimeout(recenterIfNeeded,160);
+snapToIndex(idx2,false);
 
   },110);
 
