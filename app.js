@@ -1150,9 +1150,6 @@ setAdminButton(false);
     });
   }
 
-  // 🔵 상단 로그인 사용자 이름 → 마이페이지
-  const nameBox = el("loginUserName");
-
 
 
 // 🔵 상단 로그인 사용자 이름 → 마이페이지
