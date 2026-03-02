@@ -1743,11 +1743,16 @@ html, body {
 
 .wheel{
   position:relative;
-  height:260px;
+
+  flex:1;                 /* 🔥 패널 남는 공간 전부 사용 */
+  height:auto;            /* 🔥 고정높이 제거 */
+
   border-radius:20px;
   background:#fff;
   border:1px solid #e5e7eb;
   overflow:hidden;
+
+  display:flex;           /* 🔥 내부 정렬용 */
 }
 
 /* 위아래 페이드 */
@@ -1769,48 +1774,28 @@ html, body {
   background:linear-gradient(0deg,#fff 0%,rgba(255,255,255,.6) 60%,transparent);
 }
 
-/* 가운데 선택 영역 */
-.highlightBtn{
-  position:absolute;
-  left:12px; right:12px;
-  top:50%;
-  transform:translateY(-50%);
-  height:44px;
-  border-radius:14px;
-  background:rgba(11,78,162,.08);
-  border:1px solid rgba(11,78,162,.22);
-  z-index:2;
-  cursor:pointer;
-}
+.wheel{
+  position:relative;
 
-.scroller{
-  height:100%;
-  overflow:auto;
-  scroll-snap-type:y mandatory;
-  -webkit-overflow-scrolling:touch;
-  padding:108px 12px;
-  scrollbar-width:none;
-}
-.scroller::-webkit-scrollbar{display:none}
+  flex:1;                 /* 🔥 패널 남는 공간 전부 사용 */
+  height:auto;            /* 🔥 고정높이 제거 */
 
-.wheel-item{
-  height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  scroll-snap-align:center;
-  font-weight:900;
-  border-radius:12px;
-  transition:transform .15s ease, opacity .15s ease;
-  color:#1f2937;
-}
+  border-radius:20px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  overflow:hidden;
 
-.wheel-item[data-active="1"]{
-  color:#0b4ea2;
-  transform:scale(1.05);
-}
-.wheel-item[data-active="0"]{
-  opacity:.5;
-  transform:scale(.95);
-}
+  display:flex;           /* 🔥 내부 정렬용 */
+}.wheel{
+  position:relative;
 
+  flex:1;                 /* 🔥 패널 남는 공간 전부 사용 */
+  height:auto;            /* 🔥 고정높이 제거 */
+
+  border-radius:20px;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  overflow:hidden;
+
+  display:flex;           /* 🔥 내부 정렬용 */
+}
