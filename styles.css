@@ -1783,7 +1783,7 @@ html, body {
   );
 }
 
-/* 가운데 선택 영역 */
+
 /* ===== iOS Glass Highlight ===== */
 .highlightBtn{
   position:absolute;
@@ -1794,13 +1794,13 @@ html, body {
   height:48px;
   border-radius:16px;
 
-  background:rgba(255,255,255,0.15); /* 🔥 반투명으로 변경 */
-  backdrop-filter:blur(6px);
+  background:rgba(255,255,255,0.25);
+  backdrop-filter:blur(4px);
 
   border:1.5px solid rgba(11,78,162,.35);
   box-shadow:0 6px 18px rgba(11,78,162,.15);
 
-  z-index:5;
+  z-index:0;            /* 🔥 핵심 수정 */
   pointer-events:none;
 }
 
@@ -1854,7 +1854,10 @@ html, body {
   height:auto !important; /* 기존 260px 무력화 */
 }
 
-
+.wheel-item{
+  position:relative;
+  z-index:2;            /* 🔥 클릭 복구 */
+}
 
 
 
