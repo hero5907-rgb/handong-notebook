@@ -2381,8 +2381,6 @@ btnClassFilter.addEventListener("click", () => {
 });
 }
 
-});
-}
 
 // 🔵 슬라이드 상단 "전체" 버튼 (btnSelectAll)
 const btnSelectAll = document.getElementById("btnSelectAll");
