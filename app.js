@@ -2381,6 +2381,36 @@ btnClassFilter.addEventListener("click", () => {
 });
 }
 
+});
+}
+
+// 🔵 슬라이드 상단 "전체" 버튼 (btnSelectAll)
+const btnSelectAll = document.getElementById("btnSelectAll");
+
+if (btnSelectAll) {
+  btnSelectAll.addEventListener("click", () => {
+
+    currentClassFilter = null;
+
+    renderMembers(state.members);
+
+    if (btnClassFilter) {
+      btnClassFilter.textContent = "전체 ▼";
+    }
+
+    closeClassSlide();
+
+    if (window.__snapClassWheelToAll) {
+      setTimeout(() => {
+        window.__snapClassWheelToAll();
+      }, 50);
+    }
+
+  });
+}
+
+
+
 function closeClassSlide() {
   const panel = classSlide.querySelector(".class-slide-panel");
 
