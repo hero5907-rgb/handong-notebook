@@ -2527,11 +2527,18 @@ function snapToAll(){
     return bestIdx;
   }
 
-  function setActive(idx){
-    itemEls.forEach(el=>{
-      el.dataset.active = (Number(el.dataset.index) === idx) ? "1":"0";
-    });
+function setActive(idx){
+
+  // 🔥 먼저 전부 0으로 초기화
+  for (let i = 0; i < itemEls.length; i++) {
+    itemEls[i].dataset.active = "0";
   }
+
+  // 🔥 하나만 1
+  if (itemEls[idx]) {
+    itemEls[idx].dataset.active = "1";
+  }
+}
 
 function snapToIndex(idx, smooth=true){
 
