@@ -1834,7 +1834,7 @@ html, body {
   opacity:1;
 }
 .wheel-item[data-active="0"]{
-  opacity:.15;       /* 🔥 더 흐리게 */
+  opacity:.45;       /* 🔥 더 흐리게 */
   transform:scale(.85);
   color:#9ca3af;     /* 🔥 회색 고정 */
 }
