@@ -1808,9 +1808,11 @@ html, body {
 .scroller{
   height:100%;
   overflow:auto;
-  
   -webkit-overflow-scrolling:touch;
-  padding:96px 12px;
+
+  /* 🔥 중앙 정렬 정확히 맞춤 */
+  padding:88px 12px;
+
   scrollbar-width:none;
 }
 .scroller::-webkit-scrollbar{display:none}
