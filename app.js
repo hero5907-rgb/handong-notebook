@@ -2375,20 +2375,7 @@ btnClassFilter.addEventListener("click", () => {
 }
 
 
-const btnSelectAll = document.getElementById("btnSelectAll");
-
-if (btnSelectAll) {
-  btnSelectAll.addEventListener("click", () => {
-
-    // 🔥 휠만 전체로 이동
-    if (window.__snapClassWheelToAll) {
-      window.__snapClassWheelToAll();
-    }
-
-
-  });
-}
-
+const btnSelectAll = document.getElementById("btnSelectAll")
 
 
 function closeClassSlide() {
