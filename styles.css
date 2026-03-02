@@ -1677,10 +1677,7 @@ html, body {
 
 
 /* 🔥 기수 슬라이드 내부 스크롤 강제 허용 */
-.class-slide-panel {
-  height: 100vh;
-  overflow: hidden;   /* 패널 자체는 고정 */
-}
+
 
 .class-slide-list {
   flex: 1;
@@ -1745,7 +1742,9 @@ html, body {
 
 .wheel-wrapper{
   position: relative;
-  height: 280px;
+  height: 50vh;          /* 🔥 화면 기준 */
+  max-height: 380px;     /* 🔥 너무 커지지 않게 */
+  min-height: 220px;     /* 🔥 너무 작지 않게 */
   overflow: hidden;
 }
 
@@ -1753,7 +1752,9 @@ html, body {
   height: 100%;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
-  padding: 120px 0; /* 중앙 맞추기용 */
+  padding: calc(50% - 22px) 0;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
 
 .wheel::-webkit-scrollbar{

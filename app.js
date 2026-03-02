@@ -2393,23 +2393,30 @@ function buildClassWheel(){
 
   wheel.innerHTML = "";
 
-  const classes = ["전체"];
+  let base = [...new Set(state.members.map(m=>m.gisu).filter(Boolean))];
+  base.sort((a,b)=> b-a);
 
-  const gisuSet = [...new Set(state.members.map(m => m.gisu).filter(Boolean))];
+  // 무한 루프용 3배 복제
+  const classes = [
+    ...base,
+    ...base,
+    ...base
+  ];
 
-  gisuSet.sort((a,b)=> b-a);
-
-  gisuSet.forEach(g => classes.push(`${g}기`));
-
-  classes.forEach(text=>{
+  classes.forEach(g=>{
     const div = document.createElement("div");
     div.className = "wheel-item";
-    div.textContent = text;
+    div.textContent = `${g}기`;
     wheel.appendChild(div);
   });
 
-  // 스크롤 감지
+  // 가운데 세트로 강제 이동
+  setTimeout(()=>{
+    wheel.scrollTop = wheel.scrollHeight / 3;
+  },0);
+
   wheel.addEventListener("scroll", ()=>{
+
     const items = wheel.querySelectorAll(".wheel-item");
     const center = wheel.scrollTop + wheel.clientHeight/2;
 
@@ -2429,17 +2436,21 @@ function buildClassWheel(){
     if(closest){
       closest.classList.add("active");
 
-      const text = closest.textContent;
-      if(text === "전체"){
-        currentClassFilter = null;
-      }else{
-        currentClassFilter = Number(text.replace("기",""));
-      }
-
+      const g = Number(closest.textContent.replace("기",""));
+      currentClassFilter = g;
       renderMembers(state.members);
     }
-  });
 
+    // 🔥 무한루프 위치 보정
+    const max = wheel.scrollHeight;
+    if(wheel.scrollTop < max/6){
+      wheel.scrollTop += max/3;
+    }
+    if(wheel.scrollTop > max*2/3){
+      wheel.scrollTop -= max/3;
+    }
+
+  });
 }
 
 function buildClassList() {
