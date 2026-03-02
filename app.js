@@ -2598,12 +2598,11 @@ function buildClassList() {
   allItem.textContent = "전체";
   if (currentClassFilter === null) allItem.classList.add("active");
 
-  allItem.onclick = () => {
-    currentClassFilter = null;
-    document.getElementById("btnClassFilter").textContent = "전체 ▾";
-    closeClassSlide();
-    renderMembers(state.members);
-  };
+allItem.onclick = () => {
+  currentClassFilter = null;
+  document.getElementById("btnClassFilter").textContent = "전체 ▾";
+  renderMembers(state.members);
+};
 
   listEl.appendChild(allItem);
 
