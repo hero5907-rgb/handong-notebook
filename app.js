@@ -1139,15 +1139,6 @@ setAdminButton(false);
 
 
 
-
-(function init() {
-
-  setAdminButton(false);
-
-  setBrand(null);
-  bindNav();
-  bindSearch();
-
   // 🔥 여기다 붙여넣는다 (정확히 이 위치)
   const btnSelectAll = document.getElementById("btnSelectAll");
 
