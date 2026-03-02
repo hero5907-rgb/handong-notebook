@@ -2361,13 +2361,23 @@ const classSlide = document.getElementById("classSlide");
 if (btnClassFilter) {
 btnClassFilter.addEventListener("click", () => {
 
-buildClassList(); // ⭐ 이 줄 추가
-
-  document.body.style.overflow = "hidden";   // 🔥 배경 스크롤 잠금
+  document.body.style.overflow = "hidden";
   classSlide.hidden = false;
+
   requestAnimationFrame(() => {
     classSlide.classList.add("show");
+
+    // ⭐ 여기다 넣는다 (requestAnimationFrame 안쪽!)
+    if (currentClassFilter === null) {
+      setTimeout(() => {
+        if (window.__snapClassWheelToAll) {
+          window.__snapClassWheelToAll();
+        }
+      }, 50);
+    }
+
   });
+
 });
 }
 
@@ -2415,6 +2425,13 @@ function buildClassWheel(){
   `).join("");
 
   const itemEls = Array.from(scroller.querySelectorAll(".wheel-item"));
+
+
+function snapToAll(){
+  // "전체"는 항상 index 0
+  snapToIndex(0, true);
+}
+
 
   function getNearestIndex(){
     const rect = scroller.getBoundingClientRect();
@@ -2515,7 +2532,7 @@ highlightBtn.addEventListener("click", ()=>{
 
 
 
-
+window.__snapClassWheelToAll = snapToAll;
 
 function buildClassList() {
 
