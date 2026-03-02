@@ -2638,10 +2638,11 @@ allItem.onclick = () => {
   let currentX = 0;
   let dragging = false;
 
-  panel.addEventListener("touchstart", (e)=>{
-    startX = e.touches[0].clientX;
-    dragging = true;
-  }, { passive:true });
+panel.addEventListener("touchstart", (e)=>{
+  startX = e.touches[0].clientX;
+  currentX = startX;   // 🔥 이 줄 추가 (핵심)
+  dragging = true;
+}, { passive:true });
 
   panel.addEventListener("touchmove", (e)=>{
     if (!dragging) return;
