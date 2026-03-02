@@ -1747,7 +1747,7 @@ html, body {
   border-radius:20px;
   background:#fff;
   border:1px solid #e5e7eb;
-  overflow:hidden;
+  overflow:visible;   /* 🔥 변경 */
 }
 
 /* 위아래 페이드 */
@@ -1816,7 +1816,7 @@ html, body {
   overflow:auto;
   
   -webkit-overflow-scrolling:touch;
-  padding:108px 12px;
+  padding:96px 12px;
   scrollbar-width:none;
 }
 .scroller::-webkit-scrollbar{display:none}
