@@ -2464,8 +2464,10 @@ const MAX_REPEAT = 40;
 
   if(base.length === 0) return;
 
-  const loopNums = base.map(g => `${g}기`);
-  const items = ["전체", ...Array.from({length:MAX_REPEAT}, ()=>loopNums).flat()];
+const loopNums = ["전체", ...base.map(g => `${g}기`)];
+
+// 🔥 전체 포함 무한루프
+const items = Array.from({length:MAX_REPEAT}, ()=>loopNums).flat();
 
   scroller.innerHTML = items.map((t,i)=>`
     <div class="wheel-item" data-index="${i}" data-label="${t}" data-active="0">${t}</div>
@@ -2538,16 +2540,19 @@ function snapToIndex(idx, smooth=true){
 
 // 🔥 초기 위치를 현재 선택된 기수로 맞춤
 const centerBlock = Math.floor(MAX_REPEAT/2);
-const centerStart = 1 + centerBlock * base.length;
+const blockSize = base.length + 1; // 🔥 전체 포함
+const centerStart = centerBlock * blockSize;
 
-let initialIdx = centerStart; // 기본값
+let initialIdx;
 
 if (currentClassFilter === null) {
-  initialIdx = 0; // 전체
+  initialIdx = centerStart;   // 🔥 중앙 블록의 전체
 } else {
   const pos = base.indexOf(Number(currentClassFilter));
   if (pos >= 0) {
-    initialIdx = centerStart + pos;
+    initialIdx = centerStart + pos + 1; // 🔥 전체가 앞에 있으니까 +1
+  } else {
+    initialIdx = centerStart;
   }
 }
 
