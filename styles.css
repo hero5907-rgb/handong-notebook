@@ -1794,12 +1794,11 @@ html, body {
   height:48px;
   border-radius:16px;
 
-  background:#ffffff;   /* 🔥 완전 불투명 */
+  background:rgba(255,255,255,0.15); /* 🔥 반투명으로 변경 */
+  backdrop-filter:blur(6px);
 
   border:1.5px solid rgba(11,78,162,.35);
-
-  box-shadow:
-    0 6px 18px rgba(11,78,162,.15);
+  box-shadow:0 6px 18px rgba(11,78,162,.15);
 
   z-index:5;
   pointer-events:none;
@@ -1835,8 +1834,9 @@ html, body {
   opacity:1;
 }
 .wheel-item[data-active="0"]{
-  opacity:.35;
-  transform:scale(.90);
+  opacity:.15;       /* 🔥 더 흐리게 */
+  transform:scale(.85);
+  color:#9ca3af;     /* 🔥 회색 고정 */
 }
 
 

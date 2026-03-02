@@ -2583,32 +2583,33 @@ scroller.addEventListener("scroll", ()=>{
 }, { passive:true });
 
 // 가운데 탭 적용
-highlightBtn?.addEventListener("click", ()=>{
+if (highlightBtn) {
+  highlightBtn.onclick = function(){
 
-  const idx = getNearestIndex();
-  const label = items[idx];
+    const idx = getNearestIndex();
+    const label = items[idx];
 
-  if(label === "전체"){
-    currentClassFilter = null;
-  }else{
-    currentClassFilter = Number(label.replace("기",""));
-  }
+    if(label === "전체"){
+      currentClassFilter = null;
+    }else{
+      currentClassFilter = Number(label.replace("기",""));
+    }
 
-  renderMembers(state.members);
+    renderMembers(state.members);
 
-  // 🔵 상단 기수 버튼 텍스트 변경
-  const btnClass = document.getElementById("btnClassFilter");
-  if(btnClass){
-    btnClass.textContent = label === "전체"
-      ? "전체 ▼"
-      : label + " ▼";
-  }
+    const btnClass = document.getElementById("btnClassFilter");
+    if(btnClass){
+      btnClass.textContent = label === "전체"
+        ? "전체 ▼"
+        : label + " ▼";
+    }
 
-if (typeof closeClassSlide === "function") {
-  closeClassSlide();
+    if (typeof closeClassSlide === "function") {
+      closeClassSlide();
+    }
+
+  };
 }
-});
-
 
 
 window.__snapClassWheelToAll = snapToAll;
