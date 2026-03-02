@@ -2482,12 +2482,24 @@ function snapToAll(){
     });
   }
 
-  function snapToIndex(idx, smooth=true){
-    const el = itemEls[idx];
-    if(!el) return;
-    el.scrollIntoView({block:"center",behavior:smooth?"smooth":"auto"});
-    setActive(idx);
-  }
+function snapToIndex(idx, smooth=true){
+  const elItem = itemEls[idx];
+  if(!elItem) return;
+
+  const scrollerRect = scroller.getBoundingClientRect();
+  const itemRect = elItem.getBoundingClientRect();
+
+  const offset =
+    (itemRect.top - scrollerRect.top) -
+    (scrollerRect.height / 2 - itemRect.height / 2);
+
+  scroller.scrollBy({
+    top: offset,
+    behavior: smooth ? "smooth" : "auto"
+  });
+
+  setActive(idx);
+}
 
   function recenterIfNeeded(){
     const idx = getNearestIndex();
