@@ -2360,6 +2360,9 @@ const classSlide = document.getElementById("classSlide");
 
 if (btnClassFilter) {
 btnClassFilter.addEventListener("click", () => {
+
+buildClassList(); // ⭐ 이 줄 추가
+
   document.body.style.overflow = "hidden";   // 🔥 배경 스크롤 잠금
   classSlide.hidden = false;
   requestAnimationFrame(() => {
@@ -2412,21 +2415,6 @@ function buildClassWheel(){
   `).join("");
 
   const itemEls = Array.from(scroller.querySelectorAll(".wheel-item"));
-
-
-function snapToAll(){
-  // "전체"는 항상 index 0
-  const el = itemEls[0];
-  if(!el) return;
-
-  el.scrollIntoView({
-    block: "center",
-    behavior: "smooth"
-  });
-
-  setActive(0);
-}
-
 
   function getNearestIndex(){
     const rect = scroller.getBoundingClientRect();
@@ -2524,8 +2512,8 @@ highlightBtn.addEventListener("click", ()=>{
     closeClassSlide();
   }
 });
-window.__snapClassWheelToAll = snapToAll;
-}
+
+
 
 
 
@@ -2560,19 +2548,12 @@ function buildClassList() {
   allItem.textContent = "전체";
   if (currentClassFilter === null) allItem.classList.add("active");
 
-allItem.onclick = () => {
-
-  currentClassFilter = null;
-
-  // 🔥 피커휠을 실제로 "전체"로 이동
-  if (window.__snapClassWheelToAll) {
-    window.__snapClassWheelToAll();
-  }
-
-  document.getElementById("btnClassFilter").textContent = "전체 ▼";
-
-  renderMembers(state.members);
-};
+  allItem.onclick = () => {
+    currentClassFilter = null;
+    document.getElementById("btnClassFilter").textContent = "전체 ▾";
+    closeClassSlide();
+    renderMembers(state.members);
+  };
 
   listEl.appendChild(allItem);
 
