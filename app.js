@@ -2437,7 +2437,12 @@ function buildClassWheel(){
 
   const MAX_REPEAT = 40;
 
-  let base = [...new Set(state.members.map(m=>m.gisu).filter(Boolean))];
+  let base = [...new Set(
+  state.members
+    .map(m => Number(m.gisu))
+    .filter(g => !isNaN(g))
+)];
+
   base.sort((a,b)=> b-a);
 
   if(base.length === 0) return;
