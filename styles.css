@@ -1828,3 +1828,107 @@ html, body {
   flex:1;                 /* 🔥 남은 공간 전부 차지 */
   height:auto !important; /* 기존 260px 무력화 */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===============================
+   iOS Wheel – Blue Soft Focus
+   =============================== */
+
+#classScroller{
+  position: relative;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+/* 🔵 위/아래 블루톤 그라데이션 */
+#classScroller::before,
+#classScroller::after{
+  content:"";
+  position: sticky;
+  left:0;
+  right:0;
+  height:60px;
+  pointer-events:none;
+  z-index:2;
+}
+
+#classScroller::before{
+  top:0;
+  background: linear-gradient(
+    to bottom,
+    rgba(11,78,162,.18),
+    rgba(11,78,162,.10),
+    rgba(11,78,162,0)
+  );
+}
+
+#classScroller::after{
+  bottom:0;
+  background: linear-gradient(
+    to top,
+    rgba(11,78,162,.18),
+    rgba(11,78,162,.10),
+    rgba(11,78,162,0)
+  );
+}
+
+/* 🔵 가운데 선택 영역 */
+#classSlide .class-slide-panel{
+  position: relative;
+}
+
+#classSlide .class-slide-panel::after{
+  content:"";
+  position:absolute;
+  left:14px;
+  right:14px;
+  top:50%;
+  height:52px;
+  transform:translateY(-50%);
+  border-radius:16px;
+
+  background: rgba(255,255,255,.75);
+  backdrop-filter: blur(4px);
+
+  border-top:1px solid rgba(11,78,162,.25);
+  border-bottom:1px solid rgba(11,78,162,.25);
+
+  pointer-events:none;
+  z-index:1;
+}
+
+/* 🔵 아이템 깊이감 */
+.wheel-item{
+  transition: transform .18s ease, opacity .18s ease;
+  opacity:.6;
+  transform: scale(.95);
+  color:#5b6b88;   /* 살짝 흐린 블루그레이 */
+}
+
+.wheel-item[data-active="1"]{
+  opacity:1;
+  transform: scale(1.08);
+  font-weight:700;
+  color:#0b4ea2;   /* 기존 브랜드 블루 유지 */
+}
+
+
+
+
+
+
+
