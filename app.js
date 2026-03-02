@@ -2385,73 +2385,122 @@ function closeClassSlide() {
 
 
 
+/* ============================
+   iOS Infinite Wheel Engine
+============================ */
 
 function buildClassWheel(){
 
-  const wheel = el("classWheel");
-  if (!wheel) return;
+  const scroller = document.getElementById("classScroller");
+  const highlightBtn = document.getElementById("highlightBtn");
 
-  wheel.innerHTML = "";
+  if(!scroller) return;
+
+  const ITEM_H = 44;
+  const MAX_REPEAT = 40;
 
   let base = [...new Set(state.members.map(m=>m.gisu).filter(Boolean))];
   base.sort((a,b)=> b-a);
 
-  // 무한 루프용 3배 복제
-  const classes = [
-    ...base,
-    ...base,
-    ...base
-  ];
+  if(base.length === 0) return;
 
-  classes.forEach(g=>{
-    const div = document.createElement("div");
-    div.className = "wheel-item";
-    div.textContent = `${g}기`;
-    wheel.appendChild(div);
-  });
+  const loopNums = base.map(g => `${g}기`);
+  const items = ["전체", ...Array.from({length:MAX_REPEAT}, ()=>loopNums).flat()];
 
-  // 가운데 세트로 강제 이동
-  setTimeout(()=>{
-    wheel.scrollTop = wheel.scrollHeight / 3;
-  },0);
+  scroller.innerHTML = items.map((t,i)=>`
+    <div class="wheel-item" data-index="${i}" data-label="${t}" data-active="0">${t}</div>
+  `).join("");
 
-  wheel.addEventListener("scroll", ()=>{
+  const itemEls = Array.from(scroller.querySelectorAll(".wheel-item"));
 
-    const items = wheel.querySelectorAll(".wheel-item");
-    const center = wheel.scrollTop + wheel.clientHeight/2;
+  function getNearestIndex(){
+    const rect = scroller.getBoundingClientRect();
+    const centerY = rect.top + rect.height/2;
 
-    let closest = null;
-    let minDiff = Infinity;
+    let bestIdx = 0;
+    let bestDist = Infinity;
 
-    items.forEach(item=>{
-      const box = item.offsetTop + item.offsetHeight/2;
-      const diff = Math.abs(box - center);
-      if(diff < minDiff){
-        minDiff = diff;
-        closest = item;
+    for(const el of itemEls){
+      const r = el.getBoundingClientRect();
+      const y = r.top + r.height/2;
+      const d = Math.abs(y - centerY);
+      if(d < bestDist){
+        bestDist = d;
+        bestIdx = Number(el.dataset.index);
       }
-      item.classList.remove("active");
+    }
+    return bestIdx;
+  }
+
+  function setActive(idx){
+    itemEls.forEach(el=>{
+      el.dataset.active = (Number(el.dataset.index) === idx) ? "1":"0";
     });
+  }
 
-    if(closest){
-      closest.classList.add("active");
+  function snapToIndex(idx, smooth=true){
+    const el = itemEls[idx];
+    if(!el) return;
+    el.scrollIntoView({block:"center",behavior:smooth?"smooth":"auto"});
+    setActive(idx);
+  }
 
-      const g = Number(closest.textContent.replace("기",""));
-      currentClassFilter = g;
-      renderMembers(state.members);
+  function recenterIfNeeded(){
+    const idx = getNearestIndex();
+    const label = items[idx];
+    if(label === "전체") return;
+
+    const centerBlock = Math.floor(MAX_REPEAT/2);
+    const centerStart = 1 + centerBlock * base.length;
+
+    const g = label.replace("기","");
+    const pos = base.indexOf(Number(g));
+    if(pos < 0) return;
+
+    const targetIdx = centerStart + pos;
+
+    if(Math.abs(idx - targetIdx) > base.length * 5){
+      snapToIndex(targetIdx,false);
+    }
+  }
+
+  // 초기 중앙 배치
+  const centerBlock = Math.floor(MAX_REPEAT/2);
+  const centerStart = 1 + centerBlock * base.length;
+  snapToIndex(centerStart,false);
+
+  let t = null;
+  scroller.addEventListener("scroll", ()=>{
+    clearTimeout(t);
+    const idx = getNearestIndex();
+    setActive(idx);
+
+    t = setTimeout(()=>{
+      const idx2 = getNearestIndex();
+      snapToIndex(idx2,true);
+      setTimeout(recenterIfNeeded,160);
+    },110);
+  },{passive:true});
+
+  // 가운데 탭 적용
+  highlightBtn.addEventListener("click", ()=>{
+    const idx = getNearestIndex();
+    const label = items[idx];
+
+    if(label === "전체"){
+      currentClassFilter = null;
+    }else{
+      currentClassFilter = Number(label.replace("기",""));
     }
 
-    // 🔥 무한루프 위치 보정
-    const max = wheel.scrollHeight;
-    if(wheel.scrollTop < max/6){
-      wheel.scrollTop += max/3;
-    }
-    if(wheel.scrollTop > max*2/3){
-      wheel.scrollTop -= max/3;
-    }
-
+    renderMembers(state.members);
   });
 }
+
+
+
+
+
 
 function buildClassList() {
 
