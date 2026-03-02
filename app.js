@@ -1008,9 +1008,21 @@ history.pushState({ app: true }, "", location.href);
 window.scrollTo(0, 0);
 
 
+}
+catch (err) {
 
+  console.error("LOGIN ERROR:", err);
 
-} finally {
+  const errBox = el("loginError");
+  if (errBox) {
+    errBox.hidden = false;
+    errBox.textContent = "휴대폰번호 또는 접속코드가 올바르지 않습니다.";
+  }
+
+  toast("로그인 실패");
+
+}
+finally {
 
     if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
   }
