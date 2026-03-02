@@ -1659,8 +1659,6 @@ html, body {
 /* 🔵 슬라이드 상시 스와이프 표시 */
 .class-slide-panel {
   position: relative;
-  padding:0;   /* 🔥 위아래 꽉 차게 */
-
 }
 
 .swipe-indicator {
@@ -1743,11 +1741,10 @@ html, body {
 
 .wheel{
   position:relative;
-  height:100vh;          /* 🔥 화면 전체 */
-  max-height:100vh;
-  border-radius:0;       /* 전체화면이면 둥글기 제거 */
+  height:260px;
+  border-radius:20px;
   background:#fff;
-  border:none;
+  border:1px solid #e5e7eb;
   overflow:hidden;
 }
 
