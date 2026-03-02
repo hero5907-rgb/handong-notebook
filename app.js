@@ -2507,10 +2507,11 @@ function snapToIndex(idx, smooth=true){
     elItem.offsetTop -
     (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
 
-  scroller.scrollTo({
-    top: target,
-    behavior: smooth ? "smooth" : "auto"
-  });
+if (smooth) {
+  scroller.scrollTo({ top: target, behavior: "smooth" });
+} else {
+  scroller.scrollTop = target;   // 🔥 scrollTo 말고 직접 대입
+}
 
   setActive(idx);
 
@@ -2574,7 +2575,7 @@ scroller.addEventListener("scroll", ()=>{
       return;
     }
 
-    snapToIndex(idx2,true);
+    snapToIndex(idx2,false);
     setTimeout(recenterIfNeeded,160);
 
   },110);
