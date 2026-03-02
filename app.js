@@ -1056,14 +1056,11 @@ if (target === "members") {
       : "전체 ▼";
   }
 
-pushNav("members");
+  pushNav("members");
 
-buildClassWheel();   // 🔥 이 줄 추가
+  if (el("memberSearch")) el("memberSearch").value = "";
 
-if (el("memberSearch")) el("memberSearch").value = "";
-
-renderMembers(state.members);
-
+  renderMembers(state.members);
 } else if (target === "announcements") {
   pushNav("announcements");
   renderAnnouncements();
@@ -2368,38 +2365,6 @@ btnClassFilter.addEventListener("click", () => {
   requestAnimationFrame(() => {
     classSlide.classList.add("show");
   });
-
-
-setTimeout(() => {
-
-  const scroller = document.getElementById("classScroller");
-  if (!scroller) return;
-
-  const items = scroller.querySelectorAll(".wheel-item");
-  if (!items.length) return;
-
-  const MAX_REPEAT = 40;
-  const blockSize = items.length / MAX_REPEAT;
-  const centerBlock = Math.floor(MAX_REPEAT / 2);
-
-  const label = currentClassFilter
-    ? `${currentClassFilter}기`
-    : "전체";
-
-  let pos = 0;
-  for (let i = 0; i < blockSize; i++) {
-    if (items[i].dataset.label === label) {
-      pos = i;
-      break;
-    }
-  }
-
-  const targetIdx = centerBlock * blockSize + pos;
-  items[targetIdx]?.scrollIntoView({ block: "center", behavior: "auto" });
-
-}, 60);
-
-
 });
 }
 
@@ -2431,11 +2396,6 @@ function buildClassWheel(){
 
   if(!scroller) return;
 
-
-
-
-
-
   const ITEM_H = 44;
   const MAX_REPEAT = 40;
 
@@ -2444,10 +2404,8 @@ function buildClassWheel(){
 
   if(base.length === 0) return;
 
-const baseList = ["전체", ...base.map(g => `${g}기`)];
-
-// 🔥 전체 포함해서 반복
-const items = Array.from({length:MAX_REPEAT}, ()=>baseList).flat();
+  const loopNums = base.map(g => `${g}기`);
+  const items = ["전체", ...Array.from({length:MAX_REPEAT}, ()=>loopNums).flat()];
 
   scroller.innerHTML = items.map((t,i)=>`
     <div class="wheel-item" data-index="${i}" data-label="${t}" data-active="0">${t}</div>
@@ -2487,78 +2445,61 @@ const items = Array.from({length:MAX_REPEAT}, ()=>baseList).flat();
     setActive(idx);
   }
 
+  function recenterIfNeeded(){
+    const idx = getNearestIndex();
+    const label = items[idx];
+    if(label === "전체") return;
 
+    const centerBlock = Math.floor(MAX_REPEAT/2);
+    const centerStart = 1 + centerBlock * base.length;
 
-/* ===== 무한 루프 리센터 ===== */
+    const g = label.replace("기","");
+    const pos = base.indexOf(Number(g));
+    if(pos < 0) return;
 
-function recenterIfNeeded(){
-  const idx = getNearestIndex();
-  const label = items[idx];
+    const targetIdx = centerStart + pos;
 
-  const centerBlock = Math.floor(MAX_REPEAT/2);
-  const blockSize = baseList.length;
-  const centerStart = centerBlock * blockSize;
-
-  const pos = baseList.indexOf(label);
-  if(pos < 0) return;
-
-  const targetIdx = centerStart + pos;
-
-  if(Math.abs(idx - targetIdx) > blockSize * 5){
-    snapToIndex(targetIdx,false);
+    if(Math.abs(idx - targetIdx) > base.length * 5){
+      snapToIndex(targetIdx,false);
+    }
   }
+
+  // 초기 중앙 배치
+  const centerBlock = Math.floor(MAX_REPEAT/2);
+  const centerStart = 1 + centerBlock * base.length;
+  snapToIndex(centerStart,false);
+
+  let t = null;
+  scroller.addEventListener("scroll", ()=>{
+    clearTimeout(t);
+    const idx = getNearestIndex();
+    setActive(idx);
+
+    t = setTimeout(()=>{
+      const idx2 = getNearestIndex();
+      snapToIndex(idx2,true);
+      setTimeout(recenterIfNeeded,160);
+    },110);
+  },{passive:true});
+
+  // 가운데 탭 적용
+  highlightBtn.addEventListener("click", ()=>{
+    const idx = getNearestIndex();
+    const label = items[idx];
+
+    if(label === "전체"){
+      currentClassFilter = null;
+    }else{
+      currentClassFilter = Number(label.replace("기",""));
+    }
+
+    renderMembers(state.members);
+  });
 }
 
-/* ===== 초기 중앙 배치 (내 기수 기준) ===== */
-const centerBlock = Math.floor(MAX_REPEAT/2);
-const blockSize = baseList.length;
-const centerStart = centerBlock * blockSize;
 
-// 🔥 기본값: 현재 선택된 기수
-let defaultLabel = currentClassFilter
-  ? `${currentClassFilter}기`
-  : "전체";
 
-let pos = baseList.indexOf(defaultLabel);
-if (pos < 0) pos = 0;
 
-snapToIndex(centerStart + pos, false);
-
-/* ===== 스크롤 이벤트 ===== */
-let t = null;
-scroller.addEventListener("scroll", ()=>{
-  clearTimeout(t);
-  const idx = getNearestIndex();
-  setActive(idx);
-
-  t = setTimeout(()=>{
-    const idx2 = getNearestIndex();
-    snapToIndex(idx2,true);
-    setTimeout(recenterIfNeeded,160);
-  },110);
-},{passive:true});
-
-/* ===== 가운데 탭 적용 ===== */
-highlightBtn?.addEventListener("click", ()=>{
-  const idx = getNearestIndex();
-  const label = items[idx];
-
-  if(label === "전체"){
-    currentClassFilter = null;
-  }else{
-    currentClassFilter = Number(label.replace("기",""));
-  }
-
-  const btnClass = document.getElementById("btnClassFilter");
-  if(btnClass){
-    btnClass.textContent = label === "전체"
-      ? "전체 ▾"
-      : `${currentClassFilter}기 ▾`;
-  }
-
-  closeClassSlide();
-  renderMembers(state.members);
-});
 
 
 function buildClassList() {
