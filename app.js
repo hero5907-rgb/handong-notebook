@@ -2367,14 +2367,7 @@ btnClassFilter.addEventListener("click", () => {
   requestAnimationFrame(() => {
     classSlide.classList.add("show");
 
-    // ⭐ 여기다 넣는다 (requestAnimationFrame 안쪽!)
-    if (currentClassFilter === null) {
-      setTimeout(() => {
-        if (window.__snapClassWheelToAll) {
-          window.__snapClassWheelToAll();
-        }
-      }, 50);
-    }
+
 
   });
 
@@ -2395,6 +2388,14 @@ if (btnSelectAll) {
     if (btnClassFilter) {
       btnClassFilter.textContent = "전체 ▼";
     }
+
+
+  // 🔥 여기서 바로 휠 이동
+  if (window.__snapClassWheelToAll) {
+    window.__snapClassWheelToAll();
+  }
+
+
 
     closeClassSlide();
 
