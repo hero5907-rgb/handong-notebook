@@ -1786,7 +1786,7 @@ html, body {
 .scroller{
   height:100%;
   overflow:auto;
-  scroll-snap-type:y mandatory;
+  
   -webkit-overflow-scrolling:touch;
   padding:108px 12px;
   scrollbar-width:none;
@@ -1798,7 +1798,7 @@ html, body {
   display:flex;
   align-items:center;
   justify-content:center;
-  scroll-snap-align:center;
+
   font-weight:900;
   border-radius:12px;
   transition:transform .15s ease, opacity .15s ease;

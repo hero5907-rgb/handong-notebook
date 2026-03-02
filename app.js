@@ -2433,7 +2433,20 @@ function buildClassWheel(){
     return;
   }
 
-  const scroller = document.getElementById("classScroller");
+  let scroller = document.getElementById("classScroller");
+if (!scroller) return;
+
+// 🔥 기존 이벤트 제거
+scroller.replaceWith(scroller.cloneNode(true));
+scroller = document.getElementById("classScroller"); // ← 다시 잡기 (핵심)
+
+if(!scroller) return;
+
+
+
+// 🔥 이제부터 cleanScroller 사용
+
+
   const highlightBtn = document.getElementById("highlightBtn");
 
   if(!scroller) return;
@@ -2545,31 +2558,20 @@ requestAnimationFrame(()=>{
 });
 
   let t = null;
+let scrollTimer = null;
+
 scroller.addEventListener("scroll", ()=>{
 
-  if (isSnapping) return;   // 🔥 스냅 중이면 무시
+  clearTimeout(scrollTimer);
 
-  clearTimeout(t);
+  scrollTimer = setTimeout(()=>{
 
-  const idx = getNearestIndex();
-  setActive(idx);
+    const idx = getNearestIndex();
+    snapToIndex(idx, false);   // 🔥 딱 1번만 스냅
 
-  t = setTimeout(()=>{
+  }, 120);   // 스크롤 멈춘 후 실행
 
-    if (isSnapping) return;   // 🔥 다시 한번 보호
-
-    const idx2 = getNearestIndex();
-
-    if(idx2 === 0){
-      snapToIndex(0,false);
-      return;
-    }
-
-snapToIndex(idx2,false);
-
-  },110);
-
-},{passive:true});
+}, { passive:true });
 
 // 가운데 탭 적용
 highlightBtn?.addEventListener("click", ()=>{
