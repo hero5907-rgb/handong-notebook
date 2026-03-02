@@ -1814,3 +1814,14 @@ html, body {
   transform:scale(.95);
 }
 
+/* ===== 기수 피커 전체 세로 채우기 ===== */
+#classSidebar .picker-box{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#classSidebar .picker-list{
+  flex: 1;
+  overflow-y: auto;
+}
