@@ -1173,10 +1173,15 @@ else if (target === "calendar") {
   loadCalendar();
 }
 
-
 else if (target === "song") {
-  openImgModal("./lions_song.jpg");
+  openModal(`
+    <iframe 
+      src="./handong_song.pdf" 
+      style="width:100%;height:70vh;border:none;">
+    </iframe>
+  `);
 }
+
 
 else if (target === "lionism") {
   window.open("https://www.handong.edu/kor/", "_blank");
