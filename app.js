@@ -276,7 +276,11 @@ function normalizePhone(p) {
   return String(p || "").replace(/[^0-9]/g, "");
 }
 
-
+// 🔵 로그인한 기수 텍스트 반환
+function getMyGisuText() {
+  if (!state.me?.gisu) return "";
+  return `${state.me.gisu}기 `;
+}
 
 
 
@@ -998,7 +1002,8 @@ if (nameBox && state.me?.name) {
 
 
 
-
+const gisuEl = document.getElementById("gisuPrefix");
+if (gisuEl) gisuEl.textContent = getMyGisuText();
 
 
 
