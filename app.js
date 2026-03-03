@@ -1002,8 +1002,10 @@ if (nameBox && state.me?.name) {
 
 
 
-const gisuEl = document.getElementById("gisuPrefix");
-if (gisuEl) gisuEl.textContent = getMyGisuText();
+// 🔵 모든 gisuPrefix에 로그인 기수 붙이기
+document.querySelectorAll(".gisuPrefix").forEach(el=>{
+  el.textContent = getMyGisuText();
+});
 
 
 
