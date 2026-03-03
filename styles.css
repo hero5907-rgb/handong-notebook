@@ -1881,9 +1881,9 @@ html, body {
   font-weight:700;
 
   display:flex;
-  justify-content:space-between;
+  justify-content:center;   /* 🔥 추가 */
   align-items:center;
-
+  
   padding:0 6px;             /* 🔥 좌우 여백 축소 */
   cursor:pointer;
 
@@ -1993,7 +1993,7 @@ html, body {
 
 .pw-save-row{
   padding:12px 14px;
-  text-align:right;
+  text-align:center;
 }
 
 .pw-save{
