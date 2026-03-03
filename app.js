@@ -1179,7 +1179,7 @@ else if (target === "song") {
 }
 
 else if (target === "lionism") {
-  window.open("http://www.lions356-e.or.kr/main/", "_blank");
+  window.open("https://www.handong.edu/kor/", "_blank");
 }
 
 else if (target === "ceremony") {
