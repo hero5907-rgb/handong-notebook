@@ -1174,12 +1174,7 @@ else if (target === "calendar") {
 }
 
 else if (target === "song") {
-  openModal(`
-    <iframe 
-      src="./handong_song.pdf" 
-      style="width:100%;height:70vh;border:none;">
-    </iframe>
-  `);
+  window.open("./handong_song.pdf", "_blank");
 }
 
 
