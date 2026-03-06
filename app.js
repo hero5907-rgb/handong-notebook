@@ -2607,7 +2607,7 @@ function buildClassWheel(){
   if(base.length === 0) return;
 
   const wheelItems = [
-    "총동문 집행부",
+    "총.집행부",
     "기수전체",
     ...base.map(g => `${g}기`)
   ];
