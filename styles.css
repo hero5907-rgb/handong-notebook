@@ -1859,7 +1859,12 @@ html, body {
   z-index:2;            /* 🔥 클릭 복구 */
 }
 
-
+/* 🔥 버튼 클릭 복구 */
+#btnExecView,
+#btnSelectAll{
+  position:relative;
+  z-index:5;
+}
 
 
 
