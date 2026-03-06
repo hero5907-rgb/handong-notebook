@@ -161,6 +161,8 @@ let homeBackTimer = null;
 
 let currentClassFilter = null;   // 🔵 현재 선택된 기수 (null = 전체)
 
+let execMode = false;   // 🔵 총동문 집행부 모드
+
 
 function getAuthSafe(){
   // 1) state에 있으면 그걸 우선
@@ -762,10 +764,18 @@ function formatPhone(p){
 
 function renderMembers(list) {
 
+  // 🔵 총동문 집행부 모드
+  if (execMode) {
+    list = list.filter(m => m.group === "총동문회");
 
+    // H컬럼 정렬순서
+    list.sort((a,b)=>{
+      return Number(a.sortOrder||0) - Number(b.sortOrder||0);
+    });
+  }
 
-  // 🔵 기수 필터 추가 (이 4줄만 추가)
-  if (currentClassFilter !== null) {
+  // 🔵 기수 필터
+  if (currentClassFilter !== null && !execMode) {
     list = list.filter(m => Number(m.gisu || 0) === currentClassFilter);
   }
 
@@ -2535,46 +2545,38 @@ function closeClassSlide() {
 
 function buildClassWheel(){
 
-  // 🔥 로그인 완료 전 실행 차단
   if (!state || !Array.isArray(state.members) || state.members.length === 0) {
     return;
   }
 
   let scroller = document.getElementById("classScroller");
-if (!scroller) return;
+  if (!scroller) return;
 
-// 🔥 기존 이벤트 제거
-scroller.replaceWith(scroller.cloneNode(true));
-scroller = document.getElementById("classScroller"); // ← 다시 잡기 (핵심)
-
-if(!scroller) return;
-
-
-
-// 🔥 이제부터 cleanScroller 사용
-
+  scroller.replaceWith(scroller.cloneNode(true));
+  scroller = document.getElementById("classScroller");
+  if(!scroller) return;
 
   const highlightBtn = document.getElementById("highlightBtn");
 
-  if(!scroller) return;
-
-const MAX_REPEAT = 40;
-  let isSnapping = false;   // 🔥 스냅 중복 방지용
+  const MAX_REPEAT = 40;
 
   let base = [...new Set(
-  state.members
-    .map(m => Number(m.gisu))
-    .filter(g => !isNaN(g))
-)];
+    state.members
+      .map(m => Number(m.gisu))
+      .filter(g => !isNaN(g))
+  )];
 
   base.sort((a,b)=> a-b);
 
   if(base.length === 0) return;
 
-const loopNums = ["기수전체", ...base.map(g => `${g}기`)];
+  const wheelItems = [
+    "총동문 집행부",
+    "기수전체",
+    ...base.map(g => `${g}기`)
+  ];
 
-// 🔥 전체 포함 무한루프
-const items = Array.from({length:MAX_REPEAT}, ()=>loopNums).flat();
+  const items = Array.from({length:MAX_REPEAT}, ()=>wheelItems).flat();
 
   scroller.innerHTML = items.map((t,i)=>`
     <div class="wheel-item" data-index="${i}" data-label="${t}" data-active="0">${t}</div>
@@ -2582,26 +2584,149 @@ const items = Array.from({length:MAX_REPEAT}, ()=>loopNums).flat();
 
   const itemEls = Array.from(scroller.querySelectorAll(".wheel-item"));
 
-// 🔥 wheel-item 클릭 이벤트 추가
-itemEls.forEach(elItem => {
-  elItem.addEventListener("click", () => {
+  itemEls.forEach(elItem => {
+    elItem.addEventListener("click", () => {
 
-    const label = elItem.dataset.label;
+      const label = elItem.dataset.label;
+      const btnClass = document.getElementById("btnClassFilter");
 
-    if (label === "기수전체") {
-      currentClassFilter = null;
-      document.getElementById("btnClassFilter").textContent = "기수전체 ▼";
+      if(label === "총동문 집행부"){
+        execMode = true;
+        currentClassFilter = null;
+        if(btnClass) btnClass.textContent = "총동문 집행부 ▼";
+      }
+      else if(label === "기수전체"){
+        execMode = false;
+        currentClassFilter = null;
+        if(btnClass) btnClass.textContent = "기수전체 ▼";
+      }
+      else{
+        execMode = false;
+        const gisu = Number(label.replace("기",""));
+        currentClassFilter = gisu;
+        if(btnClass) btnClass.textContent = `${gisu}기 ▼`;
+      }
+
+      closeClassSlide();
+      renderMembers(state.members);
+    });
+  });
+
+  function getNearestIndex(){
+    const rect = scroller.getBoundingClientRect();
+    const centerY = rect.top + rect.height/2;
+
+    let bestIdx = 0;
+    let bestDist = Infinity;
+
+    for(const el of itemEls){
+      const r = el.getBoundingClientRect();
+      const y = r.top + r.height/2;
+      const d = Math.abs(y - centerY);
+      if(d < bestDist){
+        bestDist = d;
+        bestIdx = Number(el.dataset.index);
+      }
+    }
+    return bestIdx;
+  }
+
+  function setActive(idx){
+    itemEls.forEach(el => el.dataset.active = "0");
+    if(itemEls[idx]) itemEls[idx].dataset.active = "1";
+  }
+
+  function snapToIndex(idx, smooth=true){
+
+    const elItem = itemEls[idx];
+    if(!elItem) return;
+
+    const target =
+      elItem.offsetTop -
+      (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
+
+    if (smooth) {
+      scroller.scrollTo({ top: target, behavior: "smooth" });
     } else {
-      const gisu = Number(label.replace("기",""));
-      currentClassFilter = gisu;
-      document.getElementById("btnClassFilter").textContent = `${gisu}기 ▼`;
+      scroller.scrollTop = target;
     }
 
-    closeClassSlide();
-    renderMembers(state.members);
-  });
-});
+    setActive(idx);
+  }
 
+  const centerBlock = Math.floor(MAX_REPEAT/2);
+  const blockSize = wheelItems.length;
+  const centerStart = centerBlock * blockSize;
+
+  let initialIdx = centerStart + 1;
+
+  if(execMode){
+    initialIdx = centerStart;
+  }
+  else if(currentClassFilter === null){
+    initialIdx = centerStart + 1;
+  }
+  else{
+    const pos = base.indexOf(Number(currentClassFilter));
+    if(pos >= 0){
+      initialIdx = centerStart + pos + 2;
+    }
+  }
+
+  requestAnimationFrame(()=>{
+    requestAnimationFrame(()=>{
+      snapToIndex(initialIdx,false);
+    });
+  });
+
+  let scrollTimer = null;
+
+  scroller.addEventListener("scroll", ()=>{
+
+    clearTimeout(scrollTimer);
+
+    scrollTimer = setTimeout(()=>{
+
+      const idx = getNearestIndex();
+      snapToIndex(idx,false);
+
+    },120);
+
+  }, { passive:true });
+
+  if (highlightBtn) {
+    highlightBtn.onclick = function(){
+
+      const idx = getNearestIndex();
+      const label = items[idx];
+      const btnClass = document.getElementById("btnClassFilter");
+
+      if(label === "총동문 집행부"){
+        execMode = true;
+        currentClassFilter = null;
+        if(btnClass) btnClass.textContent = "총동문 집행부 ▼";
+      }
+      else if(label === "기수전체"){
+        execMode = false;
+        currentClassFilter = null;
+        if(btnClass) btnClass.textContent = "기수전체 ▼";
+      }
+      else{
+        execMode = false;
+        currentClassFilter = Number(label.replace("기",""));
+        if(btnClass) btnClass.textContent = label + " ▼";
+      }
+
+      renderMembers(state.members);
+
+      if (typeof closeClassSlide === "function") {
+        closeClassSlide();
+      }
+
+    };
+  }
+
+}
 
 
 
@@ -2721,19 +2846,34 @@ if (highlightBtn) {
     const idx = getNearestIndex();
     const label = items[idx];
 
-    if(label === "기수전체"){
-      currentClassFilter = null;
-    }else{
-      currentClassFilter = Number(label.replace("기",""));
-    }
+    if(label === "총동문 집행부"){
+
+  execMode = true;
+  currentClassFilter = null;
+
+}else if(label === "기수전체"){
+
+  execMode = false;
+  currentClassFilter = null;
+
+}else{
+
+  execMode = false;
+  currentClassFilter = Number(label.replace("기",""));
+
+}
 
     renderMembers(state.members);
 
     const btnClass = document.getElementById("btnClassFilter");
     if(btnClass){
-      btnClass.textContent = label === "기수전체"
-        ? "기수전체 ▼"
-        : label + " ▼";
+      if(label === "총동문 집행부"){
+  btnClass.textContent = "총동문 집행부 ▼";
+}else if(label === "기수전체"){
+  btnClass.textContent = "기수전체 ▼";
+}else{
+  btnClass.textContent = label + " ▼";
+}
     }
 
     if (typeof closeClassSlide === "function") {
