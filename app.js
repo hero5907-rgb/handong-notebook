@@ -1278,14 +1278,36 @@ const btnExecView = document.getElementById("btnExecView");
 if (btnExecView) {
   btnExecView.addEventListener("click", () => {
 
-    execMode = true;
-    currentClassFilter = null;
+    buildClassWheel();
 
-    const btnClass = document.getElementById("btnClassFilter");
-    if (btnClass) btnClass.textContent = "총동문 집행부 ▼";
+    document.body.style.overflow = "hidden";
+    classSlide.hidden = false;
 
-    closeClassSlide();
-    renderMembers(state.members);
+    requestAnimationFrame(() => {
+      classSlide.classList.add("show");
+    });
+
+    setTimeout(()=>{
+
+      const scroller = document.getElementById("classScroller");
+      const items = scroller.querySelectorAll(".wheel-item");
+
+      const blockSize = items.length / 40;
+      const centerBlock = Math.floor(40/2);
+      const index = centerBlock * blockSize;
+
+      const elItem = items[index];
+
+      const target =
+        elItem.offsetTop -
+        (scroller.clientHeight/2 - elItem.offsetHeight/2);
+
+      scroller.scrollTo({
+        top: target,
+        behavior:"smooth"
+      });
+
+    },80);
 
   });
 }
@@ -2749,23 +2771,27 @@ window.__snapClassWheelToAll = function(){
 
   const items = scroller.querySelectorAll(".wheel-item");
 
-  for(let i=0;i<items.length;i++){
-    if(items[i].dataset.label === "기수전체"){
+  const blockSize = 2 + new Set(
+    state.members.map(m=>Number(m.gisu)).filter(g=>!isNaN(g))
+  ).size;
 
-      const elItem = items[i];
+  const centerBlock = Math.floor(40/2);
+  const centerStart = centerBlock * blockSize;
 
-      const target =
-        elItem.offsetTop -
-        (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
+  const targetIndex = centerStart + 1; // 기수전체
 
-      scroller.scrollTo({
-        top: target,
-        behavior: "smooth"
-      });
+  const elItem = items[targetIndex];
 
-      break;
-    }
-  }
+  if(!elItem) return;
+
+  const target =
+    elItem.offsetTop -
+    (scroller.clientHeight/2 - elItem.offsetHeight/2);
+
+  scroller.scrollTo({
+    top: target,
+    behavior: "smooth"
+  });
 
 };
 
