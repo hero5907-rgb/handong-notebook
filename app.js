@@ -357,7 +357,7 @@ el("myPosition").textContent = m.position || "";
     CFG.hallPhone ||
     "";
 
-  // 🔥 회관 전화 버튼 (config.js 사용 + 번호 표시)
+  // 🔥 대학 전화 버튼 (config.js 사용 + 번호 표시)
 const btnHall = el("btnHallCall");
 
 if(btnHall){
@@ -367,14 +367,14 @@ if(btnHall){
 
   // ⭐ 버튼에 번호까지 표시
   if(hallPhone){
-    btnHall.textContent = `☎ 회관 통화 (${hallPhone})`;
+    btnHall.textContent = `☎ 대학 통화 (${hallPhone})`;
   }else{
-    btnHall.textContent = "☎ 회관 통화";
+    btnHall.textContent = "☎ 대학 통화";
   }
 
   btnHall.onclick = ()=>{
     if(!hallPhone){
-      toast("회관 전화번호가 없습니다");
+      toast("대학 전화번호가 없습니다");
       return;
     }
     location.href = `tel:${hallPhone}`;
