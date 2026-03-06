@@ -3004,7 +3004,6 @@ if (gisuSortBtn) {
   });
 }
 
-}
 
 
 
