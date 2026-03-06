@@ -2731,7 +2731,160 @@ function buildClassWheel(){
 
 
 
+function snapToAll(){
 
+  const centerBlock = Math.floor(MAX_REPEAT/2);
+  const blockSize = base.length + 1;   // 전체 포함
+  const centerStart = centerBlock * blockSize;
+
+  snapToIndex(centerStart, true);  // 🔥 중앙 블록의 "전체"로 이동
+}
+
+  function getNearestIndex(){
+    const rect = scroller.getBoundingClientRect();
+    const centerY = rect.top + rect.height/2;
+
+    let bestIdx = 0;
+    let bestDist = Infinity;
+
+    for(const el of itemEls){
+      const r = el.getBoundingClientRect();
+      const y = r.top + r.height/2;
+      const d = Math.abs(y - centerY);
+      if(d < bestDist){
+        bestDist = d;
+        bestIdx = Number(el.dataset.index);
+      }
+    }
+    return bestIdx;
+  }
+
+function setActive(idx){
+
+  // 🔥 먼저 전부 0으로 초기화
+  for (let i = 0; i < itemEls.length; i++) {
+    itemEls[i].dataset.active = "0";
+  }
+
+  // 🔥 하나만 1
+  if (itemEls[idx]) {
+    itemEls[idx].dataset.active = "1";
+  }
+}
+
+function snapToIndex(idx, smooth=true){
+
+  const elItem = itemEls[idx];
+  if(!elItem) return;
+
+  const target =
+    elItem.offsetTop -
+    (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
+
+  isSnapping = true;   // 🔥 스냅 잠금 시작
+
+  if (smooth) {
+    scroller.scrollTo({ top: target, behavior: "smooth" });
+  } else {
+    scroller.scrollTop = target;
+  }
+
+  setActive(idx);
+
+  // 🔥 120ms 후 잠금 해제
+  setTimeout(()=>{
+    isSnapping = false;
+  }, 120);
+}
+
+
+
+// 🔥 초기 위치를 현재 선택된 기수로 맞춤
+const centerBlock = Math.floor(MAX_REPEAT/2);
+const blockSize = base.length + 1; // 🔥 전체 포함
+const centerStart = centerBlock * blockSize;
+
+let initialIdx;
+
+if (currentClassFilter === null) {
+  initialIdx = centerStart;   // 🔥 중앙 블록의 전체
+} else {
+  const pos = base.indexOf(Number(currentClassFilter));
+  if (pos >= 0) {
+    initialIdx = centerStart + pos + 1; // 🔥 전체가 앞에 있으니까 +1
+  } else {
+    initialIdx = centerStart;
+  }
+}
+
+requestAnimationFrame(()=>{
+  requestAnimationFrame(()=>{
+    snapToIndex(initialIdx, false);
+  });
+});
+
+  let t = null;
+let scrollTimer = null;
+
+scroller.addEventListener("scroll", ()=>{
+
+  clearTimeout(scrollTimer);
+
+  scrollTimer = setTimeout(()=>{
+
+    const idx = getNearestIndex();
+    snapToIndex(idx, false);   // 🔥 딱 1번만 스냅
+
+  }, 120);   // 스크롤 멈춘 후 실행
+
+}, { passive:true });
+
+// 가운데 탭 적용
+if (highlightBtn) {
+  highlightBtn.onclick = function(){
+
+    const idx = getNearestIndex();
+    const label = items[idx];
+
+    if(label === "총동문 집행부"){
+
+  execMode = true;
+  currentClassFilter = null;
+
+}else if(label === "기수전체"){
+
+  execMode = false;
+  currentClassFilter = null;
+
+}else{
+
+  execMode = false;
+  currentClassFilter = Number(label.replace("기",""));
+
+}
+
+    renderMembers(state.members);
+
+    const btnClass = document.getElementById("btnClassFilter");
+    if(btnClass){
+      if(label === "총동문 집행부"){
+  btnClass.textContent = "총동문 집행부 ▼";
+}else if(label === "기수전체"){
+  btnClass.textContent = "기수전체 ▼";
+}else{
+  btnClass.textContent = label + " ▼";
+}
+    }
+
+    if (typeof closeClassSlide === "function") {
+      closeClassSlide();
+    }
+
+  };
+}
+
+
+window.__snapClassWheelToAll = snapToAll;
 
 function buildClassList() {
 
@@ -2884,8 +3037,83 @@ function appConfirm(message){
   });
 }
 
+// ===============================
+// 기수전체 버튼 → 휠 맨위
+// ===============================
+document.getElementById("btnSelectAll")?.addEventListener("click", ()=>{
+
+  const scroller = document.getElementById("classScroller");
+  if (!scroller) return;
+
+  scroller.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+  state.classFilter = "ALL";
+
+});
+
+
+// ===============================
+// 총동문 집행부 보기
+// ===============================
+document.getElementById("btnExecView")?.addEventListener("click", ()=>{
+
+  const scroller = document.getElementById("classScroller");
+  if (!scroller) return;
+
+  const items = scroller.querySelectorAll(".class-wheel-item");
+
+  for (const el of items){
+    if (el.dataset.gisu === "EXEC"){   // EXEC = 집행부
+      el.scrollIntoView({
+        block:"center",
+        behavior:"smooth"
+      });
+      break;
+    }
+  }
+
+  state.execMode = true;
+
+});
 
 
 
+// ===============================
+// 기수전체 버튼
+// ===============================
+document.getElementById("btnSelectAll")?.addEventListener("click", ()=>{
+
+  const scroller = document.getElementById("classScroller");
+  if (!scroller) return;
+
+  const item = scroller.querySelector('[data-gisu="ALL"]');
+  if (!item) return;
+
+  item.scrollIntoView({
+    block: "center",
+    behavior: "smooth"
+  });
+
+});
 
 
+// ===============================
+// 총동문집행부보기 버튼
+// ===============================
+document.getElementById("btnExecView")?.addEventListener("click", ()=>{
+
+  const scroller = document.getElementById("classScroller");
+  if (!scroller) return;
+
+  const item = scroller.querySelector('[data-gisu="EXEC"]');
+  if (!item) return;
+
+  item.scrollIntoView({
+    block: "center",
+    behavior: "smooth"
+  });
+
+});
