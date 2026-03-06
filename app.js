@@ -1266,7 +1266,6 @@ setAdminButton(false);
 if (btnSelectAll) {
   btnSelectAll.addEventListener("click", (e) => {
 
-    e.stopPropagation();   // 🔥 이 한 줄 추가 (핵심)
 
     if (window.__snapClassWheelToAll) {
       window.__snapClassWheelToAll();
