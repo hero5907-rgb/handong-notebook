@@ -1144,7 +1144,7 @@ if (target === "members") {
   if (btnClass) {
     btnClass.textContent = currentClassFilter
       ? `${currentClassFilter}기 ▼`
-      : "전체 ▼";
+      : "기수전체 ▼";
   }
 
   pushNav("members");
@@ -2283,7 +2283,7 @@ const btnClass = el("btnClassFilter");
 if (btnClass) {
   btnClass.textContent = currentClassFilter
     ? `${currentClassFilter}기 ▼`
-    : "전체 ▼";
+    : "기수전체 ▼";
 }
 
 
@@ -2551,7 +2551,7 @@ const MAX_REPEAT = 40;
 
   if(base.length === 0) return;
 
-const loopNums = ["전체", ...base.map(g => `${g}기`)];
+const loopNums = ["기수전체", ...base.map(g => `${g}기`)];
 
 // 🔥 전체 포함 무한루프
 const items = Array.from({length:MAX_REPEAT}, ()=>loopNums).flat();
@@ -2568,9 +2568,9 @@ itemEls.forEach(elItem => {
 
     const label = elItem.dataset.label;
 
-    if (label === "전체") {
+    if (label === "기수전체") {
       currentClassFilter = null;
-      document.getElementById("btnClassFilter").textContent = "전체 ▼";
+      document.getElementById("btnClassFilter").textContent = "기수전체 ▼";
     } else {
       const gisu = Number(label.replace("기",""));
       currentClassFilter = gisu;
@@ -2701,7 +2701,7 @@ if (highlightBtn) {
     const idx = getNearestIndex();
     const label = items[idx];
 
-    if(label === "전체"){
+    if(label === "기수전체"){
       currentClassFilter = null;
     }else{
       currentClassFilter = Number(label.replace("기",""));
@@ -2711,8 +2711,8 @@ if (highlightBtn) {
 
     const btnClass = document.getElementById("btnClassFilter");
     if(btnClass){
-      btnClass.textContent = label === "전체"
-        ? "전체 ▼"
+      btnClass.textContent = label === "기수전체"
+        ? "기수전체 ▼"
         : label + " ▼";
     }
 
@@ -2754,12 +2754,12 @@ function buildClassList() {
   // 🔵 전체 버튼
   const allItem = document.createElement("div");
   allItem.className = "class-item";
-  allItem.textContent = "전체";
+  allItem.textContent = "기수전체";
   if (currentClassFilter === null) allItem.classList.add("active");
 
 allItem.onclick = () => {
   currentClassFilter = null;
-  document.getElementById("btnClassFilter").textContent = "전체 ▾";
+  document.getElementById("btnClassFilter").textContent = "기수전체 ▾";
   renderMembers(state.members);
 };
 
