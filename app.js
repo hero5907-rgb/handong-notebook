@@ -2607,7 +2607,7 @@ function buildClassWheel(){
   if(base.length === 0) return;
 
   const wheelItems = [
-    "총.집행부",
+    "총동문 집행부",
     "기수전체",
     ...base.map(g => `${g}기`)
   ];
@@ -2629,7 +2629,7 @@ function buildClassWheel(){
       if(label === "총동문 집행부"){
         execMode = true;
         currentClassFilter = null;
-        if(btnClass) btnClass.textContent = "총동문 집행부 ▼";
+        if(btnClass) btnClass.textContent = "총.집행부 ▼";
       }
       else if(label === "기수전체"){
         execMode = false;
@@ -2740,7 +2740,7 @@ function buildClassWheel(){
       if(label === "총동문 집행부"){
         execMode = true;
         currentClassFilter = null;
-        if(btnClass) btnClass.textContent = "총동문 집행부 ▼";
+        if(btnClass) btnClass.textContent = "총.집행부 ▼";
       }
       else if(label === "기수전체"){
         execMode = false;
