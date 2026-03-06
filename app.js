@@ -3086,34 +3086,23 @@ document.getElementById("btnExecView")?.addEventListener("click", ()=>{
 // ===============================
 document.getElementById("btnSelectAll")?.addEventListener("click", ()=>{
 
-  const scroller = document.getElementById("classScroller");
-  if (!scroller) return;
+  const idx = classWheelItems.findIndex(el =>
+    el.dataset.label === "기수전체"
+  );
 
-  const item = scroller.querySelector('[data-gisu="ALL"]');
-  if (!item) return;
-
-  item.scrollIntoView({
-    block: "center",
-    behavior: "smooth"
-  });
+  if (idx >= 0) snapToIndex(idx);
 
 });
-
 
 // ===============================
 // 총동문집행부보기 버튼
 // ===============================
 document.getElementById("btnExecView")?.addEventListener("click", ()=>{
 
-  const scroller = document.getElementById("classScroller");
-  if (!scroller) return;
+  const idx = classWheelItems.findIndex(el =>
+    el.dataset.label === "총동문 집행부"
+  );
 
-  const item = scroller.querySelector('[data-gisu="EXEC"]');
-  if (!item) return;
-
-  item.scrollIntoView({
-    block: "center",
-    behavior: "smooth"
-  });
+  if (idx >= 0) snapToIndex(idx);
 
 });
