@@ -1810,7 +1810,7 @@ html, body {
   -webkit-overflow-scrolling:touch;
 
   /* 🔥 중앙 정렬 정확히 맞춤 */
-  padding:80px 12px;
+  padding:88px 12px;
 
   scrollbar-width:none;
 }
@@ -1842,6 +1842,22 @@ html, body {
 
 
 
+/* 🔥 기수 피커 휠 전체 세로 확장 */
+
+.class-slide-panel{
+  display:flex;
+  flex-direction:column;
+}
+
+.wheel{
+  flex:1;                 /* 🔥 남은 공간 전부 차지 */
+  height:auto !important; /* 기존 260px 무력화 */
+}
+
+.wheel-item{
+  position:relative;
+  z-index:2;            /* 🔥 클릭 복구 */
+}
 
 
 
@@ -2091,10 +2107,6 @@ html, body {
   font-weight:600;
 }
 
-/* 🔥 기수 슬라이드 버튼 클릭 보호 */
-.class-slide-panel button{
-  position:relative;
-  z-index:20;
-}
+
 
 
