@@ -2115,3 +2115,67 @@ html, body {
 
 
 
+/* =========================
+   iOS 스타일 - 기수 선택 패널
+========================= */
+
+/* 패널 배경 */
+.class-slide-panel{
+  background:linear-gradient(180deg,#f9fafb,#f1f5f9);
+  border-right:1px solid rgba(0,0,0,0.05);
+  box-shadow:8px 0 30px rgba(0,0,0,0.08);
+}
+
+/* 제목 */
+.class-slide-title{
+  font-weight:700;
+  font-size:18px;
+  letter-spacing:-0.3px;
+}
+
+/* 기수전체 버튼 */
+#btnSelectAll{
+  background:linear-gradient(180deg,#ffffff,#f1f5f9);
+  border:1px solid rgba(0,0,0,0.06);
+  border-radius:14px;
+  padding:6px 14px;
+  font-weight:600;
+  font-size:14px;
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  transition:all .15s ease;
+}
+
+#btnSelectAll:active{
+  transform:scale(.96);
+  box-shadow:0 1px 3px rgba(0,0,0,0.15) inset;
+}
+
+/* 총동문 집행부 버튼 */
+#btnExecView{
+  background:linear-gradient(180deg,#ffffff,#eef2f7);
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,0.06);
+  font-weight:600;
+  font-size:15px;
+  padding:12px;
+  box-shadow:
+    0 3px 8px rgba(0,0,0,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+  transition:all .15s ease;
+}
+
+#btnExecView:active{
+  transform:scale(.97);
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
+}
+
+/* hover */
+#btnExecView:hover{
+  background:linear-gradient(180deg,#ffffff,#e9edf4);
+}
+
+#btnSelectAll:hover{
+  background:#f8fafc;
+}
