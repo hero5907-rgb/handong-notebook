@@ -1273,7 +1273,22 @@ if (btnSelectAll) {
   });
 }
 
+const btnExecView = document.getElementById("btnExecView");
 
+if (btnExecView) {
+  btnExecView.addEventListener("click", () => {
+
+    execMode = true;
+    currentClassFilter = null;
+
+    const btnClass = document.getElementById("btnClassFilter");
+    if (btnClass) btnClass.textContent = "총동문 집행부 ▼";
+
+    closeClassSlide();
+    renderMembers(state.members);
+
+  });
+}
 
 // 🔵 상단 로그인 사용자 이름 → 마이페이지
 const nameBox = el("loginUserName");
@@ -2724,6 +2739,37 @@ function buildClassWheel(){
 
     };
   }
+
+
+
+window.__snapClassWheelToAll = function(){
+
+  const scroller = document.getElementById("classScroller");
+  if(!scroller) return;
+
+  const items = scroller.querySelectorAll(".wheel-item");
+
+  for(let i=0;i<items.length;i++){
+    if(items[i].dataset.label === "기수전체"){
+
+      const elItem = items[i];
+
+      const target =
+        elItem.offsetTop -
+        (scroller.clientHeight / 2 - elItem.offsetHeight / 2);
+
+      scroller.scrollTo({
+        top: target,
+        behavior: "smooth"
+      });
+
+      break;
+    }
+  }
+
+};
+
+
 
 }
 
