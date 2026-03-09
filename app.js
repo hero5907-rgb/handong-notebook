@@ -1344,12 +1344,21 @@ if (logo) {
 
 
 
+
 // 🔄 회원명부 새로고침 버튼
 const btnMembersRefresh = el("btnMembersRefresh");
 if (btnMembersRefresh) {
-  btnMembersRefresh.onclick = reloadMembers;
-}
+  btnMembersRefresh.onclick = () => {
 
+    execMode = false; // 🔥 총동문 집행부 모드 해제
+
+    currentClassFilter = state.me?.gisu
+      ? Number(state.me.gisu)
+      : null;
+
+    renderMembers(state.members); // 🔥 다시 그리기
+  };
+}
 
 
   // 로그인 버튼 / 엔터
