@@ -2203,25 +2203,24 @@ html, body {
 
 
 
-/* 회원명부 sticky */
+/* ===============================
+   회원명부 안정 sticky
+   =============================== */
 
-#screenMembers .card-header{
+.membersSticky{
   position: sticky;
   top:64px;
   z-index:20;
   background:#fff;
+  padding-bottom:10px;
   border-bottom:1px solid var(--line);
 }
 
 #memberSearch{
-  position: sticky;
-  top:106px;
-  z-index:19;
-  background:#fff;
-  padding:8px 0 14px;
+  margin-top:8px;
 }
 
-/* 🔥 리스트 카드 자체를 내림 */
+/* 카드 영역 */
 #screenMembers .card{
-  margin-top:20px;
+  margin-top:12px;
 }
