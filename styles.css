@@ -2204,7 +2204,7 @@ html, body {
 
 
 /* ===============================
-   회원명부 sticky (조절용)
+   회원명부 sticky (최종)
    =============================== */
 
 #screenMembers .card-header{
@@ -2223,7 +2223,7 @@ html, body {
   padding:8px 0 14px;
 }
 
-#memberList{
-  margin-top:100px;     /* 카드 위치 조절 */
-  padding-top:100px;    /* 리스트 영역 위치 조절 */
+/* 🔥 실제 리스트 영역 이동 */
+#screenMembers #memberList > .card{
+  margin-top:20px;
 }
