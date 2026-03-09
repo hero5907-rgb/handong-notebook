@@ -786,7 +786,7 @@ function renderMembers(list) {
   }
 
   // 🔵 기수 필터
-  if (currentClassFilter !== null && !execMode) {
+  if (currentClassFilter !== null) {
     list = list.filter(m => Number(m.gisu || 0) === currentClassFilter);
   }
 
