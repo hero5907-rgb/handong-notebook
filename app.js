@@ -2989,18 +2989,17 @@ function appConfirm(message){
 }
 
 // 🔼 맨 위로 버튼
-// 🔼 맨 위로 버튼
 const scrollBtn = document.getElementById("btnScrollTop");
-const screenMembers = document.getElementById("screenMembers");
+const memberList = document.getElementById("memberList");
 
-if(scrollBtn && screenMembers){
+if(scrollBtn && memberList){
 
-  screenMembers.addEventListener("scroll", () => {
-    scrollBtn.hidden = screenMembers.scrollTop < 300;
+  memberList.addEventListener("scroll", () => {
+    scrollBtn.hidden = memberList.scrollTop < 300;
   });
 
   scrollBtn.onclick = () => {
-    screenMembers.scrollTo({
+    memberList.scrollTo({
       top:0,
       behavior:"smooth"
     });
