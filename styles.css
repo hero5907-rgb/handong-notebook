@@ -2213,31 +2213,30 @@ html, body {
 #screenMembers .card-header{
   position: sticky;
   top: 64px;
-  background: #fff;
-  z-index: 20;
+  background:#fff;
+  z-index:20;
 
   padding-top:8px;
   padding-bottom:6px;
-
   border-bottom:1px solid var(--line);
 }
 
 /* 검색창 고정 */
 #memberSearch{
   position: sticky;
-  top: 118px;
+  top: 64px;   /* 🔥 118 → 64로 수정 */
 
   background:#fff;
   z-index:19;
 
+  padding-top:6px;   /* 🔥 위 간격 안정화 */
   padding-bottom:10px;
 }
 
-/* 회원 리스트만 스크롤 */
+/* 회원 리스트 */
 #memberList{
   padding-top:6px;
 }
-
 
 body{
   min-height:100vh;
