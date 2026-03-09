@@ -2203,27 +2203,6 @@ html, body {
 
 
 
-/* ===============================
-   회원명부 안정 sticky
-   =============================== */
-
-.membersSticky{
-  position: sticky;
-  top:64px;
-  z-index:20;
-  background:#fff;
-  padding-bottom:10px;
-  border-bottom:1px solid var(--line);
-}
-
-#memberSearch{
-  margin-top:8px;
-}
-
-/* 카드 영역 */
-#screenMembers .card{
-  margin-top:12px;
-}
 
 
 
