@@ -2982,11 +2982,19 @@ function appConfirm(message){
 
 // 🔼 맨 위로 버튼
 const scrollBtn = document.getElementById("btnScrollTop");
+const memberList = document.getElementById("memberList");
 
-window.addEventListener("scroll", () => {
-  scrollBtn.hidden = window.scrollY < 400;
-});
+if (scrollBtn && memberList) {
 
-scrollBtn.onclick = () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
-};
+  memberList.addEventListener("scroll", () => {
+    scrollBtn.hidden = memberList.scrollTop < 300;
+  });
+
+  scrollBtn.onclick = () => {
+    memberList.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+
+}
