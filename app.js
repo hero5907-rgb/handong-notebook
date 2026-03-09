@@ -2990,19 +2990,14 @@ function appConfirm(message){
 
 // 🔼 맨 위로 버튼
 const scrollBtn = document.getElementById("btnScrollTop");
-const screenMembers = document.getElementById("screenMembers");
 
-if(scrollBtn && screenMembers){
+window.addEventListener("scroll", () => {
+  scrollBtn.hidden = window.scrollY < 300;
+});
 
-  screenMembers.addEventListener("scroll", () => {
-    scrollBtn.hidden = screenMembers.scrollTop < 300;
+scrollBtn.onclick = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
   });
-
-  scrollBtn.onclick = () => {
-    screenMembers.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
-  };
-}
-
+};
