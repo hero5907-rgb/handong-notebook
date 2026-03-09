@@ -2224,4 +2224,29 @@ html, body {
 
 
 
+/* ===== 회원명부 sticky 안정화 ===== */
 
+#screenMembers .card-header{
+  position: sticky;
+  top: 64px;                 /* 파란 topbar 높이 */
+  background: var(--bg);     /* 배경 덮기 */
+  z-index: 5;                /* topbar보다 낮게 */
+  padding-top:8px;
+  padding-bottom:6px;
+}
+
+#memberSearch{
+  position: sticky;
+  top: 110px;                /* topbar + header */
+  background: var(--bg);     /* 카드 비침 방지 */
+  z-index: 4;
+  padding-bottom:10px;
+}
+
+/* sticky 흔들림 방지 */
+#screenMembers{
+  transform: translateZ(0);
+}
+#screenMembers .card-header{
+  border-bottom:1px solid var(--line);
+}
