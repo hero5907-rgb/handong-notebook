@@ -2203,9 +2203,7 @@ html, body {
 
 
 
-/* ===============================
-   회원명부 sticky (최종)
-   =============================== */
+/* 회원명부 sticky */
 
 #screenMembers .card-header{
   position: sticky;
@@ -2223,7 +2221,7 @@ html, body {
   padding:8px 0 14px;
 }
 
-/* 🔥 실제 카드 영역 이동 */
-#screenMembers #memberList .list{
+/* 🔥 리스트 카드 자체를 내림 */
+#screenMembers .card{
   margin-top:20px;
 }
