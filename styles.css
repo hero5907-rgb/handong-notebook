@@ -2221,15 +2221,13 @@ html, body {
   border-bottom:1px solid var(--line);
 }
 
-/* 검색창 고정 */
+/* 검색창 (sticky 제거) */
 #memberSearch{
-  position: sticky;
-  top: 64px;   /* 🔥 118 → 64로 수정 */
+  position: relative;   /* 🔥 sticky 제거 */
 
   background:#fff;
-  z-index:19;
 
-  padding-top:6px;   /* 🔥 위 간격 안정화 */
+  padding-top:6px;
   padding-bottom:10px;
 }
 
