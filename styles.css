@@ -2225,7 +2225,7 @@ html, body {
 /* 검색창 고정 */
 #memberSearch{
   position: sticky;
-  top: 112px;
+  top: 118px;
 
   background:#fff;
   z-index:19;
