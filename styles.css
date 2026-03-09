@@ -2227,9 +2227,9 @@ html, body {
 
 
 
-/* ===============================
-   회원명부 상단 iOS 스타일
-   =============================== */
+/* ==================================
+   회원명부 상단 iOS 스타일 (완성)
+   ================================== */
 
 .membersSticky{
   position: sticky;
@@ -2238,8 +2238,8 @@ html, body {
 
   background:#fff;
 
-  margin:0 16px 10px;
-  padding:12px;
+  margin:0 16px 12px;
+  padding:12px 12px 14px;
 
   border-radius:18px;
   border:1px solid var(--line);
@@ -2259,11 +2259,11 @@ html, body {
 }
 
 
-/* 회원명부 텍스트 */
+/* 회원명부 글씨 */
 .membersSticky .card-header .title{
   font-weight:700;
   font-size:17px;
-  margin-left:4px;
+  letter-spacing:-0.2px;
 }
 
 
@@ -2273,37 +2273,82 @@ html, body {
 }
 
 
-/* 7명 배지 */
+/* 회원 수 */
 .membersSticky .count{
-  margin-right:4px;
+  margin-right:2px;
 }
 
 
-/* 검색창 영역 */
+
+/* ===============================
+   검색 영역
+   =============================== */
+
 #memberSearch{
-  margin-top:4px;
+  margin-top:2px;
 }
 
 
 /* 검색 input */
+
 #memberSearch input{
 
   width:100%;
-  height:44px;
+  height:42px;
 
   padding:0 16px;
 
-  border-radius:14px;
+  border-radius:12px;
   border:1px solid var(--line);
 
-  background:#f7f8fb;
+  background:#f6f7fb;
 
   font-size:15px;
 
+  outline:none;
 }
 
 
-/* 카드 리스트 위 간격 */
+/* 검색창 포커스 */
+
+#memberSearch input:focus{
+  border-color:#c9d7ff;
+  background:#fff;
+}
+
+
+
+/* ===============================
+   회원카드 영역 간격
+   =============================== */
+
 #memberList{
-  padding-top:6px;
+  padding-top:4px;
+}
+
+
+
+/* ===============================
+   카드 인터랙션 (iOS 느낌)
+   =============================== */
+
+.member-card{
+  transition:transform .08s ease, box-shadow .08s ease;
+}
+
+.member-card:active{
+  transform:scale(.98);
+  box-shadow:0 6px 14px rgba(0,0,0,.08);
+}
+
+
+
+/* 버튼 눌림 */
+
+button{
+  transition:transform .05s ease;
+}
+
+button:active{
+  transform:scale(.95);
 }
