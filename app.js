@@ -2989,22 +2989,22 @@ function appConfirm(message){
 }
 
 // 🔼 맨 위로 버튼
+// 🔼 맨 위로 버튼
 const scrollBtn = document.getElementById("btnScrollTop");
-const memberList = document.getElementById("memberList");
+const screenMembers = document.getElementById("screenMembers");
 
-if(scrollBtn && memberList){
+if(scrollBtn && screenMembers){
 
-  memberList.addEventListener("scroll", () => {
-    scrollBtn.hidden = memberList.scrollTop < 300;
+  screenMembers.addEventListener("scroll", () => {
+    scrollBtn.hidden = screenMembers.scrollTop < 300;
   });
 
   scrollBtn.onclick = () => {
-    memberList.scrollTo({
+    screenMembers.scrollTo({
       top:0,
       behavior:"smooth"
     });
   };
 }
-
 
 
