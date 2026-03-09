@@ -2995,7 +2995,13 @@ const memberList = document.getElementById("memberList");
 if(scrollBtn && memberList){
 
   memberList.addEventListener("scroll", () => {
-    scrollBtn.hidden = memberList.scrollTop < 300;
+
+    if(memberList.scrollTop > 300){
+      scrollBtn.hidden = false;
+    }else{
+      scrollBtn.hidden = true;
+    }
+
   });
 
   scrollBtn.onclick = () => {
@@ -3004,6 +3010,6 @@ if(scrollBtn && memberList){
       behavior:"smooth"
     });
   };
-}
 
+}
 
