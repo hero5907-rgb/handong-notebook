@@ -2204,7 +2204,6 @@ html, body {
 
 
 
-
 /* ===============================
    회원명부 sticky (최종 안정버전)
    =============================== */
@@ -2217,19 +2216,20 @@ html, body {
   z-index:20;
 
   padding-top:8px;
-  padding-bottom:6px;
+  padding-bottom:12px;   /* 🔥 간격을 padding으로 확보 */
+
   border-bottom:1px solid var(--line);
 }
 
 /* 검색창 고정 (헤더 아래) */
 #memberSearch{
   position: sticky;
-  top: 108px;   /* 🔥 헤더 높이만큼 아래 */
+  top:108px;
 
   background:#fff;
   z-index:19;
 
-  padding-top:6px;
+  padding-top:0;        /* 🔥 위 간격 제거 */
   padding-bottom:10px;
 }
 
