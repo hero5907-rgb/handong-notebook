@@ -8,7 +8,18 @@ html, body { overscroll-behavior-y: none; }
 :root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",sans-serif;background:var(--bg);color:var(--text)}
-.topbar{position:sticky;top:0;z-index:10;background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);color:#fff;padding:10px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 6px 16px rgba(0,0,0,.18)}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:linear-gradient(180deg,var(--blue) 0%,var(--blue2) 100%);
+  color:#fff;
+  padding:10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  box-shadow:0 6px 16px rgba(0,0,0,.18);
+}
 
 .brand{flex:1;display:flex;align-items:center;gap:10px;min-width:0}
 .brand-logo{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.14);object-fit:contain;padding:4px}
@@ -2203,9 +2214,9 @@ html, body {
 /* 회원명부 헤더 고정 */
 #screenMembers .card-header{
   position: sticky;
-  top: 64px;                 /* topbar 높이 */
+  top: 64px;
   background: #fff;
-  z-index: 6;
+  z-index: 20;
 
   padding-top:8px;
   padding-bottom:6px;
@@ -2216,10 +2227,10 @@ html, body {
 /* 검색창 고정 */
 #memberSearch{
   position: sticky;
-  top: 112px;                /* topbar + header */
+  top: 112px;
 
   background:#fff;
-  z-index:5;
+  z-index:19;
 
   padding-bottom:10px;
 }
