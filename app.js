@@ -3007,16 +3007,4 @@ if(scrollBtn && memberList){
 }
 
 
-#screenMembers .card{
-  overflow: initial !important;
-}
-
-#screenMembers{
-  overflow: visible;
-}
-
-.container{
-  overflow: visible;
-}
-
 
