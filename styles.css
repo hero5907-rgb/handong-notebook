@@ -2222,12 +2222,16 @@ html, body {
 
 #memberSearch{
   position: sticky;
-  top:110px;              /* header 높이 맞춤 */
+  top:118px;
 
   background:#fff;
   z-index:19;
 
-  padding:6px 0 10px;
+  width:100%;
+  left:0;
+
+  padding-top:6px;
+  padding-bottom:18px;   /* 🔥 여기만 늘림 */
 }
 
 #memberList{
