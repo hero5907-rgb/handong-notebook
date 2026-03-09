@@ -2223,7 +2223,7 @@ html, body {
   padding:8px 0 14px;
 }
 
-/* 🔥 실제 리스트 영역 이동 */
-#screenMembers #memberList > .card{
-  margin-top:200px;
+/* 🔥 실제 카드 영역 이동 */
+#screenMembers #memberList .list{
+  margin-top:20px;
 }
