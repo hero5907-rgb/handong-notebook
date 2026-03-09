@@ -2203,9 +2203,8 @@ html, body {
 
 
 
-
 /* ===============================
-   회원명부 sticky (안정버전)
+   회원명부 sticky (조절용)
    =============================== */
 
 #screenMembers .card-header{
@@ -2213,18 +2212,18 @@ html, body {
   top:64px;
   z-index:20;
   background:#fff;
-
-  padding-bottom:1px;   /* 🔥 border 대신 padding */
+  border-bottom:1px solid var(--line);
 }
 
 #memberSearch{
   position: sticky;
-  top:104px;
+  top:106px;
   z-index:19;
   background:#fff;
   padding:8px 0 14px;
 }
 
 #memberList{
-  margin-top:28px;
+  margin-top:10px;     /* 카드 위치 조절 */
+  padding-top:10px;    /* 리스트 영역 위치 조절 */
 }
