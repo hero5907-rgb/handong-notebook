@@ -2258,4 +2258,14 @@ html, body {
   cursor:pointer;
 }
 
+#screenMembers .card{
+  overflow: initial !important;
+}
 
+#screenMembers{
+  overflow: visible;
+}
+
+.container{
+  overflow: visible;
+}
