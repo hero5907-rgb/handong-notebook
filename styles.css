@@ -2224,6 +2224,6 @@ html, body {
 }
 
 #memberList{
-  margin-top:5px;     /* 카드 위치 조절 */
-  padding-top:50px;    /* 리스트 영역 위치 조절 */
+  margin-top:100px;     /* 카드 위치 조절 */
+  padding-top:100px;    /* 리스트 영역 위치 조절 */
 }
