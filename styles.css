@@ -2225,5 +2225,5 @@ html, body {
 
 /* 🔥 실제 리스트 영역 이동 */
 #screenMembers #memberList > .card{
-  margin-top:20px;
+  margin-top:200px;
 }
