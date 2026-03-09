@@ -2378,6 +2378,18 @@ state.members.sort((a, b) =>
     // ✅ 다시 렌더
     renderMembers(state.members);
 
+
+    // 🔵 내기수보기 버튼 상태 갱신
+    const btnMembersRefresh = el("btnMembersRefresh");
+    if (btnMembersRefresh) {
+      if (currentClassFilter === Number(state.me?.gisu) && !execMode) {
+        btnMembersRefresh.style.display = "none";
+      } else {
+        btnMembersRefresh.style.display = "";
+      }
+    }
+
+
     toast("회원명부 업데이트 완료");
   });
 }
