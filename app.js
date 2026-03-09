@@ -764,6 +764,16 @@ function formatPhone(p){
 
 function renderMembers(list) {
 
+  // 🔵 내기수보기 버튼 표시/숨김 제어
+  const btnMembersRefresh = el("btnMembersRefresh");
+  if (btnMembersRefresh) {
+    if (currentClassFilter === Number(state.me?.gisu) && !execMode) {
+      btnMembersRefresh.style.display = "none";   // 내기수 → 숨김
+    } else {
+      btnMembersRefresh.style.display = "";       // 그 외 → 표시
+    }
+  }
+
   // 🔵 총동문 집행부 모드
   if (execMode) {
     list = list.filter(m => m.group === "총동문회");
