@@ -2202,3 +2202,60 @@ html, body {
   box-shadow:0 4px 10px rgba(0,0,0,.2);
   z-index:999;
 }
+
+
+/* ===============================
+   회원명부 헤더 고정 (topbar 고려)
+   =============================== */
+
+/* 카드 sticky 깨짐 방지 */
+#screenMembers .card{
+  overflow: visible;
+}
+
+/* 회원명부 헤더 */
+#screenMembers .card-header{
+  position: sticky;
+  top: 64px;          /* 🔥 파란 헤더 높이 */
+  z-index: 30;
+  background:#fff;
+  padding-top:6px;
+  padding-bottom:8px;
+}
+
+/* 검색창 */
+#memberSearch{
+  position: sticky;
+  top: 110px;         /* 🔥 파란헤더 + card-header */
+  z-index:29;
+  background:#fff;
+  margin-top:6px;
+  margin-bottom:6px;
+}
+
+/* 리스트 */
+#memberList{
+  padding-top:4px;
+}
+
+/* ===============================
+   맨위로 버튼
+   =============================== */
+
+.scroll-top-btn{
+  position: fixed;
+  right: 18px;
+  bottom: 90px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border:none;
+  background:#0b4ea2;
+  color:#fff;
+  font-size:20px;
+  box-shadow:0 6px 14px rgba(0,0,0,.2);
+  z-index:9999;
+  cursor:pointer;
+}
+
+

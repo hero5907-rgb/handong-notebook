@@ -2992,7 +2992,7 @@ function appConfirm(message){
 const scrollBtn = document.getElementById("btnScrollTop");
 const memberList = document.getElementById("memberList");
 
-if (scrollBtn && memberList) {
+if(scrollBtn && memberList){
 
   memberList.addEventListener("scroll", () => {
     scrollBtn.hidden = memberList.scrollTop < 300;
@@ -3000,9 +3000,13 @@ if (scrollBtn && memberList) {
 
   scrollBtn.onclick = () => {
     memberList.scrollTo({
-      top: 0,
-      behavior: "smooth"
+      top:0,
+      behavior:"smooth"
     });
   };
-
 }
+
+
+
+
+
