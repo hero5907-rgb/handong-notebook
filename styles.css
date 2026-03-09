@@ -2216,12 +2216,11 @@ html, body {
   z-index:20;
 
   padding-top:8px;
-  padding-bottom:12px;   /* 🔥 간격을 padding으로 확보 */
-
+  padding-bottom:6px;
   border-bottom:1px solid var(--line);
 }
 
-/* 검색창 고정 (헤더 아래) */
+/* 검색창 고정 */
 #memberSearch{
   position: sticky;
   top:108px;
@@ -2229,7 +2228,10 @@ html, body {
   background:#fff;
   z-index:19;
 
-  padding-top:0;        /* 🔥 위 간격 제거 */
+  width:100%;          /* 🔥 추가 */
+  left:0;              /* 🔥 추가 */
+
+  padding-top:6px;
   padding-bottom:10px;
 }
 
