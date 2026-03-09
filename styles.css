@@ -1,8 +1,6 @@
 [hidden] { display: none !important; }
 
 
-html, body { height: 100%; }
-html, body { overscroll-behavior-y: none; }
 
 
 :root{--blue:#0b4ea2;--blue2:#0a3e83;--bg:#f2f5fa;--card:#fff;--text:#0b1220;--muted:#64748b;--line:#e5eaf3;--shadow:0 10px 25px rgba(12,20,38,.12);--radius:18px}
@@ -2238,4 +2236,9 @@ html, body {
 /* 회원 리스트만 스크롤 */
 #memberList{
   padding-top:6px;
+}
+
+
+body{
+  min-height:100vh;
 }
