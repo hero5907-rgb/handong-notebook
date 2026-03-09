@@ -2224,3 +2224,86 @@ html, body {
 #screenMembers .card{
   margin-top:12px;
 }
+
+
+
+/* ===============================
+   회원명부 상단 iOS 스타일
+   =============================== */
+
+.membersSticky{
+  position: sticky;
+  top:64px;
+  z-index:20;
+
+  background:#fff;
+
+  margin:0 12px 10px;
+  padding:12px;
+
+  border-radius:18px;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow);
+}
+
+
+/* 회원명부 헤더 */
+.membersSticky .card-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:0 4px 10px;
+  margin:0;
+  border:none;
+}
+
+
+/* 회원명부 텍스트 */
+.membersSticky .card-header .title{
+  font-weight:700;
+  font-size:17px;
+  margin-left:4px;
+}
+
+
+/* 기수 버튼 */
+.membersSticky .class-btn{
+  margin-left:8px;
+}
+
+
+/* 7명 배지 */
+.membersSticky .count{
+  margin-right:4px;
+}
+
+
+/* 검색창 영역 */
+#memberSearch{
+  margin-top:4px;
+}
+
+
+/* 검색 input */
+#memberSearch input{
+
+  width:100%;
+  height:44px;
+
+  padding:0 16px;
+
+  border-radius:14px;
+  border:1px solid var(--line);
+
+  background:#f7f8fb;
+
+  font-size:15px;
+
+}
+
+
+/* 카드 리스트 위 간격 */
+#memberList{
+  padding-top:6px;
+}
