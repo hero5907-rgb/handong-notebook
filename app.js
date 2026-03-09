@@ -765,17 +765,6 @@ function formatPhone(p){
 function renderMembers(list) {
 
 
-
-console.log("currentClassFilter =", currentClassFilter);
-  console.log("my gisu =", state.me?.gisu);
-  console.log("execMode =", execMode);
-  console.log("compare =", currentClassFilter === Number(state.me?.gisu));
-
-
-
-
-
-
   // 🔵 내기수보기 버튼 표시/숨김 제어
   const btnMembersRefresh = el("btnMembersRefresh");
   if (btnMembersRefresh) {
