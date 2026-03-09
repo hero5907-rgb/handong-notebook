@@ -2214,11 +2214,12 @@ html, body {
   z-index:20;
   background:#fff;
   border-bottom:1px solid var(--line);
+  margin-bottom:0;
 }
 
 #memberSearch{
   position: sticky;
-  top:96px;
+  top:104px;
   z-index:19;
   background:#fff;
   padding:8px 0 14px;
