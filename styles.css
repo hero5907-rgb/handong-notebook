@@ -2205,35 +2205,25 @@ html, body {
 
 
 /* ===============================
-   회원명부 sticky (수정버전)
+   회원명부 sticky (안정버전)
    =============================== */
 
 #screenMembers .card-header{
   position: sticky;
   top:64px;
-  background:#fff;
   z-index:20;
-
-  margin-bottom:0;        /* 기존 margin 충돌 제거 */
-  padding-top:8px;
-  padding-bottom:6px;
+  background:#fff;
   border-bottom:1px solid var(--line);
 }
 
 #memberSearch{
   position: sticky;
-  top:118px;
-
+  top:110px;
+  z-index:19;
   background:#fff;
-  z-index:30;
-
-  width:100%;
-  left:0;
-
-  padding-top:6px;
-  padding-bottom:18px;   /* 🔥 여기만 늘림 */
+  padding:8px 0 14px;
 }
 
 #memberList{
-  padding-top:12px;       /* 카드 살짝 내려서 겹침 방지 */
+  margin-top:6px;
 }
