@@ -2213,8 +2213,8 @@ html, body {
   top:64px;
   z-index:20;
   background:#fff;
-  border-bottom:1px solid var(--line);
-  margin-bottom:0;
+
+  padding-bottom:1px;   /* 🔥 border 대신 padding */
 }
 
 #memberSearch{
