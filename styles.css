@@ -2170,3 +2170,19 @@ html, body {
   transform:scale(.97);
   box-shadow:inset 0 2px 6px rgba(0,0,0,0.12);
 }
+
+
+
+/* 회원명부 상단 고정 */
+#screenMembers .card-header{
+  position: sticky;
+  top: 0;
+  background: #f3f4f6;
+  z-index: 5;
+}
+
+#screenMembers #memberSearch{
+  position: sticky;
+  top: 48px;
+  z-index: 5;
+}
