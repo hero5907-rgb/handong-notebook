@@ -2980,3 +2980,13 @@ function appConfirm(message){
   });
 }
 
+// 🔼 맨 위로 버튼
+const scrollBtn = document.getElementById("btnScrollTop");
+
+window.addEventListener("scroll", () => {
+  scrollBtn.hidden = window.scrollY < 400;
+});
+
+scrollBtn.onclick = () => {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+};
