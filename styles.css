@@ -2205,7 +2205,7 @@ html, body {
 
 
 /* ===============================
-   회원명부 sticky (최종 안정버전)
+   회원명부 sticky (수정버전)
    =============================== */
 
 #screenMembers .card-header{
@@ -2214,6 +2214,7 @@ html, body {
   background:#fff;
   z-index:20;
 
+  margin-bottom:0;        /* 기존 margin 충돌 제거 */
   padding-top:8px;
   padding-bottom:6px;
   border-bottom:1px solid var(--line);
@@ -2221,22 +2222,14 @@ html, body {
 
 #memberSearch{
   position: sticky;
-  top:118px;
+  top:110px;              /* header 높이 맞춤 */
 
   background:#fff;
   z-index:19;
 
-  width:100%;
-  left:0;
-
-  padding-top:6px;
-  padding-bottom:10px;
+  padding:6px 0 10px;
 }
 
 #memberList{
-  margin-top:20px;
-}
-
-body{
-  min-height:100vh;
+  padding-top:12px;       /* 카드 살짝 내려서 겹침 방지 */
 }
