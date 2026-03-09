@@ -764,6 +764,14 @@ function formatPhone(p){
 
 function renderMembers(list) {
 
+// 🔵 필터 버튼 텍스트 동기화
+const btnClass = el("btnClassFilter");
+if (btnClass) {
+  if (execMode) btnClass.textContent = "총.집행부 ▼";
+  else if (currentClassFilter === null) btnClass.textContent = "기수전체 ▼";
+  else btnClass.textContent = `${currentClassFilter}기 ▼`;
+}
+
 
   // 🔵 내기수보기 버튼 표시/숨김 제어
   const btnMembersRefresh = el("btnMembersRefresh");
