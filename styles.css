@@ -2208,10 +2208,9 @@ html, body {
    회원명부 sticky (최종 안정버전)
    =============================== */
 
-/* 회원명부 헤더 고정 */
 #screenMembers .card-header{
   position: sticky;
-  top: 64px;
+  top:64px;
   background:#fff;
   z-index:20;
 
@@ -2220,22 +2219,20 @@ html, body {
   border-bottom:1px solid var(--line);
 }
 
-/* 검색창 고정 */
 #memberSearch{
   position: sticky;
-  top:108px;
+  top:118px;
 
   background:#fff;
   z-index:19;
 
-  width:100%;          /* 🔥 추가 */
-  left:0;              /* 🔥 추가 */
+  width:100%;
+  left:0;
 
   padding-top:6px;
   padding-bottom:10px;
 }
 
-/* 회원 리스트 */
 #memberList{
   padding-top:6px;
 }
