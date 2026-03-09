@@ -261,37 +261,33 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 <!-- 회원 -->
 <section id="screenMembers" class="screen" hidden>
-  <div class="card">
 
-    <div class="card-header">
-      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
-        회원명부
+  <div class="card-header">
+    <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+      회원명부
 
-  <button id="btnClassFilter" class="class-filter-btn" type="button">
-    기수전체 ▼
-  </button>
+      <button id="btnClassFilter" class="class-filter-btn" type="button">
+        기수전체 ▼
+      </button>
 
-<button
-  id="btnMembersRefresh"
-  class="btn-blue small"
-  type="button"
->
-  <span style="margin-right:4px;">↻</span>내기수보기
-</button>
-      </div>
-
-      <div class="pill" id="memberCountPill">0명</div>
+      <button id="btnMembersRefresh" class="btn-blue small" type="button">
+        <span style="margin-right:4px;">↻</span>내기수보기
+      </button>
     </div>
 
-    <input
-      id="memberSearch"
-      class="input"
-      placeholder="이름 / 직위 / 그룹 / 휴대폰 검색"
-    />
-
-    <div id="memberList" class="list mt12"></div>
-
+    <div class="pill" id="memberCountPill">0명</div>
   </div>
+
+  <input
+    id="memberSearch"
+    class="input"
+    placeholder="이름 / 직위 / 그룹 / 휴대폰 검색"
+  />
+
+  <div class="card">
+    <div id="memberList" class="list mt12"></div>
+  </div>
+
 </section>
 
 

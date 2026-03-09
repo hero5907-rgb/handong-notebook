@@ -2172,21 +2172,6 @@ html, body {
 }
 
 
-/* ===== 회원명부 상단 고정 ===== */
-
-#screenMembers .card-header{
-  position: sticky;
-  top: 64px;        /* 파란 topbar 높이 */
-  background:#fff;
-  z-index:30;
-}
-
-#memberSearch{
-  position: sticky;
-  top: 110px;       /* topbar + header */
-  background:#fff;
-  z-index:29;
-}
 
 
 /* ===== 맨위로 버튼 ===== */
@@ -2207,46 +2192,39 @@ html, body {
 }
 
 
-#btnScrollTop{
-  position: fixed;
-  right: 16px;
-  bottom: 90px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: #2563eb;
-  color: white;
-  font-size: 20px;
-  z-index: 999;
-}
 
 
 
 
-/* ===== 회원명부 sticky 안정화 ===== */
+/* ===============================
+   회원명부 sticky (최종 안정버전)
+   =============================== */
 
+/* 회원명부 헤더 고정 */
 #screenMembers .card-header{
   position: sticky;
-  top: 64px;                 /* 파란 topbar 높이 */
-  background: var(--bg);     /* 배경 덮기 */
-  z-index: 5;                /* topbar보다 낮게 */
+  top: 64px;                 /* topbar 높이 */
+  background: #fff;
+  z-index: 6;
+
   padding-top:8px;
   padding-bottom:6px;
+
+  border-bottom:1px solid var(--line);
 }
 
+/* 검색창 고정 */
 #memberSearch{
   position: sticky;
-  top: 110px;                /* topbar + header */
-  background: var(--bg);     /* 카드 비침 방지 */
-  z-index: 4;
+  top: 112px;                /* topbar + header */
+
+  background:#fff;
+  z-index:5;
+
   padding-bottom:10px;
 }
 
-/* sticky 흔들림 방지 */
-#screenMembers{
-  transform: translateZ(0);
-}
-#screenMembers .card-header{
-  border-bottom:1px solid var(--line);
+/* 회원 리스트만 스크롤 */
+#memberList{
+  padding-top:6px;
 }
