@@ -2258,14 +2258,16 @@ html, body {
   cursor:pointer;
 }
 
+/* ===== 회원명부 상단 고정 버그 해결 ===== */
+
+#screenMembers .container{
+  overflow: visible !important;
+}
+
 #screenMembers .card{
-  overflow: initial !important;
+  overflow: visible !important;
 }
 
 #screenMembers{
-  overflow: visible;
-}
-
-.container{
-  overflow: visible;
+  overflow: visible !important;
 }
