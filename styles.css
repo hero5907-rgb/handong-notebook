@@ -2218,7 +2218,7 @@ html, body {
 
 #memberSearch{
   position: sticky;
-  top:110px;
+  top:96px;
   z-index:19;
   background:#fff;
   padding:8px 0 14px;
