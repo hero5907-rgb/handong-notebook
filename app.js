@@ -2309,7 +2309,7 @@ function openDayEvents(date){
 openModal(`
   <!-- 날짜 제목 : 가운데 정렬 -->
   <div style="text-align:center;margin-bottom:12px;">
-    <h3 style="margin:0;">📅 ${date}</h3>
+    <h3 style="margin:0;">🗓️ ${date}</h3>
   </div>
 
   ${list.map(e=>`
@@ -2442,7 +2442,7 @@ let __calendarReloading = false;
 
 
 
-// 📅 달력 새로고침 버튼 (완전 초기화)
+// 🗓️ 달력 새로고침 버튼 (완전 초기화)
 
 el("btnCalendarRefresh")?.addEventListener("click", () => {
 
