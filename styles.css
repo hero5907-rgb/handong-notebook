@@ -2331,3 +2331,29 @@ button{
 button:active{
   transform:scale(.95);
 }
+
+
+
+
+/* ===== 총동문회 소개 ===== */
+
+.intro-photo-wrap{
+  margin-top:12px;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 8px 20px rgba(0,0,0,.08);
+}
+
+.intro-photo{
+  width:100%;
+  display:block;
+  object-fit:cover;
+}
+
+.intro-text{
+  margin-top:16px;
+  font-size:15px;
+  line-height:1.7;
+  color:#374151;
+  white-space:pre-line;
+}
