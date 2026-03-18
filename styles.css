@@ -2357,3 +2357,10 @@ button:active{
   color:#374151;
   white-space:pre-line;
 }
+
+
+
+#imgModalPhoto {
+  touch-action: none;
+  transform-origin: center;
+}

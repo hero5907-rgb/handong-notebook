@@ -3019,3 +3019,86 @@ window.addEventListener("DOMContentLoaded", () => {
   };
 
 });
+
+
+(function bindImgModalPinch(){
+
+  const img = document.getElementById("imgModalPhoto");
+  if (!img) return;
+
+  let scale = 1;
+  let tx = 0;
+  let ty = 0;
+
+  const ptrs = new Map();
+  let pinchStartDist = 0;
+  let pinchStartScale = 1;
+  let dragStart = null;
+
+  function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+  function apply(){
+    img.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+  }
+
+  function reset(){
+    scale = 1;
+    tx = 0;
+    ty = 0;
+    apply();
+  }
+
+  img.addEventListener("pointerdown", (e)=>{
+    img.setPointerCapture(e.pointerId);
+    ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+
+    if(ptrs.size === 1){
+      dragStart = {x:e.clientX, y:e.clientY, tx, ty};
+    }
+
+    if(ptrs.size === 2){
+      const pts = [...ptrs.values()];
+      pinchStartDist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y);
+      pinchStartScale = scale;
+      dragStart = null;
+    }
+  });
+
+  img.addEventListener("pointermove", (e)=>{
+    if(!ptrs.has(e.pointerId)) return;
+    ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+
+    if(ptrs.size === 2){
+      const pts = [...ptrs.values()];
+      const dist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y);
+      const ratio = dist / (pinchStartDist || dist);
+
+      scale = clamp(pinchStartScale * ratio, 1, 4);
+      apply();
+      return;
+    }
+
+    if(ptrs.size === 1 && dragStart && scale > 1){
+      const dx = e.clientX - dragStart.x;
+      const dy = e.clientY - dragStart.y;
+      tx = dragStart.tx + dx;
+      ty = dragStart.ty + dy;
+      apply();
+    }
+  });
+
+  function end(e){
+    ptrs.delete(e.pointerId);
+    if(ptrs.size < 2) pinchStartDist = 0;
+    if(ptrs.size === 0) dragStart = null;
+
+    if(scale <= 1) reset();
+  }
+
+  img.addEventListener("pointerup", end);
+  img.addEventListener("pointercancel", end);
+
+  img.addEventListener("dblclick", reset);
+
+})();
+
