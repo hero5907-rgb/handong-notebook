@@ -440,6 +440,17 @@ function toast(msg, opts = {}) {
 function showScreen(name) {
  
 stopCeremony();   // 🔥 화면 이동시 무조건 정지
+
+
+  // 🔥 추가
+  if (name === "ceremony") {
+    const elIntro = document.getElementById("introText");
+    if (elIntro && window.APP_CONFIG?.introText) {
+      elIntro.innerText = window.APP_CONFIG.introText;
+    }
+  }
+
+
  Object.entries(screens).forEach(([k, node]) => {
     if (!node) return;
     node.hidden = (k !== name);
