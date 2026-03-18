@@ -812,12 +812,14 @@ if (btnClass) {
     return;
   }
 
-// 🔥 기수 정렬 적용
-list.sort((a, b) => {
-  const ga = Number(a.gisu || 0);
-  const gb = Number(b.gisu || 0);
-  return gisuSortDesc ? gb - ga : ga - gb;
-});
+// 🔥 기수 정렬 적용 (집행부 아닐때만)
+if (!execMode) {
+  list.sort((a, b) => {
+    const ga = Number(a.gisu || 0);
+    const gb = Number(b.gisu || 0);
+    return gisuSortDesc ? gb - ga : ga - gb;
+  });
+}
 
 
 
