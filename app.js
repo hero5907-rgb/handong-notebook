@@ -858,12 +858,43 @@ if (!execMode) {
   ${esc(m.name)} 
   ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
 
-${m.position ? `
-<span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
-  ${esc(m.position)}
-</span>
-` : ""}
+
 </div>
+
+<div class="profile-badges">
+  ${(() => {
+
+    let html = "";
+
+    if (m.position) {
+      const arr = String(m.position)
+        .split(/[,/]/)
+        .map(v => v.trim())
+        .filter(Boolean);
+
+      arr.forEach(v => {
+        html += `
+          <span class="badge ${v.includes("총동문") ? 'badge-exec' : ''}">
+            ${esc(v)}
+          </span>
+        `;
+      });
+    }
+
+    if (m.group) {
+      html += `
+        <span class="badge badge-group">
+          ${esc(m.group)}
+        </span>
+      `;
+    }
+
+    return html;
+
+  })()}
+</div>
+
+
 
         <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone)].filter(Boolean).join(" / "))}</div>
 

@@ -2396,3 +2396,26 @@ button:active{
 
   box-shadow: 0 2px 6px rgba(92, 62, 255, 0.35);
 }
+
+
+/* ===============================
+   🔥 프로필 배지 여러개 정렬 (핵심)
+   =============================== */
+
+.profile-badges{
+  display:flex;
+  flex-wrap:wrap;          /* 🔥 줄바꿈 핵심 */
+  justify-content:center;  /* 🔥 가운데 정렬 */
+  gap:6px;
+
+  margin-top:8px;
+}
+
+/* 배지 크기 살짝 정리 */
+.profile-badges .badge{
+  font-size:12px;
+  padding:5px 10px;
+  border-radius:999px;
+}
+
+
