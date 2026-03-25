@@ -1309,7 +1309,57 @@ setAdminButton(false);
   bindNav();
   bindSearch();
 
+const installBar = el("installBar");
+const btnInstallBar = el("btnInstallBar");
 
+if (installBar && btnInstallBar) {
+
+  // 🔥 기본 숨김 (이미 HTML에서 했지만 안전하게)
+  installBar.style.display = "none";
+
+  // 🔥 Android + 설치 가능할 때만 표시
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    installBar.style.display = "block";
+  });
+
+  btnInstallBar.addEventListener("click", async () => {
+
+    // 🤖 안드로이드 + 크롬
+    if (isRealChromeOnAndroid()) {
+
+      if (!deferredPrompt) {
+        toast("설치 준비중입니다. 잠시 후 다시 시도하세요.");
+        return;
+      }
+
+      deferredPrompt.prompt();
+      const choice = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+
+      if (choice?.outcome === "accepted") {
+        installBar.style.display = "none";
+      }
+
+    } else if (IS_IOS) {
+
+      // 🍎 아이폰 안내
+      showHint(`
+        <b>아이폰 설치 방법</b><br><br>
+        1) 사파리로 접속<br>
+        2) 하단 공유버튼(⬆️)<br>
+        3) 홈 화면에 추가
+      `);
+
+    } else {
+
+      toast("이 브라우저에서는 설치가 지원되지 않습니다.");
+    }
+
+  });
+}
 
   // 🔥 여기다 붙여넣는다 (정확히 이 위치)
  const btnSelectAll = document.getElementById("btnSelectAll");
