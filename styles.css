@@ -200,70 +200,75 @@ flex-direction: column;   /* 🔥 이거 추가 */
 }
 
 
-/* ===== Boot (Splash) Screen ===== */
+/* ===============================
+   🚀 Boot (밝고 세련된 버전)
+   =============================== */
+
 .screen.boot{
-  min-height: calc(100vh - 56px); /* topbar 높이 감안(대충) */
+  min-height: calc(100vh - 56px);
   display:flex;
   align-items:center;
   justify-content:center;
   padding:24px;
+
   background:
-    radial-gradient(1200px 600px at 50% 0%, rgba(255,255,255,0.10), transparent 60%),
-    linear-gradient(180deg, #0b4ea2 0%, #06346f 100%);
+    radial-gradient(1000px 500px at 50% 0%, rgba(255,255,255,0.25), transparent 60%),
+    linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
 }
 
 .boot-card{
   width:min(420px, 92vw);
-  border-radius: 18px;
-  padding: 26px 22px;
+  border-radius: 24px;
+  padding: 30px 24px;
   text-align:center;
   color:#fff;
-  background: rgba(255,255,255,0.10);
-  border: 1px solid rgba(255,255,255,0.18);
-  box-shadow: 0 18px 40px rgba(0,0,0,0.25);
-  backdrop-filter: blur(10px);
+
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.35);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,0.18),
+    inset 0 1px rgba(255,255,255,.35);
 }
 
 .boot-logo{
-  width:84px;
-  height:84px;
-  object-fit:contain;
-  margin: 4px auto 10px;
+  width:90px;
+  height:90px;
+  margin: 6px auto 12px;
   display:block;
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.25));
+  filter: drop-shadow(0 8px 18px rgba(0,0,0,.25));
 }
 
 .boot-title{
   font-size: 22px;
-  font-weight: 800;
-  letter-spacing: -0.3px;
-  margin-top: 6px;
+  font-weight: 900;
 }
 
 .boot-sub{
   font-size: 16px;
   font-weight: 700;
-  opacity: 0.92;
-  margin-top: 4px;
+  opacity: 0.9;
 }
 
 .boot-loading{
-  margin-top: 16px;
+  margin-top: 18px;
   display:flex;
   gap:10px;
   align-items:center;
   justify-content:center;
   font-weight: 700;
-  opacity: 0.95;
 }
 
 .spinner{
-  width:18px;
-  height:18px;
+  width:20px;
+  height:20px;
   border-radius: 50%;
   border: 3px solid rgba(255,255,255,0.35);
-  border-top-color: rgba(255,255,255,0.95);
-  animation: spin 0.9s linear infinite;
+  border-top-color: #ffffff;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin{
@@ -273,7 +278,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
 .boot-tip{
   margin-top: 14px;
   font-size: 13px;
-  opacity: 0.80;
+  opacity: 0.8;
 }
 
 
