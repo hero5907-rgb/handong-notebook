@@ -201,7 +201,7 @@ flex-direction: column;   /* 🔥 이거 추가 */
 
 
 /* ===============================
-   🚀 Boot (밝고 세련된 버전)
+   🍎 iOS 스타일 Boot (최종)
    =============================== */
 
 .screen.boot{
@@ -211,76 +211,90 @@ flex-direction: column;   /* 🔥 이거 추가 */
   justify-content:center;
   padding:24px;
 
+  /* 🔥 핵심: 밝은 + 흰색 섞인 블루 */
   background:
-    radial-gradient(1000px 500px at 50% 0%, rgba(255,255,255,0.25), transparent 60%),
-    linear-gradient(180deg, #3b82f6 0%, #1e40af 100%);
+    radial-gradient(800px 400px at 50% 10%, rgba(255,255,255,0.6), transparent 70%),
+    linear-gradient(180deg, #60a5fa 0%, #2563eb 60%, #1e3a8a 100%);
 }
 
+/* 카드 (진짜 핵심) */
 .boot-card{
   width:min(420px, 92vw);
-  border-radius: 24px;
-  padding: 30px 24px;
+  border-radius: 28px;
+  padding: 34px 26px;
   text-align:center;
-  color:#fff;
 
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.35);
+  /* 🔥 iOS 느낌 = 더 투명 */
+  background: rgba(255,255,255,0.22);
+  border: 1px solid rgba(255,255,255,0.45);
 
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 
+  /* 🔥 부드러운 떠있는 그림자 */
   box-shadow:
-    0 20px 50px rgba(0,0,0,0.18),
-    inset 0 1px rgba(255,255,255,.35);
+    0 10px 30px rgba(0,0,0,0.15),
+    0 1px 0 rgba(255,255,255,0.4) inset;
 }
 
+/* 로고 */
 .boot-logo{
-  width:90px;
-  height:90px;
-  margin: 6px auto 12px;
+  width:88px;
+  height:88px;
+  margin: 8px auto 14px;
   display:block;
-  filter: drop-shadow(0 8px 18px rgba(0,0,0,.25));
+
+  /* 🔥 살짝 떠보이게 */
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,.18));
 }
 
+/* 타이틀 */
 .boot-title{
   font-size: 22px;
   font-weight: 900;
+  color:#ffffff;
+  letter-spacing:-0.2px;
 }
 
+/* 서브 */
 .boot-sub{
-  font-size: 16px;
-  font-weight: 700;
-  opacity: 0.9;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  margin-top:4px;
 }
 
+/* 로딩 */
 .boot-loading{
   margin-top: 18px;
   display:flex;
-  gap:10px;
+  gap:8px;
   align-items:center;
   justify-content:center;
-  font-weight: 700;
+  font-weight:600;
+  color: rgba(255,255,255,0.95);
 }
 
+/* 스피너 */
 .spinner{
-  width:20px;
-  height:20px;
-  border-radius: 50%;
-  border: 3px solid rgba(255,255,255,0.35);
-  border-top-color: #ffffff;
-  animation: spin 0.8s linear infinite;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  border:2.5px solid rgba(255,255,255,0.35);
+  border-top-color:#ffffff;
+  animation: spin 0.7s linear infinite;
+}
+
+/* 설명 */
+.boot-tip{
+  margin-top: 12px;
+  font-size: 13px;
+  color: rgba(255,255,255,0.75);
 }
 
 @keyframes spin{
   to { transform: rotate(360deg); }
 }
-
-.boot-tip{
-  margin-top: 14px;
-  font-size: 13px;
-  opacity: 0.8;
-}
-
 
 .modal-photo {
   width: 220px;
