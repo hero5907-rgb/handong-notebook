@@ -2364,3 +2364,18 @@ button:active{
   touch-action: none;
   transform-origin: center;
 }
+
+
+/* ===============================
+   🔥 집행부 배지 (최종 강제)
+   =============================== */
+.badge.badge-exec{
+  background: linear-gradient(135deg, #7c5cff, #4f2bff) !important;
+  color: #ffffff !important;
+  border: none !important;
+
+  font-weight: 900;
+  letter-spacing: 0.3px;
+
+  box-shadow: 0 2px 6px rgba(92, 62, 255, 0.35);
+}

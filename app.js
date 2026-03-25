@@ -310,7 +310,11 @@ if (myNameEl) {
 }
 
 // 직위 유지
-el("myPosition").textContent = m.position || "";
+el("myPosition").innerHTML = m.position ? `
+<span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
+  ${esc(m.position)}
+</span>
+` : "";
 
   el("myGroup").textContent = m.group || "";
 
@@ -844,8 +848,13 @@ if (!execMode) {
         <div class="row-title">
 
   ${esc(m.name)} 
-  ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
-  ${m.position ? `<span class="badge">${esc(m.position)}</span>` : ""}
+  $${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
+
+${m.position ? `
+<span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
+  ${esc(m.position)}
+</span>
+` : ""}
 </div>
 
         <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone)].filter(Boolean).join(" / "))}</div>
@@ -1735,7 +1744,11 @@ if (nameEl) {
 }
 
 // 기존 직위 유지
-el("modalPosition").textContent = m.position || "";
+el("modalPosition").innerHTML = m.position ? `
+<span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
+  ${esc(m.position)}
+</span>
+` : "";
 
 const groupEl = el("modalGroup");
 const g = String(m.group || "").trim();
