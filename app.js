@@ -1012,6 +1012,8 @@ state.me = {
   isAdmin: isAdmin === true
 };
 
+execMode = false;   // 🔥 리스트무조건기수순
+
 // 🔵 로그인 사용자 기수 기본 필터값 설정
 currentClassFilter = state.me?.gisu
   ? Number(state.me.gisu)
