@@ -310,11 +310,10 @@ if (myNameEl) {
 }
 
 // 직위 유지
-el("myPosition").innerHTML = m.position ? `
-<span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
-  ${esc(m.position)}
-</span>
-` : "";
+const isExec = m.group && m.group.trim() !== "";
+
+el("myPosition").textContent = m.position || "";
+el("myPosition").className = "badge" + (isExec ? " badge-exec" : "");
 
   el("myGroup").textContent = m.group || "";
 
@@ -1744,11 +1743,10 @@ if (nameEl) {
 }
 
 // 기존 직위 유지
-el("modalPosition").innerHTML = m.position ? `
-<span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
-  ${esc(m.position)}
-</span>
-` : "";
+const isExec = m.group && m.group.trim() !== "";
+
+el("modalPosition").textContent = m.position || "";
+el("modalPosition").className = "badge" + (isExec ? " badge-exec" : "");
 
 const groupEl = el("modalGroup");
 const g = String(m.group || "").trim();
