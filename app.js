@@ -1827,6 +1827,47 @@ if(IS_IOS){
 // 🔵 이름 + 기수 표시
 const nameEl = el("modalName");
 
+
+// 🔥 상세페이지 배지 생성
+const wrap = el("modalBadges");
+if (wrap) {
+  wrap.innerHTML = "";
+
+  // 1️⃣ 직위 쪼개기
+  if (m.position) {
+    const arr = String(m.position)
+      .split(/[,/]/)
+      .map(v => v.trim())
+      .filter(Boolean);
+
+    arr.forEach(v => {
+      const span = document.createElement("span");
+
+
+if (v.includes("총동문")) {
+  span.className = "badge badge-exec";
+} else if (v.includes("기")) {
+  span.className = "badge badge-gisu";
+} else {
+  span.className = "badge";
+}
+
+      span.textContent = v;
+      wrap.appendChild(span);
+    });
+  }
+
+  // 2️⃣ 그룹 추가
+  if (m.group) {
+    const g = document.createElement("span");
+    g.className = "badge badge-group";
+    g.textContent = m.group;
+    wrap.appendChild(g);
+  }
+}
+
+
+
 if (nameEl) {
   nameEl.innerHTML = `
     ${m.gisu ? `<span class="gisu-medal">${m.gisu}기</span>` : ""}
@@ -1837,29 +1878,6 @@ if (nameEl) {
 // 기존 직위 유지
 const isExec = m.group && m.group.trim() !== "";
 
-el("modalPosition").textContent = m.position || "";
-el("modalPosition").className = "badge" + (isExec ? " badge-exec" : "");
-
-const groupEl = el("modalGroup");
-const g = String(m.group || "").trim();
-
-
-// ✅ 값 없으면 뱃지 자체 숨김 (빈 동그라미 방지)
-if (!g) {
-  groupEl.textContent = "";
-  groupEl.classList.remove("group-exec","group-member","group-guest");
-  groupEl.hidden = true;   // 🔥 핵심
-} else {
-  groupEl.hidden = false;
-  groupEl.textContent = g;
-
-  groupEl.classList.remove("group-exec","group-member","group-guest");
-
-  // 🔥 그룹 이름 기준 자동 색상
-  if (g.includes("집행부")) groupEl.classList.add("group-exec");
-  else if (g.includes("회원")) groupEl.classList.add("group-member");
-  else groupEl.classList.add("group-guest");
-}
 
 
 // ===== 추가: 영문이름 =====
