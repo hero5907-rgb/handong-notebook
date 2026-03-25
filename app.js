@@ -315,7 +315,16 @@ const isExec = m.group && m.group.trim() !== "";
 el("myPosition").textContent = m.position || "";
 el("myPosition").className = "badge" + (isExec ? " badge-exec" : "");
 
-  el("myGroup").textContent = m.group || "";
+  const g = String(m.group || "").trim();
+const myGroupEl = el("myGroup");
+
+if (!g) {
+  myGroupEl.textContent = "";
+  myGroupEl.hidden = true;   // 🔥 이게 핵심
+} else {
+  myGroupEl.hidden = false;
+  myGroupEl.textContent = g;
+}
 
   // 직장 + 주소
   const workplaceRaw = String(m.workplace || "").trim();
