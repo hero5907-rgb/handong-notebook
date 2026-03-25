@@ -847,7 +847,7 @@ if (!execMode) {
         <div class="row-title">
 
   ${esc(m.name)} 
-  $${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
+  ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
 
 ${m.position ? `
 <span class="badge ${m.group && m.group.trim() !== "" ? 'badge-exec' : ''}">
