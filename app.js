@@ -798,13 +798,17 @@ if (btnClass) {
 
   // 🔵 내기수보기 버튼 표시/숨김 제어
   const btnMembersRefresh = el("btnMembersRefresh");
-  if (btnMembersRefresh) {
-    if (currentClassFilter === Number(state.me?.gisu)) {
-      btnMembersRefresh.style.display = "none";   // 내기수 → 숨김
-    } else {
-      btnMembersRefresh.style.display = "";       // 그 외 → 표시
-    }
+if (btnMembersRefresh) {
+
+  const myGisu = Number(state.me?.gisu || 0);
+
+  // 🔥 상태 기준으로 정확히 판단
+  if (!execMode && currentClassFilter === myGisu) {
+    btnMembersRefresh.style.display = "none";
+  } else {
+    btnMembersRefresh.style.display = "";
   }
+}
 
   // 🔵 총동문 집행부 모드
   if (execMode) {
@@ -1284,6 +1288,12 @@ function bindNav() {
       if (pdfBtn) pdfBtn.hidden = true;
 
 if (target === "members") {
+
+  execMode = false;   // 🔥 추가
+
+  if (currentClassFilter === null && state.me?.gisu) {
+    currentClassFilter = Number(state.me.gisu);
+  }
 
   // 🔵 로그인 사용자 기수 기본 적용 (혹시 초기화됐을 경우 대비)
   if (currentClassFilter === null && state.me?.gisu) {
