@@ -2421,62 +2421,46 @@ button:active{
 /* ===============================
    🔵 기수별 그룹 묶음
    =============================== */
+/* ===============================
+   🍎 iOS 스타일 기수 그룹 (최종)
+   =============================== */
+
 .gisu-group{
-  border:1px solid #dbeafe;   /* 🔵 연한 블루 */
+  border:1px solid var(--line);
   border-radius:18px;
   padding:10px;
   margin-bottom:14px;
-  background:#f8fbff;         /* 🔵 거의 안보이는 블루톤 */
+  background:#fff;
   box-shadow:0 4px 10px rgba(12,20,38,.04);
 }
 
 .gisu-title{
-  display:inline-block;
-  margin:6px auto 12px;
-  padding:6px 18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
 
-  font-size:14px;
-  font-weight:900;
-  color:#0b4ea2;
+  margin:6px 0 12px;
 
-  border-radius:999px;
-  text-align:center;
+  font-size:13px;
+  font-weight:700;
+  color:#64748b;
 
-  /* 🔥 핵심: 캡슐 + 살짝 번짐 */
-  background:rgba(11,78,162,0.08);
-  border:1px solid rgba(11,78,162,0.15);
-
-  position:relative;
+  letter-spacing:0.3px;
 }
 
-/* 🔥 붓 느낌 아주 약하게 */
-.gisu-title::before{
+.gisu-title::before,
+.gisu-title::after{
   content:"";
-  position:absolute;
-  inset:-4px;
-
-  background:linear-gradient(
-    90deg,
-    rgba(11,78,162,0.12),
-    rgba(11,78,162,0.04)
-  );
-
-  border-radius:14px;
-  filter: blur(6px);
-
-  z-index:-1;
+  flex:1;
+  height:1px;
+  background:#e5e7eb;
 }
 
-/* 그룹 안 마지막 카드 아래 간격 제거 */
-
-.gisu-group{
-  text-align:center;
-}
-
+/* 마지막 카드 여백 제거 */
 .gisu-group .row:last-child{
   margin-bottom:0;
 }
-
 
 /* ===============================
    🔥 회장 강조
