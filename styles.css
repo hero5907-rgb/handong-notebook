@@ -2468,6 +2468,11 @@ button:active{
 }
 
 /* 그룹 안 마지막 카드 아래 간격 제거 */
+
+.gisu-group{
+  text-align:center;
+}
+
 .gisu-group .row:last-child{
   margin-bottom:0;
 }
