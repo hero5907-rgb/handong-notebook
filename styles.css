@@ -2573,3 +2573,31 @@ button:active{
   min-height: 0;
 }
 
+/* ===============================
+   🔥 홈 타일 커스텀 레이아웃 (최종)
+   =============================== */
+
+/* 기본 그리드 */
+#screenHome .grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:12px;
+  grid-auto-rows:110px;
+}
+
+/* 세로 긴 타일 (회원명부) */
+#screenHome .hero-tall{
+  grid-row: span 2;
+}
+
+/* 가로 전체 타일 (총동문회소개) */
+#screenHome .hero-wide{
+  grid-column: span 2;
+}
+
+/* 타일 내부 정렬 */
+#screenHome .tile{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
