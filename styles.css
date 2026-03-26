@@ -2442,3 +2442,20 @@ button:active{
 .gisu-group .row:last-child{
   margin-bottom:0;
 }
+
+
+/* ===============================
+   🔥 회장 강조
+   =============================== */
+
+/* 🔵 총동문 회장 (강하게) */
+.row.is-grand-president{
+  border:1.5px solid #3b82f6;
+  background:#f0f7ff;
+  box-shadow:0 6px 14px rgba(59,130,246,.12);
+}
+
+/* 🔵 기수 회장 (약하게) */
+.row.is-class-president{
+  border:1px solid #93c5fd;
+}
