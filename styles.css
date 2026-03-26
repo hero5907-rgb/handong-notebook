@@ -2418,4 +2418,27 @@ button:active{
   border-radius:999px;
 }
 
+/* ===============================
+   🔵 기수별 그룹 묶음
+   =============================== */
+.gisu-group{
+  border:1px solid #e5eaf3;
+  border-radius:18px;
+  padding:10px;
+  margin-bottom:14px;
+  background:#fff;
+  box-shadow:0 4px 10px rgba(12,20,38,.04);
+}
 
+.gisu-title{
+  font-size:13px;
+  font-weight:800;
+  color:#64748b;
+  margin-bottom:8px;
+  padding-left:4px;
+}
+
+/* 그룹 안 마지막 카드 아래 간격 제거 */
+.gisu-group .row:last-child{
+  margin-bottom:0;
+}

@@ -846,72 +846,90 @@ if (!execMode) {
 
 
 
- for (let i = 0; i < list.length; i++) {
-  const m = list[i];
+ // 🔵 기수별 그룹 만들기
+const groups = {};
+
+list.forEach(m => {
+  const g = m.gisu || "기타";
+  if (!groups[g]) groups[g] = [];
+  groups[g].push(m);
+});
+
+// 🔵 그룹별 출력
+for (const gisu in groups) {
+
+  const groupBox = document.createElement("div");
+  groupBox.className = "gisu-group";
+
+  // 🔵 기수 제목
+  const title = document.createElement("div");
+  title.className = "gisu-title";
+  title.textContent = gisu + "기";
+  groupBox.appendChild(title);
+
+  groups[gisu].forEach((m, i) => {
+
     const row = document.createElement("div");
     row.className = "row";
+
     row.innerHTML = `
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">
         <div class="row-title">
+          ${esc(m.name)} 
+          ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
+        </div>
 
-  ${esc(m.name)} 
-  ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
+        <div class="profile-badges">
+          ${(() => {
 
+            let html = "";
 
-</div>
+            if (m.position) {
+              const arr = String(m.position)
+                .split(/[,/]/)
+                .map(v => v.trim())
+                .filter(Boolean);
 
-<div class="profile-badges">
-  ${(() => {
+              arr.forEach(v => {
+                html += `
+                  <span class="badge ${v.includes("총동문") ? 'badge-exec' : ''}">
+                    ${esc(v)}
+                  </span>
+                `;
+              });
+            }
 
-    let html = "";
+            if (m.group) {
+              html += `
+                <span class="badge badge-group">
+                  ${esc(m.group)}
+                </span>
+              `;
+            }
 
-    if (m.position) {
-      const arr = String(m.position)
-        .split(/[,/]/)
-        .map(v => v.trim())
-        .filter(Boolean);
+            return html;
 
-      arr.forEach(v => {
-        html += `
-          <span class="badge ${v.includes("총동문") ? 'badge-exec' : ''}">
-            ${esc(v)}
-          </span>
-        `;
-      });
-    }
-
-    if (m.group) {
-      html += `
-        <span class="badge badge-group">
-          ${esc(m.group)}
-        </span>
-      `;
-    }
-
-    return html;
-
-  })()}
-</div>
-
-
+          })()}
+        </div>
 
         <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone)].filter(Boolean).join(" / "))}</div>
 
         <div class="actions">
           <a class="a-btn primary" href="tel:${esc(m.phone)}">📞 통화</a>
           <a class="a-btn" href="sms:${esc(m.phone)}">💬 문자</a>
-        
         </div>
-      </div>`;
-    
-    row.addEventListener("click", () => openProfileAt(list, i));
+      </div>
+    `;
+
+    row.addEventListener("click", () => openProfileAt(groups[gisu], i));
     row.querySelector(".actions")?.addEventListener("click", (e) => e.stopPropagation());
- 
 
+    groupBox.appendChild(row);
+  });
 
- wrap.appendChild(row);
-  }
+  wrap.appendChild(groupBox);
+}
 }
 
 function renderAnnouncements() {
