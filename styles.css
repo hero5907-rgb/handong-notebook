@@ -2466,16 +2466,24 @@ button:active{
    🔥 회장 강조
    =============================== */
 
-/* 🔵 총동문 회장 (강하게) */
+/* 🟡 총동문 회장 (최상위) */
 .row.is-grand-president{
+  border:1.5px solid #e6b85c;
+
+  background:linear-gradient(
+    180deg,
+    #fff9e8 0%,
+    #fff3cc 100%
+  );
+
+  box-shadow:0 6px 14px rgba(230,184,92,.25);
+}
+
+/* 🔵 기수 회장 (강하게) */
+.row.is-class-president{
   border:1.5px solid #3b82f6;
   background:#f0f7ff;
   box-shadow:0 6px 14px rgba(59,130,246,.12);
-}
-
-/* 🔵 기수 회장 (약하게) */
-.row.is-class-president{
-  border:1px solid #93c5fd;
 }
 
 
