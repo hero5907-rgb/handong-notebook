@@ -2545,3 +2545,31 @@ button:active{
   flex-direction:column;
   justify-content:center;
 }
+
+/* ===============================
+   🔥 한동 홈 불규칙 타일 레이아웃
+   =============================== */
+#screenHome .grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  grid-auto-flow: row dense;
+  grid-auto-rows: 110px;
+}
+
+#screenHome .tile{
+  min-height: 0;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#screenHome .tile.big{
+  grid-row: span 2;
+}
+
+#screenHome .tile-image{
+  min-height: 0;
+}
+
