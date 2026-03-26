@@ -2442,9 +2442,9 @@ button:active{
 
   margin:6px 0 12px;
 
-  font-size:13px;
-  font-weight:700;
-  color:#64748b;
+  font-size:14px;        /* 🔥 살짝 키움 */
+  font-weight:800;       /* 🔥 조금 더 굵게 */
+  color:#0b4ea2;         /* 🔥 파란색 강조 */
 
   letter-spacing:0.3px;
 }
@@ -2453,8 +2453,8 @@ button:active{
 .gisu-title::after{
   content:"";
   flex:1;
-  height:1px;
-  background:#e5e7eb;
+  height:1.5px;          /* 🔥 살짝 두껍게 */
+  background:#c7d7f5;    /* 🔥 연한 파랑 */
 }
 
 /* 마지막 카드 여백 제거 */
