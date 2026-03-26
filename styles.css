@@ -2582,7 +2582,7 @@ button:active{
   display:grid;
   grid-template-columns: repeat(2, 1fr);
   gap:12px;
-  grid-auto-rows:110px;
+  grid-auto-rows:88px;
 }
 
 /* 세로 긴 타일 (회원명부) */
