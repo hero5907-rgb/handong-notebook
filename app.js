@@ -871,15 +871,17 @@ for (const gisu of sortedGisu) {
 
   groups[gisu].forEach((m, i) => {
 
-    let cls = "row";
+  const row = document.createElement("div");
 
-if (Number(m.sortOrder) === 10) {
-  cls += " is-grand-president";   // 총회장
-} else if (Number(m.sortOrder) === 100) {
-  cls += " is-class-president";   // 기수회장
-}
+  let cls = "row";
 
-row.className = cls;
+  if (Number(m.sortOrder) === 10) {
+    cls += " is-grand-president";   // 총회장
+  } else if (Number(m.sortOrder) === 100) {
+    cls += " is-class-president";   // 기수회장
+  }
+
+  row.className = cls;
 
     row.innerHTML = `
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
