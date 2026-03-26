@@ -856,7 +856,9 @@ list.forEach(m => {
 });
 
 // 🔵 그룹별 출력
-for (const gisu in groups) {
+const sortedGisu = Object.keys(groups).sort((a, b) => b - a);
+
+for (const gisu of sortedGisu) {
 
   const groupBox = document.createElement("div");
   groupBox.className = "gisu-group";

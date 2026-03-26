@@ -2422,18 +2422,18 @@ button:active{
    🔵 기수별 그룹 묶음
    =============================== */
 .gisu-group{
-  border:1px solid #e5eaf3;
+  border:1px solid #dbeafe;   /* 🔵 연한 블루 */
   border-radius:18px;
   padding:10px;
   margin-bottom:14px;
-  background:#fff;
+  background:#f8fbff;         /* 🔵 거의 안보이는 블루톤 */
   box-shadow:0 4px 10px rgba(12,20,38,.04);
 }
 
 .gisu-title{
   font-size:13px;
-  font-weight:800;
-  color:#64748b;
+  font-weight:800;      /* 🔥 더 진하게 */
+  color:#1e3a8a;        /* 🔵 진한 블루 */
   margin-bottom:8px;
   padding-left:4px;
 }
