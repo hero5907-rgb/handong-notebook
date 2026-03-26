@@ -193,11 +193,11 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
     <div class="grid">
       <button class="tile hero-tall" data-nav="members">
-        <div class="tile-title">회원명부</div>
-        <div class="tile-desc">검색 · 연락처 · 통화 · 문자</div>
+        <div class="tile-title">전체 및 기수별회원명부</div>
+        <div class="tile-desc">기수별검색 · 연락처 · 통화 ·</div>
       </button>
       <button class="tile" data-nav="announcements">
-        <div class="tile-title">공지사항</div>
+        <div class="tile-title">총동문회 공지사항</div>
         <div class="tile-desc">관리자 공지 확인</div>
       </button>
       <button class="tile" data-nav="purpose">
@@ -331,18 +331,24 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
   <button id="btnCalendarRefresh" class="btn-blue">↻ 새로고침</button>
 </div>
 
+<!-- 🔥 범례 추가 -->
+<div class="calendar-legend">
+  <span class="legend-all">● 전체</span>
+  <span class="legend-class">● 기수</span>
+</div>
 
-    <!-- 🔥 여기 추가 -->
-    <div id="calendarLoading" style="
-      text-align:center;
-      padding:40px 0;
-      color:#64748b;
-      font-size:15px;
-    ">
-      일정을 불러오는 중....
-    </div>
+<!-- 🔥 로딩 -->
+<div id="calendarLoading" style="
+  text-align:center;
+  padding:40px 0;
+  color:#64748b;
+  font-size:15px;
+">
+  일정을 불러오는 중....
+</div>
 
-    <div id="calendar"></div>
+<!-- 🔥 캘린더 -->
+<div id="calendar"></div>
   </div>
 </section>
 
