@@ -2459,3 +2459,62 @@ button:active{
 .row.is-class-president{
   border:1px solid #93c5fd;
 }
+
+
+
+
+/* ===============================
+   🔵 브랜드 카드 (슬로건 통합)
+   =============================== */
+
+.brand-hero{
+  margin-top:12px;
+  padding:18px 14px;
+
+  border-radius:22px;
+
+  background: linear-gradient(180deg,#0b4ea2 0%,#083a78 100%);
+
+  color:#fff;
+  text-align:center;
+
+  box-shadow:
+    0 12px 28px rgba(11,78,162,.35),
+    inset 0 1px 0 rgba(255,255,255,.25);
+}
+
+/* 슬로건 (위 큰 글씨) */
+.brand-hero-title{
+  font-weight:900;
+  font-size:clamp(16px,5vw,24px);
+  line-height:1.2;
+  letter-spacing:-0.3px;
+}
+
+/* 중간 구분선 */
+.brand-hero-divider{
+  width:60%;
+  height:1px;
+  margin:12px auto 10px;
+
+  background:rgba(255,255,255,.35);
+}
+
+/* 아래 영역 */
+.brand-hero-sub{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+/* 제00대 클럽명 */
+.brand-hero-main{
+  font-size:15px;
+  font-weight:900;
+}
+
+/* 지구명 */
+.brand-hero-desc{
+  font-size:13px;
+  color:rgba(255,255,255,.9);
+}
