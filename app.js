@@ -856,7 +856,17 @@ list.forEach(m => {
 });
 
 // 🔵 그룹별 출력
-const sortedGisu = Object.keys(groups).sort((a, b) => b - a);
+let sortedGisu;
+
+if (execMode) {
+  sortedGisu = Object.keys(groups).sort((a, b) => {
+    const aMin = Math.min(...groups[a].map(m => Number(m.sortOrder || 9999)));
+    const bMin = Math.min(...groups[b].map(m => Number(m.sortOrder || 9999)));
+    return aMin - bMin;
+  });
+} else {
+  sortedGisu = Object.keys(groups).sort((a, b) => b - a);
+}
 
 for (const gisu of sortedGisu) {
 
