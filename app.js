@@ -1606,8 +1606,7 @@ if (!classSlide.hidden) {
     document.body.style.overflow = "";
   }, 250);
 
-  // 🔒 뒤로가기 막기 (화면 이동 방지)
-  history.pushState({ app: true }, "", location.href);
+ 
 
   return;
 }
