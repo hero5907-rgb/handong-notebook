@@ -2431,11 +2431,40 @@ button:active{
 }
 
 .gisu-title{
-  font-size:13px;
-  font-weight:800;      /* 🔥 더 진하게 */
-  color:#1e3a8a;        /* 🔵 진한 블루 */
-  margin-bottom:8px;
-  padding-left:4px;
+  display:inline-block;
+  margin:6px auto 12px;
+  padding:6px 18px;
+
+  font-size:14px;
+  font-weight:900;
+  color:#0b4ea2;
+
+  border-radius:999px;
+  text-align:center;
+
+  /* 🔥 핵심: 캡슐 + 살짝 번짐 */
+  background:rgba(11,78,162,0.08);
+  border:1px solid rgba(11,78,162,0.15);
+
+  position:relative;
+}
+
+/* 🔥 붓 느낌 아주 약하게 */
+.gisu-title::before{
+  content:"";
+  position:absolute;
+  inset:-4px;
+
+  background:linear-gradient(
+    90deg,
+    rgba(11,78,162,0.12),
+    rgba(11,78,162,0.04)
+  );
+
+  border-radius:14px;
+  filter: blur(6px);
+
+  z-index:-1;
 }
 
 /* 그룹 안 마지막 카드 아래 간격 제거 */
@@ -2601,3 +2630,6 @@ button:active{
   flex-direction:column;
   justify-content:center;
 }
+
+
+
