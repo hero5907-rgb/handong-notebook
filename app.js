@@ -1115,7 +1115,7 @@ document.body.classList.add("logged-in");
 // 🔔 로그인 사용자 이름 상단 표시
 const nameBox = document.getElementById("loginUserName");
 if (nameBox && state.me?.name) {
-  nameBox.textContent = state.me.name;
+  nameBox.textContent = `${getMyGisuText()}${state.me.name}`;
   nameBox.hidden = false;
 }
 
