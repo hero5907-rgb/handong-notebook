@@ -2518,3 +2518,30 @@ button:active{
   font-size:13px;
   color:rgba(255,255,255,.9);
 }
+
+
+/* ===============================
+   🔥 불규칙 타일 레이아웃 (핵심)
+   =============================== */
+
+/* 🔥 불규칙 레이아웃 */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px;
+
+  /* 🔥 기준 높이 */
+  grid-auto-rows: 110px;
+}
+
+/* 긴 타일 */
+.tile.big{
+  grid-row: span 2;
+}
+
+/* 내부 정렬 안정화 */
+.tile{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
