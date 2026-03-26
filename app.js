@@ -1597,6 +1597,22 @@ history.pushState({ app: true }, "", location.href);
 
 window.addEventListener("popstate", () => {
 
+// 🔥 사이드바 열려있으면 먼저 닫기
+if (!classSlide.hidden) {
+  classSlide.classList.remove("show");
+
+  setTimeout(()=>{
+    classSlide.hidden = true;
+    document.body.style.overflow = "";
+  }, 250);
+
+  // 🔒 뒤로가기 막기 (화면 이동 방지)
+  history.pushState({ app: true }, "", location.href);
+
+  return;
+}
+
+
 
 // 🔔 공용 모달(일정 팝업) 열려 있으면 → 닫기
 if (document.getElementById("modal")?.hidden === false) {
