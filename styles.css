@@ -2854,16 +2854,16 @@ button:active{
 .sheet-card{
   position: fixed;
 
-  bottom: 12px;                 /* 🔥 바닥에서 띄움 */
-  left: 12px;                   
-  width: calc(100% - 24px);     
+  bottom: 0;        /* 🔥 바닥 딱 붙임 */
+  left: 0;
+  width: 100%;
 
-  height: 65vh;
+  height: 60vh;     /* 🔥 살짝 줄임 (더 자연스러움) */
 
   background: #fff;
-  border-radius: 22px;          /* 🔥 전체 둥글게 */
+  border-radius: 22px 22px 0 0;   /* 🔥 위만 둥글게 */
 
-  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  box-shadow: 0 -10px 30px rgba(0,0,0,.2);
 
   transform: translateY(100%);
   transition: transform .28s cubic-bezier(.22,.61,.36,1);
@@ -2875,4 +2875,3 @@ button:active{
 .event-sheet.show .sheet-card{
   transform: translateY(0);
 }
-
