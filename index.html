@@ -664,10 +664,10 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 <div id="eventSheet" class="event-sheet" hidden>
 
   <!-- 배경 -->
-  <div class="event-sheet-backdrop"></div>
+  <div class="sheet-backdrop" onclick="closeEventSheet()"></div>
 
   <!-- 실제 패널 -->
-  <div class="event-sheet-panel">
+  <div class="sheet-card">
 
     <!-- 상단 -->
     <div class="event-sheet-header">
@@ -682,12 +682,13 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
       <!-- 제목 -->
       <input id="evTitle" class="ev-input title" placeholder="제목" />
 
-      <!-- 날짜/시간 -->
+      <!-- 날짜 -->
       <div class="ev-row">
         <span>📅</span>
         <span id="evDateText"></span>
       </div>
 
+      <!-- 시간 -->
       <div class="ev-row">
         <span>⏰</span>
         <input id="evTime" type="time" />
@@ -714,7 +715,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
       </div>
 
-      <!-- 삭제 (수정일때만 표시 예정) -->
+      <!-- 삭제 -->
       <button id="btnEventDelete" class="btn-delete" hidden>
         🗑 일정 삭제
       </button>
@@ -722,8 +723,8 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
     </div>
 
   </div>
-</div>
 
+</div>
 
 <button id="btnScrollTop" class="scroll-top-btn" hidden>↑</button>
 
