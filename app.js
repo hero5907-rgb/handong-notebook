@@ -1533,6 +1533,11 @@ if (btnMembersRefresh) {
 
   // 로그인 버튼 / 엔터
   el("btnLogin")?.addEventListener("click", handleLogin);
+
+el("btnAddEvent")?.addEventListener("click", ()=>{
+  openEventSheet();
+});
+
   ["inputPhone", "inputCode"].forEach((id) => {
     el(id)?.addEventListener("keydown", (e) => {
       if (e.key === "Enter") handleLogin();
@@ -1596,6 +1601,17 @@ history.pushState({ app: true }, "", location.href);
 
 
 window.addEventListener("popstate", () => {
+
+
+
+// 🔥 일정 입력 시트 닫기
+if (!el("eventSheet")?.hidden) {
+  closeEventSheet();
+  return;
+}
+
+
+
 
 // 🔥 사이드바 열려있으면 먼저 닫기
 if (!classSlide.hidden) {
@@ -2255,7 +2271,45 @@ function closeAnnModal(){
   if (m) m.hidden = true;
 }
 
+// ===============================
+// 📅 일정 입력 시트 (열기/닫기)
+// ===============================
 
+function openEventSheet(data = {}) {
+
+  const sheet = el("eventSheet");
+  if (!sheet) return;
+
+// 값 채우기
+  el("evTitle").value = data.title || "";
+  el("evDateText").textContent = data.date || ""; // 🔥 이거 추가
+  el("evTime").value = data.time || "";
+  el("evPlace").value = data.place || "";
+  el("evDesc").value = data.desc || "";
+
+  // 표시
+  sheet.hidden = false;
+
+  requestAnimationFrame(()=>{
+    sheet.classList.add("show");
+  });
+
+  // 🔥 뒤로가기 대응 (핵심)
+  history.pushState({ modal: "eventSheet" }, "", location.href);
+}
+
+
+function closeEventSheet(){
+
+  const sheet = el("eventSheet");
+  if (!sheet) return;
+
+  sheet.classList.remove("show");
+
+  setTimeout(()=>{
+    sheet.hidden = true;
+  }, 250);
+}
 
 async function loadEvents(yyyymm){
   const now = new Date();
@@ -2495,56 +2549,92 @@ if (loading) loading.style.display = "none";
 }
 
 function openDayEvents(date){
+
   const list = allEvents.filter(e =>
     e.extendedProps?.date === date
   );
 
+  // ===============================
+  // ❌ 일정 없음
+  // ===============================
   if (!list.length){
-    openModal(`<h3>${date}</h3><p>일정이 없습니다.</p>`);
+
+    openModal(`
+      <h3>${date}</h3>
+      <p>일정이 없습니다.</p>
+
+      ${state.me?.isAdmin ? `
+        <button id="btnAddEvent" class="btn primary" style="margin-top:12px;">
+          + 일정 등록
+        </button>
+      ` : ""}
+    `);
+
+    if (state.me?.isAdmin){
+      setTimeout(()=>{
+        const btn = el("btnAddEvent");
+        if (btn){
+          btn.onclick = ()=>{
+            openEventSheet({ date });
+          };
+        }
+      },0);
+    }
+
     return;
   }
 
-openModal(`
-  <!-- 날짜 제목 : 가운데 정렬 -->
-  <div style="text-align:center;margin-bottom:12px;">
-    <h3 style="margin:0;">🗓️ ${date}</h3>
-  </div>
-
-  ${list.map(e=>`
-    <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee">
-
-      <!-- 일정 제목 : 가운데 -->
-      <div style="
-        text-align:center;
-        font-weight:600;
-        font-size:16px;
-      ">
-        ${e.title}
-      </div>
-
-      <!-- 시간 / 장소 : 가운데 -->
-      <div style="
-        text-align:center;
-        color:#64748b;
-        font-size:13px;
-        margin-top:4px;
-      ">
-        ${e.extendedProps?.startTime || ""} ${e.extendedProps?.place || ""}
-      </div>
-
-      <!-- 내용 : 왼쪽 정렬 (핵심 수정) -->
-      <div style="
-        margin-top:8px;
-        white-space:pre-wrap;
-        line-height:1.6;
-        text-align:left;
-      ">${String(e.extendedProps?.desc || "").trim()}</div>
-
+  // ===============================
+  // ✅ 일정 있음
+  // ===============================
+  openModal(`
+    <div style="text-align:center;margin-bottom:12px;">
+      <h3 style="margin:0;">🗓️ ${date}</h3>
     </div>
-  `).join("")}
-`);
+
+    ${list.map(e=>`
+      <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee;">
+        
+        <div style="font-weight:700;">
+          ${e.title || ""}
+        </div>
+
+        <div style="font-size:13px;color:#64748b;">
+          ${e.extendedProps?.startTime || ""}
+          ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
+        </div>
+
+        ${e.extendedProps?.desc ? `
+          <div style="margin-top:6px;white-space:pre-wrap;">
+            ${e.extendedProps.desc}
+          </div>
+        ` : ""}
+
+      </div>
+    `).join("")}
+
+    ${state.me?.isAdmin ? `
+      <button id="btnAddEvent" class="btn primary" style="margin-top:16px;">
+        + 일정 등록
+      </button>
+    ` : ""}
+  `);
+
+  if (state.me?.isAdmin){
+    setTimeout(()=>{
+      const btn = el("btnAddEvent");
+      if (btn){
+        btn.onclick = ()=>{
+          openEventSheet({ date });
+        };
+      }
+    },0);
+  }
 
 }
+
+
+
 
 
 function reloadMembers() {

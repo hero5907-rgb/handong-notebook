@@ -660,6 +660,71 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 
+<!-- 🔵 일정 입력 슬라이드 모달 -->
+<div id="eventSheet" class="event-sheet" hidden>
+
+  <!-- 배경 -->
+  <div class="event-sheet-backdrop"></div>
+
+  <!-- 실제 패널 -->
+  <div class="event-sheet-panel">
+
+    <!-- 상단 -->
+    <div class="event-sheet-header">
+      <button id="btnEventCancel" class="btn-cancel">취소</button>
+      <div class="title">일정</div>
+      <button id="btnEventSave" class="btn-save">저장</button>
+    </div>
+
+    <!-- 본문 -->
+    <div class="event-sheet-body">
+
+      <!-- 제목 -->
+      <input id="evTitle" class="ev-input title" placeholder="제목" />
+
+      <!-- 날짜/시간 -->
+      <div class="ev-row">
+        <span>📅</span>
+        <span id="evDateText"></span>
+      </div>
+
+      <div class="ev-row">
+        <span>⏰</span>
+        <input id="evTime" type="time" />
+      </div>
+
+      <!-- 장소 -->
+      <input id="evPlace" class="ev-input" placeholder="장소" />
+
+      <!-- 내용 -->
+      <textarea id="evDesc" class="ev-textarea" placeholder="내용"></textarea>
+
+      <!-- 옵션 -->
+      <div class="ev-options">
+
+        <label class="switch">
+          <input type="checkbox" id="evIsNotice">
+          <span>공지로 표시</span>
+        </label>
+
+        <label class="switch">
+          <input type="checkbox" id="evIsPopup">
+          <span>팝업으로 표시</span>
+        </label>
+
+      </div>
+
+      <!-- 삭제 (수정일때만 표시 예정) -->
+      <button id="btnEventDelete" class="btn-delete" hidden>
+        🗑 일정 삭제
+      </button>
+
+    </div>
+
+  </div>
+</div>
+
+
 <button id="btnScrollTop" class="scroll-top-btn" hidden>↑</button>
 
 </body>
