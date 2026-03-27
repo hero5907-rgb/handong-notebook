@@ -2683,9 +2683,7 @@ button:active{
   font-weight:800;
 }
 
-.event-sheet-header .title{
-  font-size:16px;
-}
+
 
 /* 버튼 */
 .btn-cancel{
@@ -2908,13 +2906,6 @@ button:active{
   justify-content: space-between;
 }
 
-.event-sheet-header .title{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-weight: 800;
-  font-size: 15px;
-}
 
 #btnEventCancel{
   color:#94a3b8;
@@ -2927,7 +2918,8 @@ button:active{
 
 
 .event-sheet-header .title{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
+  flex:1;
+  text-align:center;
+  font-weight:800;
+  font-size:15px;
 }
