@@ -1538,6 +1538,48 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
   openEventSheet();
 });
 
+
+el("btnEventSave")?.addEventListener("click", ()=>{
+
+  const title = el("evTitle").value.trim();
+  const time  = el("evTime").value;
+  const place = el("evPlace").value.trim();
+  const desc  = el("evDesc").value.trim();
+  const date  = el("evDateText").textContent;
+
+  const isNotice = el("evIsNotice").checked;
+  const isPopup  = el("evIsPopup").checked;
+
+  if (!title){
+    toast("제목 입력해라");
+    return;
+  }
+
+  const action = editingEventId ? "updateEvent" : "addEvent";
+
+  api(action, {
+    id: editingEventId,
+    date,
+    title,
+    time,
+    place,
+    desc,
+    isNotice,
+    isPopup
+  }, (res)=>{
+
+    if (res && res.ok){
+      toast(editingEventId ? "수정 완료" : "등록 완료");
+      closeEventSheet();
+      loadCalendar();
+    } else {
+      toast("실패");
+    }
+
+  });
+
+});
+
   ["inputPhone", "inputCode"].forEach((id) => {
     el(id)?.addEventListener("keydown", (e) => {
       if (e.key === "Enter") handleLogin();
@@ -2282,6 +2324,12 @@ function openEventSheet(data = {}) {
 
 // 값 채우기
   el("evTitle").value = data.title || "";
+editingEventId = data.id || null;   // 🔥 추가
+
+const btnDelete = el("btnEventDelete");
+if (btnDelete){
+  btnDelete.hidden = !editingEventId;
+}
   el("evDateText").textContent = data.date || ""; // 🔥 이거 추가
   el("evTime").value = data.time || "";
   el("evPlace").value = data.place || "";
@@ -2382,6 +2430,7 @@ function loadUpcomingEvents(){
 
 let calendar = null;
 let allEvents = [];
+let editingEventId = null;   // 🔥 추가
 let calendarCache = {};
 
 
