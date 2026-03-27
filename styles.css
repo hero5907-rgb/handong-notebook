@@ -2923,3 +2923,12 @@ button:active{
   font-weight:800;
   font-size:15px;
 }
+
+
+#btnEventCancel{
+  margin-right:auto;
+}
+
+#btnEventSave{
+  margin-left:auto;
+}
