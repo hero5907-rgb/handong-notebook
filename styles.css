@@ -2671,9 +2671,12 @@ button:active{
 
 /* 패널 */
 .event-sheet-panel{
-  position:relative;
-  width:100%;
-  max-height:88vh;
+  position: fixed;   /* 🔥 바닥 기준 */
+  bottom: 0;         /* 🔥 핵심 */
+  left: 0;
+
+  width: 100%;
+  max-height: 70vh;
 
   background:#fff;
   border-radius:22px 22px 0 0;
