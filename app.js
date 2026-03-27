@@ -1541,6 +1541,34 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 
 el("btnEventSave")?.addEventListener("click", ()=>{
 
+
+
+el("btnEventDelete")?.addEventListener("click", ()=>{
+
+  if (!editingEventId){
+    toast("삭제할 데이터 없음");
+    return;
+  }
+
+  if (!confirm("삭제할까요?")) return;
+
+  api("events", {
+    mode: "delete",
+    id: editingEventId
+  }, (res)=>{
+
+    if (res && res.ok){
+      toast("삭제 완료");
+      closeEventSheet();
+      loadCalendar();
+    } else {
+      toast("삭제 실패");
+    }
+
+  });
+
+});
+
   const title = el("evTitle").value.trim();
   const time  = el("evTime").value;
   const place = el("evPlace").value.trim();
@@ -1551,7 +1579,7 @@ el("btnEventSave")?.addEventListener("click", ()=>{
   const isPopup  = el("evIsPopup").checked;
 
   if (!title){
-    toast("제목 입력해라");
+    toast("제목 입력");
     return;
   }
 
