@@ -730,14 +730,16 @@ font-size: clamp(15px, 5vw, 24px);
   position: relative;
   background: #fff;
   width: min(92vw, 420px);
-  max-height: 80vh;
+
+  max-height: 75vh;
   overflow-y: auto;   /* 🔥 이걸로 교체 */
+
   border-radius: 18px;
   padding: 16px;
+
   box-shadow: 0 20px 40px rgba(0,0,0,.2);
-  margin: 0;
-  text-align: center;
-will-change: transform;   /* ⭐ 이거 추가 */
+
+  margin-bottom: 80px;
 
 }
 
