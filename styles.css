@@ -2675,7 +2675,7 @@ button:active{
 .event-sheet-header{
   display:flex;
   align-items:center;
-  justify-content:space-between;
+ 
 
   padding:14px 16px;
   border-bottom:1px solid #eef1f5;
@@ -2903,7 +2903,7 @@ button:active{
 
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  
 }
 
 
@@ -2931,4 +2931,36 @@ button:active{
 
 #btnEventSave{
   margin-left:auto;
+}
+
+
+/* 🔥 일정 헤더 최종 (이걸로 끝) */
+.event-sheet-header{
+  position: relative;
+  height: 52px;
+  padding: 0 14px;
+  border-bottom: 1px solid #eef1f5;
+  background: #fff;
+
+  display: flex;
+  align-items: center;
+  /* ❌ space-between 제거 */
+}
+
+#btnEventCancel{
+  color:#94a3b8;
+}
+
+#btnEventSave{
+  color:#0b4ea2;
+  font-weight:900;
+}
+
+/* 🔥 핵심 */
+.event-sheet-header .title{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight:800;
+  font-size:15px;
 }
