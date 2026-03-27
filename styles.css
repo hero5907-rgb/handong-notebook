@@ -2686,11 +2686,15 @@ button:active{
 }
 
 
-.event-sheet-header .title{
-  position:absolute;
-  left:50%;
-  transform:translateX(-50%);
-  pointer-events:none;
+.event-sheet-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:14px 16px;
+  border-bottom:1px solid #eef1f5;
+
+  font-weight:800;
 }
 
 
