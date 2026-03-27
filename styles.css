@@ -2991,3 +2991,26 @@ button:active{
 .event-sheet-header .btn-save{
   width:auto !important;     /* 🔥 이게 핵심 */
 }
+
+
+.event-sheet-header .btn-cancel{
+  position:absolute;
+  left:16px;
+}
+
+.event-sheet-header .btn-save{
+  position:absolute;
+  right:16px;
+}
+.event-sheet-header{
+  display:flex;
+  align-items:center;
+
+  position:relative;
+
+  padding:14px 16px;
+  border-bottom:1px solid #eef1f5;
+
+  font-weight:800;
+}
+
