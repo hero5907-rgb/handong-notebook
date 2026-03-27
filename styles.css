@@ -716,7 +716,7 @@ font-size: clamp(15px, 5vw, 24px);
   z-index: 9999;
 
   display: flex;
-  align-items: flex-end;   /* 🔥 핵심: 아래에서 올라오게 */
+  align-items: center;   
   justify-content: center;
 }
 
@@ -738,7 +738,7 @@ font-size: clamp(15px, 5vw, 24px);
   margin: 0;
   text-align: center;
 will-change: transform;   /* ⭐ 이거 추가 */
-margin-bottom: 20px;   /* 🔥 바닥에서 살짝 띄움 */
+
 }
 
 .modal-close{
