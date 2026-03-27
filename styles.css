@@ -2985,3 +2985,9 @@ button:active{
   font-weight:800;
   font-size:15px;
 }
+
+
+.event-sheet-header .btn-cancel,
+.event-sheet-header .btn-save{
+  width:auto !important;     /* 🔥 이게 핵심 */
+}
