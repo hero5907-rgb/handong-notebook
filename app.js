@@ -1539,10 +1539,49 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 });
 
 
+// ✅ 저장 버튼
 el("btnEventSave")?.addEventListener("click", ()=>{
 
+  const title = el("evTitle").value.trim();
+  const time  = el("evTime").value;
+  const place = el("evPlace").value.trim();
+  const desc  = el("evDesc").value.trim();
+  const date  = el("evDateText").textContent;
+
+  const isNotice = el("evIsNotice").checked;
+  const isPopup  = el("evIsPopup").checked;
+
+  if (!title){
+    toast("제목 입력");
+    return;
+  }
+
+  api("events", {
+    mode: editingEventId ? "update" : "add",
+    id: editingEventId,
+    date,
+    title,
+    time,
+    place,
+    desc,
+    isNotice,
+    isPopup
+  }, (res)=>{
+
+    if (res && res.ok){
+      toast(editingEventId ? "수정 완료" : "등록 완료");
+      closeEventSheet();
+      loadCalendar();
+    } else {
+      toast("실패");
+    }
+
+  });
+
+});
 
 
+// ✅ 삭제 버튼 (밖으로 빼라)
 el("btnEventDelete")?.addEventListener("click", ()=>{
 
   if (!editingEventId){
@@ -1563,45 +1602,6 @@ el("btnEventDelete")?.addEventListener("click", ()=>{
       loadCalendar();
     } else {
       toast("삭제 실패");
-    }
-
-  });
-
-});
-
-  const title = el("evTitle").value.trim();
-  const time  = el("evTime").value;
-  const place = el("evPlace").value.trim();
-  const desc  = el("evDesc").value.trim();
-  const date  = el("evDateText").textContent;
-
-  const isNotice = el("evIsNotice").checked;
-  const isPopup  = el("evIsPopup").checked;
-
-  if (!title){
-    toast("제목 입력");
-    return;
-  }
-
-  const action = editingEventId ? "updateEvent" : "addEvent";
-
-  api(action, {
-    id: editingEventId,
-    date,
-    title,
-    time,
-    place,
-    desc,
-    isNotice,
-    isPopup
-  }, (res)=>{
-
-    if (res && res.ok){
-      toast(editingEventId ? "수정 완료" : "등록 완료");
-      closeEventSheet();
-      loadCalendar();
-    } else {
-      toast("실패");
     }
 
   });
