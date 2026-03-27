@@ -2893,3 +2893,34 @@ button:active{
 .event-sheet.show .sheet-card{
   transform: translateY(0);
 }
+
+
+/* 🔥 일정 헤더 UI 최종 (맨 아래에만 추가) */
+.event-sheet-header{
+  position: relative;
+  height: 52px;
+  padding: 0 14px;
+  border-bottom: 1px solid #eef1f5;
+  background: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.event-sheet-header .title{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 800;
+  font-size: 15px;
+}
+
+#btnEventCancel{
+  color:#94a3b8;
+}
+
+#btnEventSave{
+  color:#0b4ea2;
+  font-weight:900;
+}
