@@ -2924,3 +2924,10 @@ button:active{
   color:#0b4ea2;
   font-weight:900;
 }
+
+
+.event-sheet-header .title{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
