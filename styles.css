@@ -2970,6 +2970,13 @@ button:active{
   font-weight:900;
 }
 
+
+.event-sheet-header .btn-cancel,
+.event-sheet-header .btn-save{
+  width:60px;
+  flex-shrink:0;
+}
+
 /* 🔥 핵심 */
 .event-sheet-header .title{
   position: absolute;
