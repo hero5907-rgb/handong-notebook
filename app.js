@@ -1564,16 +1564,16 @@ el("btnEventSave")?.addEventListener("click", ()=>{
     return;
   }
 
-  api("events", {
-    mode: editingEventId ? "update" : "add",
-    id: editingEventId,
-    date,
-    title,
-    time,
-    place,
-    desc,
-    isPopup,
-    gisu: state.me?.gisu || 0
+api("events", {
+  mode: editingEventId ? "update" : "add",
+  id: editingEventId,
+  date: date,
+  title: title,
+  startTime: time,   // 🔥 핵심
+  place: place,
+  desc: desc,
+  popup: isPopup,    // 🔥 핵심
+  gisu: state.me?.gisu || 0
   }, (res)=>{
 
     if (res && res.ok){
