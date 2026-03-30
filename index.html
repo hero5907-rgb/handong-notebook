@@ -682,6 +682,22 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
       <!-- 제목 -->
       <input id="evTitle" class="ev-input title" placeholder="제목" />
 
+<!-- 🔵 일정 범위 선택 (전체관리자만 보임) -->
+<div id="evScopeBox" class="ev-scope">
+
+  <label>
+    <input type="radio" name="evScope" value="all" checked>
+    전체 일정
+  </label>
+
+  <label>
+    <input type="radio" name="evScope" value="my">
+    내 기수 일정
+  </label>
+
+</div>
+
+
       <!-- 날짜 -->
       <div class="ev-row">
         <span>📅</span>

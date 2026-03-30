@@ -1561,6 +1561,28 @@ el("btnEventSave")?.addEventListener("click", ()=>{
 
     console.log("🔥 읽은값", {title, time, date});
 
+
+
+// 🔵 gisu 결정 (추가)
+let gisu = 0;
+
+if (state.me?.adminLevel === 1){
+  // 기수관리자 → 무조건 자기기수
+  gisu = state.me.gisu;
+
+} else {
+  // 전체관리자 → 선택값
+  const scope = document.querySelector('input[name="evScope"]:checked')?.value;
+
+  if (scope === "my"){
+    gisu = state.me.gisu;
+  } else {
+    gisu = 0;
+  }
+}
+
+
+
     if (!title){
       toast("제목 입력");
       return;
@@ -1574,7 +1596,7 @@ el("btnEventSave")?.addEventListener("click", ()=>{
       endTime: "",
       place: place,
       desc: desc,
-      gisu: state.me?.gisu || 0
+      gisu: gisu
     }, (res)=>{
 
       console.log("🔥 응답", res);
@@ -2382,6 +2404,20 @@ if (btnDelete){
   el("evTime").value = data.time || "";
   el("evPlace").value = data.place || "";
   el("evDesc").value = data.desc || "";
+
+
+
+// 🔵 권한별 UI 처리
+const box = el("evScopeBox");
+if (box){
+  if (state.me?.adminLevel === 1){
+    box.style.display = "none";
+  } else {
+    box.style.display = "flex";
+  }
+}
+
+
 
   // 표시
   sheet.hidden = false;
