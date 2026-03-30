@@ -2977,6 +2977,11 @@ button:active{
   transform: translateX(-50%);
   font-weight:800;
   font-size:15px;
+  width:100%;            /* 🔥 이거 추가 */
+  text-align:center;     /* 🔥 이거 추가 */
+  pointer-events:none;   /* 🔥 클릭 방해 방지 */
+
+
 }
 
 
