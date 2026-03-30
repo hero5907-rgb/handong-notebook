@@ -1546,20 +1546,16 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 
 
 // ✅ 저장 버튼
+// ✅ 저장 버튼
 el("btnEventSave")?.addEventListener("click", ()=>{
 
-
-el("btnEventCancel")?.addEventListener("click", ()=>{
-  closeEventSheet();
-});
-
+  console.log("🔥 저장 클릭됨");
 
   const title = el("evTitle").value.trim();
   const time  = el("evTime").value;
   const place = el("evPlace").value.trim();
   const desc  = el("evDesc").value.trim();
   const date  = el("evDateText").textContent;
-
 
   const isPopup  = el("evIsPopup").checked;
 
@@ -1576,10 +1572,8 @@ el("btnEventCancel")?.addEventListener("click", ()=>{
     time,
     place,
     desc,
-    isNotice,
     isPopup,
-    gisu: state.me?.gisu || 0   // 🔥 추가
-
+    gisu: state.me?.gisu || 0
   }, (res)=>{
 
     if (res && res.ok){
@@ -1592,6 +1586,12 @@ el("btnEventCancel")?.addEventListener("click", ()=>{
 
   });
 
+});
+
+// ✅ 취소 버튼 (따로!)
+el("btnEventCancel")?.addEventListener("click", ()=>{
+  console.log("🔥 취소 클릭됨");
+  closeEventSheet();
 });
 
 
