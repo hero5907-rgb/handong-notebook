@@ -1564,17 +1564,18 @@ el("btnEventSave")?.addEventListener("click", ()=>{
     return;
   }
 
-api("events", {
-  mode: editingEventId ? "update" : "add",
-  id: editingEventId,
-  date: date,
-  title: title,
-  startTime: time,   // 🔥 핵심
-  place: place,
-  desc: desc,
-  popup: isPopup,    // 🔥 핵심
-  gisu: state.me?.gisu || 0
+  // 🔥 여기부터 변경
+  api("adminAddEvent", {
+    date: date,
+    title: title,
+    startTime: time,
+    endTime: "",                 // 🔥 추가
+    place: place,
+    desc: desc,
+    gisu: state.me?.gisu || 0
   }, (res)=>{
+
+    console.log("🔥 응답", res);   // 🔥 한줄 추가 (확인용)
 
     if (res && res.ok){
       toast(editingEventId ? "수정 완료" : "등록 완료");
