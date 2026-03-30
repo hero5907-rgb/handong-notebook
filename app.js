@@ -1551,45 +1551,41 @@ el("btnEventSave")?.addEventListener("click", ()=>{
 
   console.log("🔥 저장 클릭됨");
 
-  setTimeout(()=>{
+  const title = el("evTitle").value.trim();
+  const time  = el("evTime").value;
+  const place = el("evPlace").value.trim();
+  const desc  = el("evDesc").value.trim();
+  const date  = el("evDateText").textContent;
 
-    const title = el("evTitle").value.trim();
-    const time  = el("evTime").value;
-    const place = el("evPlace").value.trim();
-    const desc  = el("evDesc").value.trim();
-    const date  = el("evDateText").textContent;
+  const isPopup  = el("evIsPopup").checked;
 
-    console.log("🔥 읽은값", {title, time, date}); // 🔥 확인용
+  if (!title){
+    toast("제목 입력");
+    return;
+  }
 
-    if (!title){
-      toast("제목 입력");
-      return;
-    }
+ api("adminAddEvent", {
+  ...getAuthSafe(),   // 🔥 인증 추가
+  date: date,
+  title: title,
+  startTime: time,
+  endTime: "",
+  place: place,
+  desc: desc,
+  gisu: state.me?.gisu || 0
+}, (res)=>{
 
-    api("adminAddEvent", {
-      ...getAuthSafe(),   // 🔥 이거 추가
-      date: date,
-      title: title,
-      startTime: time,
-      endTime: "",
-      place: place,
-      desc: desc,
-      gisu: state.me?.gisu || 0
-    }, (res)=>{
+  console.log("🔥 응답", res);
 
-      console.log("🔥 응답", res);
+  if (res && res.ok){
+    toast("등록 완료");
+    closeEventSheet();
+    loadCalendar();
+  } else {
+    toast("실패");
+  }
 
-      if (res && res.ok){
-        toast("등록 완료");
-        closeEventSheet();
-        loadCalendar();
-      } else {
-        toast("실패");
-      }
-
-    });
-
-  }, 100);
+});
 
 });
 
