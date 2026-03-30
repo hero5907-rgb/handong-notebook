@@ -2972,17 +2972,21 @@ button:active{
 
 /* 🔥 핵심 */
 .event-sheet-header .title{
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  position: static;        /* 🔥 이거 핵심 */
+  flex:1;                  /* 🔥 양쪽 밀기 */
+  text-align:center;
   font-weight:800;
   font-size:15px;
-  width:100%;            /* 🔥 이거 추가 */
-  text-align:center;     /* 🔥 이거 추가 */
-  pointer-events:none;   /* 🔥 클릭 방해 방지 */
-
-
 }
+
+#btnEventCancel{
+  margin-right:auto;
+}
+
+#btnEventSave{
+  margin-left:auto;
+}
+
 
 
 
