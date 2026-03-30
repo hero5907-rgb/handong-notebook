@@ -1548,13 +1548,19 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 // ✅ 저장 버튼
 el("btnEventSave")?.addEventListener("click", ()=>{
 
+
+el("btnEventCancel")?.addEventListener("click", ()=>{
+  closeEventSheet();
+});
+
+
   const title = el("evTitle").value.trim();
   const time  = el("evTime").value;
   const place = el("evPlace").value.trim();
   const desc  = el("evDesc").value.trim();
   const date  = el("evDateText").textContent;
 
-  const isNotice = el("evIsNotice").checked;
+
   const isPopup  = el("evIsPopup").checked;
 
   if (!title){
