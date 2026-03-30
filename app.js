@@ -1183,7 +1183,13 @@ showScreen("home");
 __popupPromise.then(res=>{
   if (!res || res.ok !== true) return;
 
-  const list = res.events || [];
+  const myGisu = Number(state.me?.gisu || 0);
+
+const list = (res.events || []).filter(e => {
+  const g = Number(e.gisu || 0);
+  return g === 0 || g === myGisu;   // 🔥 동일 로직
+});
+
   if (!list.length) return;
 
 
@@ -1565,7 +1571,9 @@ el("btnEventSave")?.addEventListener("click", ()=>{
     place,
     desc,
     isNotice,
-    isPopup
+    isPopup,
+    gisu: state.me?.gisu || 0   // 🔥 추가
+
   }, (res)=>{
 
     if (res && res.ok){
@@ -2499,7 +2507,15 @@ if (!need.length) {
     api("events", { yyyymm: k }, resolve);
   }).then(res => {
 
-    const list = (res?.events || []).map(e => ({
+    const myGisu = Number(state.me?.gisu || 0);
+
+const list = (res?.events || [])
+  .filter(e => {
+    const g = Number(e.gisu || 0);
+    return g === 0 || g === myGisu;   // 🔥 핵심
+  })
+  .map(e => ({
+
       id: e.id,
       title: e.title,
       start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
