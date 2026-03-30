@@ -2571,7 +2571,7 @@ const list = (res?.events || [])
 
       id: e.id,
       title: e.title,
-      start: e.startTime ? `${e.date}T${e.startTime}` : `${e.date}T00:00`,
+      start: e.date,
       end: e.endTime ? `${e.date}T${e.endTime}` : null,
       extendedProps: {
   date: e.date,
