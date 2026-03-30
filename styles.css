@@ -1968,7 +1968,7 @@ html, body {
 
   opacity: 0;
   transition: all .25s cubic-bezier(.4,0,.2,1);
-  z-index: 9999;
+  z-index: 30000 !important;
 }
 
 #toast:not([hidden]){
@@ -2970,13 +2970,6 @@ button:active{
   font-weight:900;
 }
 
-
-.event-sheet-header .btn-cancel,
-.event-sheet-header .btn-save{
-  width:60px;
-  flex-shrink:0;
-}
-
 /* 🔥 핵심 */
 .event-sheet-header .title{
   position: absolute;
@@ -2987,30 +2980,23 @@ button:active{
 }
 
 
-.event-sheet-header .btn-cancel,
-.event-sheet-header .btn-save{
-  width:auto !important;     /* 🔥 이게 핵심 */
+
+/* 🔥 제목 입력칸 강조 (맨 아래에 추가) */
+.ev-input.title{
+  border: 2px solid #ff4d4f !important;
+  background: #fff8f8 !important;
+  border-radius: 12px;
+  padding: 10px 12px;
 }
 
-
-.event-sheet-header .btn-cancel{
-  position:absolute;
-  left:16px;
-}
-
-.event-sheet-header .btn-save{
-  position:absolute;
-  right:16px;
-}
-.event-sheet-header{
-  display:flex;
-  align-items:center;
-
-  position:relative;
-
-  padding:14px 16px;
-  border-bottom:1px solid #eef1f5;
-
+/* placeholder 강조 */
+.ev-input.title::placeholder{
+  color:#ff4d4f;
   font-weight:800;
 }
 
+/* 포커스 강조 */
+.ev-input.title:focus{
+  border-color:#ff0000 !important;
+  box-shadow:0 0 0 3px rgba(255,0,0,.15);
+}
