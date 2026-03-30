@@ -1567,6 +1567,7 @@ el("btnEventSave")?.addEventListener("click", ()=>{
     }
 
     api("adminAddEvent", {
+      ...getAuthSafe(),   // 🔥 이거 추가
       date: date,
       title: title,
       startTime: time,
