@@ -2638,6 +2638,8 @@ if (calendar) {
     initialView: "dayGridMonth",
     height: "auto",
 
+  eventDisplay: 'list-item',   // 🔥 이거 추가
+
     headerToolbar: {
       left: "prev,next",
       center: "title",
