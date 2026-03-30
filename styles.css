@@ -3019,3 +3019,11 @@ button:active{
   background:#fff;
   box-shadow:0 0 0 3px rgba(255,77,79,.15);
 }
+
+
+/* 🔥 좌우 버튼 균형 맞추기 (핵심) */
+#btnEventCancel,
+#btnEventSave{
+  min-width: 70px;     /* 👉 동일하게 맞춤 */
+  text-align: center;
+}
