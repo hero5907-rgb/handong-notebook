@@ -1558,7 +1558,7 @@ el("btnEventSave")?.addEventListener("click", ()=>{
     const place = el("evPlace").value.trim();
     const desc  = el("evDesc").value.trim();
     const date  = el("evDateText").textContent;
-
+    const popup = el("evIsPopup")?.checked === true;
     console.log("🔥 읽은값", {title, time, date});
 
 
@@ -1596,7 +1596,10 @@ if (state.me?.adminLevel === 1){
       endTime: "",
       place: place,
       desc: desc,
-      gisu: gisu
+      gisu: gisu,
+      popup: popup
+
+
     }, (res)=>{
 
       console.log("🔥 응답", res);
