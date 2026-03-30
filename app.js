@@ -1551,13 +1551,15 @@ el("btnEventSave")?.addEventListener("click", ()=>{
 
   console.log("🔥 저장 클릭됨");
 
-  setTimeout(()=>{   // 🔥 이거 추가
+  setTimeout(()=>{
 
     const title = el("evTitle").value.trim();
     const time  = el("evTime").value;
     const place = el("evPlace").value.trim();
     const desc  = el("evDesc").value.trim();
     const date  = el("evDateText").textContent;
+
+    console.log("🔥 읽은값", {title, time, date}); // 🔥 확인용
 
     if (!title){
       toast("제목 입력");
@@ -1577,7 +1579,7 @@ el("btnEventSave")?.addEventListener("click", ()=>{
       console.log("🔥 응답", res);
 
       if (res && res.ok){
-        toast(editingEventId ? "수정 완료" : "등록 완료");
+        toast("등록 완료");
         closeEventSheet();
         loadCalendar();
       } else {
@@ -1586,7 +1588,7 @@ el("btnEventSave")?.addEventListener("click", ()=>{
 
     });
 
-  }, 100);  // 🔥 이 줄이 핵심
+  }, 100);
 
 });
 
