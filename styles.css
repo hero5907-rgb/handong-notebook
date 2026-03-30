@@ -2958,7 +2958,7 @@ button:active{
 
   display: flex;
   align-items: center;
-  /* ❌ space-between 제거 */
+  justify-content: space-between;  /* 🔥 이거 다시 살려 */
 }
 
 #btnEventCancel{
