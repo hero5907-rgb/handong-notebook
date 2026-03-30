@@ -1588,18 +1588,19 @@ if (state.me?.adminLevel === 1){
       return;
     }
 
-    api("events", {
-  ...getAuthSafe(),   // 🔥 인증 유지 (절대 지우지마)
-  mode: editingEventId ? "update" : "add",
-  id: editingEventId,
-      date: date,
-      title: title,
-      startTime: time,
-      endTime: "",
-      place: place,
-      desc: desc,
-      gisu: gisu,
-      popup: popup
+    api(
+  editingEventId ? "adminUpdateEvent" : "adminAddEvent",
+  {
+    ...getAuthSafe(),
+    id: editingEventId,
+    date: date,
+    title: title,
+    startTime: time,
+    endTime: "",
+    place: place,
+    desc: desc,
+    gisu: gisu,
+    popup: popup
 
 
     }, (res)=>{
@@ -1636,10 +1637,9 @@ el("btnEventDelete")?.addEventListener("click", ()=>{
 
   if (!confirm("삭제할까요?")) return;
 
-  api("events", {
-    mode: "delete",
-    id: editingEventId
-  }, (res)=>{
+  api("adminDeleteEvent", {
+  id: editingEventId
+}, (res)=>{
 
     if (res && res.ok){
       toast("삭제 완료");
