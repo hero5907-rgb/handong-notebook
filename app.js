@@ -1676,7 +1676,9 @@ history.pushState({ app: true }, "", location.href);
 
 
 
-})(); // 🔚 init 끝 (단 1번)
+} // 🔥 init 끝
+
+document.addEventListener("DOMContentLoaded", init);
 
 
 
@@ -3474,8 +3476,5 @@ window.addEventListener("DOMContentLoaded", () => {
 
 img.addEventListener("dblclick", reset);
 
-} // 🔥 init 끝
-
-// 🔥 실행 연결
-document.addEventListener("DOMContentLoaded", init);
+})();   // 🔥 이건 그대로 (이 함수 끝)
 
