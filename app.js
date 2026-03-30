@@ -2737,25 +2737,36 @@ function openDayEvents(date){
     </div>
 
     ${list.map(e=>`
-      <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee;">
-        
-        <div style="font-weight:700;">
-          ${e.title || ""}
-        </div>
-
-        <div style="font-size:13px;color:#64748b;">
-          ${e.extendedProps?.startTime || ""}
-          ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
-        </div>
-
-        ${e.extendedProps?.desc ? `
-          <div style="margin-top:6px;white-space:pre-wrap;">
-            ${e.extendedProps.desc}
-          </div>
-        ` : ""}
-
+  <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee;">
+    
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      
+      <div style="font-weight:700;">
+        ${e.title || ""}
       </div>
-    `).join("")}
+
+      ${state.me?.isAdmin ? `
+        <div style="display:flex;gap:6px;">
+          <button class="btn small" onclick="editEvent('${e.id}')">수정</button>
+          <button class="btn small" onclick="deleteEvent('${e.id}')">삭제</button>
+        </div>
+      ` : ""}
+
+    </div>
+
+    <div style="font-size:13px;color:#64748b;">
+      ${e.extendedProps?.startTime || ""}
+      ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
+    </div>
+
+    ${e.extendedProps?.desc ? `
+      <div style="margin-top:6px;white-space:pre-wrap;">
+        ${e.extendedProps.desc}
+      </div>
+    ` : ""}
+
+  </div>
+`).join("")}
 
     ${state.me?.isAdmin ? `
       <button id="btnAddEvent" class="btn primary" style="margin-top:16px;">
@@ -3520,4 +3531,39 @@ window.addEventListener("DOMContentLoaded", () => {
 img.addEventListener("dblclick", reset);
 
 })();   // 🔥 이건 그대로 (이 함수 끝)
+
+
+function editEvent(id){
+
+  const e = allEvents.find(v => v.id == id);
+  if (!e) return;
+
+  openEventSheet({
+    id: e.id,
+    title: e.title,
+    date: e.extendedProps.date,
+    time: e.extendedProps.startTime,
+    place: e.extendedProps.place,
+    desc: e.extendedProps.desc
+  });
+}
+
+function deleteEvent(id){
+
+  if (!confirm("삭제할까요?")) return;
+
+  api("events", {
+    mode: "delete",
+    id: id
+  }, (res)=>{
+
+    if (res && res.ok){
+      toast("삭제 완료");
+      loadCalendar();   // 🔥 다시불러오기
+    } else {
+      toast("삭제 실패");
+    }
+
+  });
+}
 
