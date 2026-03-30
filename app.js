@@ -1382,7 +1382,7 @@ function bindSearch() {
 
 // ⬇️⬇️⬇️ 여기부터 붙여넣기 ⬇️⬇️⬇️
 
-(function init() {
+function init() {
 
 
 setAdminButton(false);
@@ -3472,7 +3472,10 @@ window.addEventListener("DOMContentLoaded", () => {
   img.addEventListener("pointerup", end);
   img.addEventListener("pointercancel", end);
 
-  img.addEventListener("dblclick", reset);
+img.addEventListener("dblclick", reset);
 
-})();
+} // 🔥 init 끝
+
+// 🔥 실행 연결
+document.addEventListener("DOMContentLoaded", init);
 
