@@ -1588,8 +1588,10 @@ if (state.me?.adminLevel === 1){
       return;
     }
 
-    api("adminAddEvent", {
-      ...getAuthSafe(),   // 🔥 인증
+    api("events", {
+  ...getAuthSafe(),   // 🔥 인증 유지 (절대 지우지마)
+  mode: editingEventId ? "update" : "add",
+  id: editingEventId,
       date: date,
       title: title,
       startTime: time,
@@ -2407,7 +2409,7 @@ if (btnDelete){
   el("evTime").value = data.time || "";
   el("evPlace").value = data.place || "";
   el("evDesc").value = data.desc || "";
-
+  el("evIsPopup").checked = data.popup === true;   // ⭐ 이 줄 추가
 
 
 // 🔵 권한별 UI 처리
@@ -2576,7 +2578,11 @@ const list = (res?.events || [])
   startTime: e.startTime,
   place: e.place,
   desc: e.desc,
-  gisu: Number(e.gisu || 0)   // ⭐ 이 줄 추가
+  gisu: Number(e.gisu || 0),
+   popup: e.popup 
+
+
+
 }
     }));
 
@@ -3544,7 +3550,9 @@ function editEvent(id){
     date: e.extendedProps.date,
     time: e.extendedProps.startTime,
     place: e.extendedProps.place,
-    desc: e.extendedProps.desc
+    desc: e.extendedProps.desc,
+    popup: e.extendedProps.popup   // ⭐ 추가
+
   });
 }
 
