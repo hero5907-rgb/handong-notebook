@@ -3052,7 +3052,7 @@ button:active{
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 99999;
+  z-index: 20000;
   backdrop-filter: blur(2px);
 }
 
