@@ -2829,7 +2829,7 @@ currentEventDate = date;   // 🔥 추가
       <h3>${date}</h3>
       <p>일정이 없습니다.</p>
 
-      ${state.me?.isAdmin ? `
+      ${(state.me?.isAdmin === true && (state.me.adminLevel === 0 || state.me.adminLevel === 1)) ? `
         <button id="btnAddEvent" class="btn primary" style="margin-top:12px;">
           + 일정 등록
         </button>
@@ -2874,7 +2874,7 @@ currentEventDate = date;   // 🔥 추가
   ${e.title || ""}
 </div>
 
-      ${state.me?.isAdmin ? `
+      ${(state.me?.isAdmin === true && (state.me.adminLevel === 0 || state.me.adminLevel === 1)) ? `
         <div style="display:flex;gap:6px;">
           <button class="btn small" onclick="editEvent('${e.id}')">수정</button>
           <button class="btn small btn-danger" onclick="deleteEvent('${e.id}')">삭제</button>
@@ -2919,7 +2919,7 @@ if (match){
   </div>
 `).join("")}
 
-    ${state.me?.isAdmin ? `
+    ${(state.me?.isAdmin === true && (state.me.adminLevel === 0 || state.me.adminLevel === 1)) ? `
       <button id="btnAddEvent" class="btn primary" style="margin-top:16px;">
         + 일정 등록
       </button>
