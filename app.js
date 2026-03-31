@@ -1229,7 +1229,6 @@ ${list.map(e => {
     : '<span style="color:#111;">●</span>';
 
 const raw = String(e.startTime || "");
-
 const match = raw.match(/^(\d{2}):(\d{2})$/);
 
 let timeText = "";
@@ -2800,8 +2799,6 @@ ${(()=>{
   const d = (e.extendedProps?.date || e.start || "").slice(0,10);
 
 const raw = String(e.extendedProps?.startTime || "");
-
-// 🔥 HH:mm 형식만 인정
 const match = raw.match(/^(\d{2}):(\d{2})$/);
 
 let timeText = "";
