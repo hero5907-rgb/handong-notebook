@@ -1220,21 +1220,38 @@ list.sort((a, b) => {
       </div>
     </div>
 
-    ${list.map(e => `
+${list.map(e => {
+
+  const isAll = Number(e.gisu || 0) === 0;
+
+  const dot = isAll
+    ? '<span style="color:#e53935;">●</span>'
+    : '<span style="color:#111;">●</span>';
+
+  const t = (e.startTime || "").slice(0,5);
+
+  const timeText = t
+    ? (parseInt(t.split(":")[0]) >= 12
+        ? "오후 " + (parseInt(t.split(":")[0]) - 12 || 12) + ":" + t.split(":")[1]
+        : "오전 " + t)
+    : "";
+
+  return `
   <div style="margin-bottom:20px;">
     <div style="text-align:center;font-size:14px;color:#64748b;">
-      ${e.date || ""}
+      ${e.date || ""} ${timeText}
     </div>
 
     <div style="
-  text-align:center;
-  font-size:16px;
-  font-weight:600;
-  margin-top:4px;
-">
-  ${e.title || ""}
-  ${e.place ? ` / ${e.place}` : ""}
-</div>
+      text-align:center;
+      font-size:16px;
+      font-weight:600;
+      margin-top:4px;
+    ">
+      ${dot} ${e.title || ""}
+      ${e.place ? ` / ${e.place}` : ""}
+    </div>
+
     <div style="
       margin-top:10px;
       white-space:pre-wrap;
@@ -1242,7 +1259,8 @@ list.sort((a, b) => {
       text-align:left;
     ">${String(e.desc || "").trim()}</div>
   </div>
-`).join("")}
+`;
+}).join("")}
   `);
 
   const rows = list.map(e => e.row);
@@ -1607,21 +1625,11 @@ if (state.me?.adminLevel === 1){
 
       console.log("🔥 응답", res);
 
-if (res && res.ok){
-  toast("등록 완료");
-
-   calendarCache = {};   // 🔥 이것도 추가
-
-  closeEventSheet();
-
-loadCalendar();
-
-setTimeout(()=>{
-  if (currentEventDate){
-    openDayEvents(currentEventDate);
-  }
-}, 300);
-} else {
+      if (res && res.ok){
+        toast("등록 완료");
+        closeEventSheet();
+        loadCalendar();
+      } else {
         toast("실패");
       }
 
@@ -1652,14 +1660,9 @@ el("btnEventDelete")?.addEventListener("click", ()=>{
 }, (res)=>{
 
     if (res && res.ok){
-toast("삭제 완료");
-closeEventSheet();
-
-if (currentEventDate){
-  openDayEvents(currentEventDate);
-}
-
-loadCalendar();
+      toast("삭제 완료");
+      closeEventSheet();
+      loadCalendar();
     } else {
       toast("삭제 실패");
     }
@@ -2536,7 +2539,7 @@ let calendar = null;
 let allEvents = [];
 let editingEventId = null;   // 🔥 추가
 let calendarCache = {};
-let currentEventDate = null;   // 🔥 추가
+
 
 function loadCalendar(yyyymm){
 
@@ -2611,13 +2614,6 @@ const list = (res?.events || [])
   ).then(() => {
     allEvents = keys.flatMap(k => calendarCache[k]);
     initCalendar(allEvents);
-
-  // 👇👇👇 여기 한줄 추가 (이 위치 정확)
-  if (currentEventDate){
-    openDayEvents(currentEventDate);
-  }
-
-
     __calendarReloading = false;   // ← 추가
   }).catch(e=>{
     console.error(e);
@@ -2724,11 +2720,9 @@ if (loading) loading.style.display = "none";
 
 function openDayEvents(date){
 
-  currentEventDate = date;   // 🔥 추가
-
-const list = allEvents.filter(e =>
-  (e.extendedProps?.date || e.start?.slice(0,10)) === date
-);
+  const list = allEvents.filter(e =>
+    e.extendedProps?.date === date
+  );
 
   // ===============================
   // ❌ 일정 없음
@@ -2793,10 +2787,24 @@ const list = allEvents.filter(e =>
 
     </div>
 
+${(()=>{
+  const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+
+  const t = (e.extendedProps?.startTime || "").slice(0,5);
+
+  const timeText = t
+    ? (parseInt(t.split(":")[0]) >= 12
+        ? "오후 " + (parseInt(t.split(":")[0]) - 12 || 12) + ":" + t.split(":")[1]
+        : "오전 " + t)
+    : "";
+
+  return `
     <div style="font-size:13px;color:#64748b;">
-      ${e.extendedProps?.startTime || ""}
+      ${d} ${timeText}
       ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
     </div>
+  `;
+})()}
 
     ${e.extendedProps?.desc ? `
       <div style="margin-top:6px;white-space:pre-wrap;">
@@ -3593,25 +3601,14 @@ function deleteEvent(id){
 
   if (!confirm("삭제할까요?")) return;
 
-  api("adminDeleteEvent", {
-    ...getAuthSafe(),
-    id: id
-  }, (res)=>{
+api("adminDeleteEvent", {
+  ...getAuthSafe(),
+  id: id
+}, (res)=>{
 
     if (res && res.ok){
       toast("삭제 완료");
-
-	calendarCache = {};   // 🔥 이거 추가 (핵심)
-
-
-loadCalendar();
-
-setTimeout(()=>{
-  if (currentEventDate){
-    openDayEvents(currentEventDate);
-  }
-}, 300);
-
+      loadCalendar();   // 🔥 다시불러오기
     } else {
       toast("삭제 실패");
     }
