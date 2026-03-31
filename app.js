@@ -1671,9 +1671,14 @@ if (state.me?.adminLevel === 1){
       console.log("🔥 응답", res);
 
       if (res && res.ok){
-        toast("등록 완료");
-        closeEventSheet();
-        loadCalendar();
+toast("등록 완료");
+closeEventSheet();
+
+// 🔥 추가 (캐시 초기화)
+calendarCache = {};
+allEvents = [];
+
+loadCalendar();
       } else {
         toast("실패");
       }
@@ -1705,9 +1710,14 @@ el("btnEventDelete")?.addEventListener("click", ()=>{
 }, (res)=>{
 
     if (res && res.ok){
-      toast("삭제 완료");
-      closeEventSheet();
-      loadCalendar();
+toast("삭제 완료");
+closeEventSheet();
+
+// 🔥 추가 (캐시 초기화)
+calendarCache = {};
+allEvents = [];
+
+loadCalendar();
     } else {
       toast("삭제 실패");
     }
@@ -3661,8 +3671,13 @@ api("adminDeleteEvent", {
 }, (res)=>{
 
     if (res && res.ok){
-      toast("삭제 완료");
-      loadCalendar();   // 🔥 다시불러오기
+toast("삭제 완료");
+
+// 🔥 추가 (캐시 초기화)
+calendarCache = {};
+allEvents = [];
+
+loadCalendar();
     } else {
       toast("삭제 실패");
     }
