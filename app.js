@@ -446,7 +446,16 @@ function toast(msg, opts = {}) {
 }
 
 
+// 🔥 여기부터 추가
+function showLoading(){
+  const el = document.getElementById("loading");
+  if(el) el.style.display = "flex";
+}
 
+function hideLoading(){
+  const el = document.getElementById("loading");
+  if(el) el.style.display = "none";
+}
 
 
 function showScreen(name) {
@@ -2604,6 +2613,10 @@ let currentEventDate = null;   // 🔥 추가
 
 function loadCalendar(yyyymm){
 
+
+showLoading();   // 🔥 여기 (첫 줄)
+
+
   if (__calendarReloading) return;
   __calendarReloading = true;
 
@@ -2681,10 +2694,16 @@ const list = (res?.events || [])
   if (currentEventDate) {
     openDayEvents(currentEventDate);
   }
+
+ hideLoading();   // 🔥 여기
+
 }).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
     __calendarReloading = false;   // ← 추가
+
+  hideLoading();   // 🔥 여기
+
   });
 }
 

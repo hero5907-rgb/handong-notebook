@@ -3042,3 +3042,57 @@ button:active{
 .btn-danger:active{
   opacity:.7;
 }
+
+
+/* 🔥 로딩 오버레이 */
+#loading{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  backdrop-filter: blur(2px);
+}
+
+/* 🔥 로딩 박스 */
+#loading .loading-box{
+  background: #fff;
+  padding: 18px 26px;
+  border-radius: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.2);
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  animation: fadeIn .2s ease;
+}
+
+/* 🔥 스피너 */
+.spinner{
+  width: 18px;
+  height: 18px;
+  border: 3px solid #ddd;
+  border-top-color: #0b4ea2;
+  border-radius: 50%;
+  animation: spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn{
+  from{
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to{
+    opacity: 1;
+    transform: scale(1);
+  }
+}
