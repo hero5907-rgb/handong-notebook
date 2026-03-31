@@ -2521,7 +2521,7 @@ let calendar = null;
 let allEvents = [];
 let editingEventId = null;   // 🔥 추가
 let calendarCache = {};
-
+let currentEventDate = null;   // 🔥 추가
 
 function loadCalendar(yyyymm){
 
@@ -2701,6 +2701,8 @@ if (loading) loading.style.display = "none";
 }
 
 function openDayEvents(date){
+
+  currentEventDate = date;   // 🔥 추가
 
   const list = allEvents.filter(e =>
     e.extendedProps?.date === date
@@ -3574,10 +3576,17 @@ api("adminDeleteEvent", {
   id: id
 }, (res)=>{
 
-    if (res && res.ok){
-      toast("삭제 완료");
-      loadCalendar();   // 🔥 다시불러오기
-    } else {
+if (res && res.ok){
+  toast("삭제 완료");
+  loadCalendar();
+
+  setTimeout(()=>{
+    if (currentEventDate){
+      openDayEvents(currentEventDate);
+    }
+  }, 300);
+
+} else {
       toast("삭제 실패");
     }
 
