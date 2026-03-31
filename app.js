@@ -2874,12 +2874,22 @@ currentEventDate = date;   // 🔥 추가
   ${e.title || ""}
 </div>
 
-      ${(state.me?.isAdmin === true && (state.me.adminLevel === 0 || state.me.adminLevel === 1)) ? `
-        <div style="display:flex;gap:6px;">
-          <button class="btn small" onclick="editEvent('${e.id}')">수정</button>
-          <button class="btn small btn-danger" onclick="deleteEvent('${e.id}')">삭제</button>
-        </div>
-      ` : ""}
+${(
+  state.me?.isAdmin === true &&
+  (
+    state.me.adminLevel === 0 || 
+    (
+  state.me.adminLevel === 1 &&
+  Number(e.extendedProps?.gisu) !== 0 &&   // 🔥 이거 추가
+  Number(e.extendedProps?.gisu) === Number(state.me.gisu)
+)
+  )
+) ? `
+  <div style="display:flex;gap:6px;">
+    <button class="btn small" onclick="editEvent('${e.id}')">수정</button>
+    <button class="btn small btn-danger" onclick="deleteEvent('${e.id}')">삭제</button>
+  </div>
+` : ""}
 
     </div>
 
