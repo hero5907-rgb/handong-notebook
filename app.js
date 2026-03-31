@@ -2749,9 +2749,16 @@ function openDayEvents(date){
     
     <div style="display:flex;justify-content:space-between;align-items:center;">
       
-      <div style="font-weight:700;">
-        ${e.title || ""}
-      </div>
+<div style="font-weight:700; display:flex; align-items:center; gap:6px;">
+  <span style="
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    display:inline-block;
+    background:${e.extendedProps?.gisu === 0 ? '#e53935' : '#111'};
+  "></span>
+  ${e.title || ""}
+</div>
 
       ${state.me?.isAdmin ? `
         <div style="display:flex;gap:6px;">
