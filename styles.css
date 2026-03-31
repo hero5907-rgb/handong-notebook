@@ -3032,3 +3032,13 @@ button:active{
   min-width: 70px;     /* 👉 동일하게 맞춤 */
   text-align: center;
 }
+
+.btn-danger{
+  background:#e53935;
+  color:#fff;
+  border:none;
+}
+
+.btn-danger:active{
+  opacity:.7;
+}

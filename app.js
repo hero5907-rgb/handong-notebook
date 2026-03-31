@@ -2756,7 +2756,7 @@ function openDayEvents(date){
       ${state.me?.isAdmin ? `
         <div style="display:flex;gap:6px;">
           <button class="btn small" onclick="editEvent('${e.id}')">수정</button>
-          <button class="btn small" onclick="deleteEvent('${e.id}')">삭제</button>
+          <button class="btn small btn-danger" onclick="deleteEvent('${e.id}')">삭제</button>
         </div>
       ` : ""}
 
@@ -3562,10 +3562,10 @@ function deleteEvent(id){
 
   if (!confirm("삭제할까요?")) return;
 
-  api("events", {
-    mode: "delete",
-    id: id
-  }, (res)=>{
+api("adminDeleteEvent", {
+  ...getAuthSafe(),
+  id: id
+}, (res)=>{
 
     if (res && res.ok){
       toast("삭제 완료");
