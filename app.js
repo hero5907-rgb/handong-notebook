@@ -1620,7 +1620,7 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 // ✅ 저장 버튼
 // ✅ 저장 버튼
 el("btnEventSave")?.addEventListener("click", ()=>{
-
+showLoading();   // 🔥 이 줄 추가 (맨 위)
   console.log("🔥 저장 클릭됨");
 
   setTimeout(()=>{   // 🔥 이거 필수
@@ -1691,8 +1691,14 @@ calendarCache = {};
 allEvents = [];
 
 loadCalendar();
+
+  hideLoading();   // 🔥 성공시
+
       } else {
         toast("실패");
+
+  hideLoading();   // 🔥 실패시
+
       }
 
     });
@@ -3694,7 +3700,12 @@ function editEvent(id){
 
 function deleteEvent(id){
 
-  if (!confirm("삭제할까요?")) return;
+  showLoading();   // 🔥 여기 추가 (confirm 전에)
+
+  if (!confirm("삭제할까요?")) {
+    hideLoading();   // 🔥 취소하면 다시 숨김
+    return;
+  }
 
 api("adminDeleteEvent", {
   ...getAuthSafe(),
@@ -3706,14 +3717,19 @@ toast("삭제 완료");
 
 
 
-
-// 🔥 추가 (캐시 초기화)
 calendarCache = {};
 allEvents = [];
 
 loadCalendar();
+
+
+  hideLoading();   // 🔥 성공시 숨김
+
     } else {
       toast("삭제 실패");
+
+  hideLoading();   // 🔥 실패시 숨김
+
     }
 
   });
