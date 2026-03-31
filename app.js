@@ -1228,13 +1228,22 @@ ${list.map(e => {
     ? '<span style="color:#e53935;">●</span>'
     : '<span style="color:#111;">●</span>';
 
-  const t = (e.startTime || "").slice(0,5);
+const raw = String(e.startTime || "");
 
-  const timeText = t
-    ? (parseInt(t.split(":")[0]) >= 12
-        ? "오후 " + (parseInt(t.split(":")[0]) - 12 || 12) + ":" + t.split(":")[1]
-        : "오전 " + t)
-    : "";
+const match = raw.match(/^(\d{2}):(\d{2})$/);
+
+let timeText = "";
+
+if (match){
+  let h = parseInt(match[1],10);
+  const m = match[2];
+
+  if (h >= 12){
+    timeText = "오후 " + (h - 12 || 12) + ":" + m;
+  } else {
+    timeText = "오전 " + h + ":" + m;
+  }
+}
 
   return `
   <div style="margin-bottom:20px;">
@@ -2790,13 +2799,23 @@ function openDayEvents(date){
 ${(()=>{
   const d = (e.extendedProps?.date || e.start || "").slice(0,10);
 
-  const t = (e.extendedProps?.startTime || "").slice(0,5);
+const raw = String(e.extendedProps?.startTime || "");
 
-  const timeText = t
-    ? (parseInt(t.split(":")[0]) >= 12
-        ? "오후 " + (parseInt(t.split(":")[0]) - 12 || 12) + ":" + t.split(":")[1]
-        : "오전 " + t)
-    : "";
+// 🔥 HH:mm 형식만 인정
+const match = raw.match(/^(\d{2}):(\d{2})$/);
+
+let timeText = "";
+
+if (match){
+  let h = parseInt(match[1],10);
+  const m = match[2];
+
+  if (h >= 12){
+    timeText = "오후 " + (h - 12 || 12) + ":" + m;
+  } else {
+    timeText = "오전 " + h + ":" + m;
+  }
+}
 
   return `
     <div style="font-size:13px;color:#64748b;">
