@@ -1620,7 +1620,7 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 // ✅ 저장 버튼
 // ✅ 저장 버튼
 el("btnEventSave")?.addEventListener("click", ()=>{
-showLoading();   // 🔥 이 줄 추가 (맨 위)
+
   console.log("🔥 저장 클릭됨");
 
   setTimeout(()=>{   // 🔥 이거 필수
@@ -1659,6 +1659,9 @@ if (state.me?.adminLevel === 1){
       toast("제목 입력");
       return;
     }
+
+showLoading();   // 🔥
+
 
     api(
   editingEventId ? "adminUpdateEvent" : "adminAddEvent",
