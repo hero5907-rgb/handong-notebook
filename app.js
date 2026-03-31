@@ -1674,6 +1674,9 @@ if (state.me?.adminLevel === 1){
 toast("등록 완료");
 closeEventSheet();
 
+
+if (currentEventDate) openDayEvents(currentEventDate);   // 🔥 추가
+
 // 🔥 추가 (캐시 초기화)
 calendarCache = {};
 allEvents = [];
@@ -1712,6 +1715,8 @@ el("btnEventDelete")?.addEventListener("click", ()=>{
     if (res && res.ok){
 toast("삭제 완료");
 closeEventSheet();
+
+if (currentEventDate) openDayEvents(currentEventDate);   // 🔥 추가
 
 // 🔥 추가 (캐시 초기화)
 calendarCache = {};
@@ -2595,7 +2600,7 @@ let calendar = null;
 let allEvents = [];
 let editingEventId = null;   // 🔥 추가
 let calendarCache = {};
-
+let currentEventDate = null;   // 🔥 추가
 
 function loadCalendar(yyyymm){
 
@@ -2775,6 +2780,8 @@ if (loading) loading.style.display = "none";
 }
 
 function openDayEvents(date){
+
+currentEventDate = date;   // 🔥 추가
 
   const list = allEvents.filter(e =>
     e.extendedProps?.date === date
@@ -3672,6 +3679,9 @@ api("adminDeleteEvent", {
 
     if (res && res.ok){
 toast("삭제 완료");
+
+
+if (currentEventDate) openDayEvents(currentEventDate);   // 🔥 추가
 
 // 🔥 추가 (캐시 초기화)
 calendarCache = {};
