@@ -3726,8 +3726,7 @@ allEvents = [];
 loadCalendar();
 
 
-  hideLoading();   // 🔥 성공시 숨김
-
+ 
     } else {
       toast("삭제 실패");
 
