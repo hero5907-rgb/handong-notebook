@@ -1609,6 +1609,9 @@ if (state.me?.adminLevel === 1){
 
 if (res && res.ok){
   toast("등록 완료");
+
+   calendarCache = {};   // 🔥 이것도 추가
+
   closeEventSheet();
 
   if (currentEventDate){
@@ -3588,6 +3591,9 @@ function deleteEvent(id){
 
     if (res && res.ok){
       toast("삭제 완료");
+
+	calendarCache = {};   // 🔥 이거 추가 (핵심)
+
 
       if (currentEventDate){
         openDayEvents(currentEventDate);
