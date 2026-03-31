@@ -1614,11 +1614,13 @@ if (res && res.ok){
 
   closeEventSheet();
 
+loadCalendar();
+
+setTimeout(()=>{
   if (currentEventDate){
     openDayEvents(currentEventDate);
   }
-
-  loadCalendar();
+}, 200);
 } else {
         toast("실패");
       }
@@ -3595,11 +3597,13 @@ function deleteEvent(id){
 	calendarCache = {};   // 🔥 이거 추가 (핵심)
 
 
-      if (currentEventDate){
-        openDayEvents(currentEventDate);
-      }
+loadCalendar();
 
-      loadCalendar();
+setTimeout(()=>{
+  if (currentEventDate){
+    openDayEvents(currentEventDate);
+  }
+}, 200);
 
     } else {
       toast("삭제 실패");
