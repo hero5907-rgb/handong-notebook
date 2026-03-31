@@ -1675,7 +1675,7 @@ toast("등록 완료");
 closeEventSheet();
 
 
-if (currentEventDate) openDayEvents(currentEventDate);   // 🔥 추가
+
 
 // 🔥 추가 (캐시 초기화)
 calendarCache = {};
@@ -1716,7 +1716,7 @@ el("btnEventDelete")?.addEventListener("click", ()=>{
 toast("삭제 완료");
 closeEventSheet();
 
-if (currentEventDate) openDayEvents(currentEventDate);   // 🔥 추가
+
 
 // 🔥 추가 (캐시 초기화)
 calendarCache = {};
@@ -2673,10 +2673,15 @@ const list = (res?.events || [])
 
 
   ).then(() => {
-    allEvents = keys.flatMap(k => calendarCache[k]);
-    initCalendar(allEvents);
-    __calendarReloading = false;   // ← 추가
-  }).catch(e=>{
+  allEvents = keys.flatMap(k => calendarCache[k]);
+  initCalendar(allEvents);
+  __calendarReloading = false;
+
+  // 🔥🔥🔥 이거 추가 (핵심)
+  if (currentEventDate) {
+    openDayEvents(currentEventDate);
+  }
+}).catch(e=>{
     console.error(e);
     toast("달력 일정 불러오기 실패");
     __calendarReloading = false;   // ← 추가
@@ -3681,7 +3686,7 @@ api("adminDeleteEvent", {
 toast("삭제 완료");
 
 
-if (currentEventDate) openDayEvents(currentEventDate);   // 🔥 추가
+
 
 // 🔥 추가 (캐시 초기화)
 calendarCache = {};
