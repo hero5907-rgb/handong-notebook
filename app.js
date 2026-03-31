@@ -1695,7 +1695,7 @@ allEvents = [];
 
 loadCalendar();
 
-  hideLoading();   // 🔥 성공시
+  
 
       } else {
         toast("실패");
