@@ -878,6 +878,28 @@ font-size: clamp(15px, 5vw, 24px);
   margin-top: 2px;
 }
 
+/* 🔥 프로필 상세 전체 정렬 강제 중앙 (핵심 해결) */
+#profileModal .modal-card{
+  text-align: center;
+}
+
+/* 🔥 회원정보 (입회일자, 회원번호 등) 중앙 */
+#profileModal .modal-memberinfo{
+  text-align: center;
+}
+
+/* 🔥 전화번호 중앙 */
+#profileModal .modal-phone{
+  text-align: center;
+}
+
+/* 🔥 주소도 완전 중앙 기준 */
+#profileModal .modal-workplace{
+  text-align: center;
+}
+
+
+
 /* 추천인 */
 .modal-recommender{
   margin-top: 10px;
@@ -896,7 +918,7 @@ font-size: clamp(15px, 5vw, 24px);
   justify-content: center;      /* 🔥 카드 기준 가운데 */
   gap: 6px;
   margin-top: 8px;
-  text-align: left;
+  text-align: center;
 }
 
 /* 지도 버튼 전체 크기 조정 */
