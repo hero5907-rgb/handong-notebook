@@ -736,6 +736,43 @@ function esc(s) {
     .replaceAll(">", "&gt;");
 }
 
+
+function formatDateTime(v){
+  if (!v) return "";
+
+  const d = new Date(v);
+  if (isNaN(d)) return v;
+
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth()+1).padStart(2,"0");
+  const dd = String(d.getDate()).padStart(2,"0");
+
+  const hh = String(d.getHours()).padStart(2,"0");
+  const mi = String(d.getMinutes()).padStart(2,"0");
+
+  return `${yyyy}-${mm}-${dd} ${hh}:${mi}`;
+}
+
+function formatDate(v){
+  if (!v) return "";
+  return String(v).slice(0,10);
+}
+
+function formatTime(v){
+  if (!v) return "";
+  const m = String(v).match(/^(\d{2}):(\d{2})$/);
+  if (!m) return v;
+
+  let h = parseInt(m[1],10);
+  const min = m[2];
+
+  return h >= 12
+    ? `오후 ${h-12 || 12}:${min}`
+    : `오전 ${h}:${min}`;
+}
+
+
+
 function renderBylawsView() {
   const body = el("textBody");
   if (!body) return;
@@ -974,7 +1011,7 @@ function renderAnnouncements() {
     row.innerHTML = `
       <div class="row-main">
         <div class="row-title">${esc(a.title || "")}</div>
-        <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
+        <div class="row-sub">${formatDateTime(a.date)} ${a.author ? " · " + esc(a.author) : ""}</div>
         <div class="row-sub" style="white-space:normal;margin-top:8px;">${esc(a.body || "")}</div>
       </div>`;
 
@@ -1018,7 +1055,7 @@ function renderLatest() {
 
 </div>
 
-        <div class="row-sub">${esc(a.date || "")} ${a.author ? " · " + esc(a.author) : ""}</div>
+        <div class="row-sub">${formatDateTime(a.date)} ${a.author ? " · " + esc(a.author) : ""}</div>
       </div>`;
     wrap.appendChild(row);
   }
@@ -2403,7 +2440,8 @@ function openAnnModal(a){
   const m = el("annModal");
   if (!m) return;
   el("annModalTitle").textContent = a?.title || "";
-  el("annModalMeta").textContent = [a?.date, a?.author].filter(Boolean).join(" · ");
+  el("annModalMeta").textContent =
+  [formatDateTime(a?.date), a?.author].filter(Boolean).join(" · ");
   el("annModalBody").textContent = a?.body || "";
   m.hidden = false;
 
@@ -2500,7 +2538,7 @@ async function loadEvents(yyyymm){
     for(const e of list){
       html += `
         <div class="card">
-          <b>${e.date || ""} ${e.startTime || ""}</b>
+          <b>${formatDate(e.date)} ${formatTime(e.startTime)}</b>
           <div>${e.title || ""}</div>
           ${e.place ? `<div class="small">📍 ${e.place}</div>` : ""}
           ${e.desc ? `<div class="small">${e.desc}</div>` : ""}
