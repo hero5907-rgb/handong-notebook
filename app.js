@@ -2611,6 +2611,13 @@ const list = (res?.events || [])
   ).then(() => {
     allEvents = keys.flatMap(k => calendarCache[k]);
     initCalendar(allEvents);
+
+  // 👇👇👇 여기 한줄 추가 (이 위치 정확)
+  if (currentEventDate){
+    openDayEvents(currentEventDate);
+  }
+
+
     __calendarReloading = false;   // ← 추가
   }).catch(e=>{
     console.error(e);
