@@ -1620,7 +1620,7 @@ setTimeout(()=>{
   if (currentEventDate){
     openDayEvents(currentEventDate);
   }
-}, 200);
+}, 300);
 } else {
         toast("실패");
       }
@@ -2719,9 +2719,9 @@ function openDayEvents(date){
 
   currentEventDate = date;   // 🔥 추가
 
-  const list = allEvents.filter(e =>
-    e.extendedProps?.date === date
-  );
+const list = allEvents.filter(e =>
+  (e.extendedProps?.date || e.start?.slice(0,10)) === date
+);
 
   // ===============================
   // ❌ 일정 없음
@@ -3603,7 +3603,7 @@ setTimeout(()=>{
   if (currentEventDate){
     openDayEvents(currentEventDate);
   }
-}, 200);
+}, 300);
 
     } else {
       toast("삭제 실패");
