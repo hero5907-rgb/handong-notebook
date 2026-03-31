@@ -3096,3 +3096,18 @@ button:active{
     transform: scale(1);
   }
 }
+
+
+/* 🔥 일정 하단 닫기 버튼 정리 */
+.event-sheet-footer{
+  margin-top: 12px;
+  padding: 12px 0 4px;
+  border-top: 1px solid #eef1f5;
+}
+
+.event-sheet-footer .btn-cancel{
+  width: 100%;
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 700;
+}
