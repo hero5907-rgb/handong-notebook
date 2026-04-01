@@ -3596,18 +3596,18 @@ function appConfirm(message){
 window.addEventListener("DOMContentLoaded", () => {
 
   const scrollBtn = document.getElementById("btnScrollTop");
-  const scroller = document.getElementById("screenMembers"); // 🔥 핵심
+  const scroller = document.getElementById("screenMembers"); // 🔥 이게 정답
 
-  if(!scrollBtn || !scroller) return;
+  if (!scrollBtn || !scroller) return;
 
   scroller.addEventListener("scroll", () => {
-    scrollBtn.hidden = scroller.scrollTop < 300;
+    scrollBtn.hidden = scroller.scrollTop < 200;
   });
 
   scrollBtn.onclick = () => {
     scroller.scrollTo({
-      top:0,
-      behavior:"smooth"
+      top: 0,
+      behavior: "smooth"
     });
   };
 
