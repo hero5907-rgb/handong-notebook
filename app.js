@@ -3593,29 +3593,23 @@ function appConfirm(message){
 }
 
 // 🔼 맨 위로 버튼
-// 🔼 맨 위로 버튼 (SPA 대응 최종버전)
-(function initScrollTopBtn(){
+window.addEventListener("DOMContentLoaded", () => {
 
   const scrollBtn = document.getElementById("btnScrollTop");
-  if (!scrollBtn) return;
+  if(!scrollBtn) return;
 
-  // 🔥 중복 이벤트 방지
-  if (scrollBtn.dataset.bind === "1") return;
-  scrollBtn.dataset.bind = "1";
-
-  // 🔥 window 기준 (콘솔로 이미 확인됨)
   window.addEventListener("scroll", () => {
-    scrollBtn.hidden = window.scrollY < 200;
+    scrollBtn.hidden = window.scrollY < 300;
   });
 
   scrollBtn.onclick = () => {
     window.scrollTo({
-      top: 0,
-      behavior: "smooth"
+      top:0,
+      behavior:"smooth"
     });
   };
 
-})();
+});
 
 
 (function bindImgModalPinch(){
