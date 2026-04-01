@@ -2526,7 +2526,7 @@ if (btnDelete){
   el("evTime").value = data.time || "";
   el("evPlace").value = data.place || "";
   el("evDesc").value = data.desc || "";
-  el("evIsPopup").checked = data.popup === true;   // ⭐ 이 줄 추가
+  el("evIsPopup").checked = String(data.popup).toLowerCase() === "true";
 
 
 // 🔵 권한별 UI 처리
