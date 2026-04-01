@@ -3596,14 +3596,16 @@ function appConfirm(message){
 window.addEventListener("DOMContentLoaded", () => {
 
   const scrollBtn = document.getElementById("btnScrollTop");
-  if(!scrollBtn) return;
+  const scroller = document.getElementById("screenMembers"); // 🔥 핵심
 
-  window.addEventListener("scroll", () => {
-    scrollBtn.hidden = window.scrollY < 300;
+  if(!scrollBtn || !scroller) return;
+
+  scroller.addEventListener("scroll", () => {
+    scrollBtn.hidden = scroller.scrollTop < 300;
   });
 
   scrollBtn.onclick = () => {
-    window.scrollTo({
+    scroller.scrollTo({
       top:0,
       behavior:"smooth"
     });
