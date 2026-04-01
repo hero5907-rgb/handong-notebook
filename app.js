@@ -1802,13 +1802,25 @@ history.pushState({ app: true }, "", location.href);
 
 
 document.addEventListener("click", (e) => {
+
+  // 🔥 메뉴 버튼 클릭
   const btn = e.target.closest(".menu-btn");
-  if (!btn) return;
 
-  const popup = btn.nextElementSibling;
-  if (!popup) return;
+  if (btn) {
+    e.stopPropagation();   // 🔥 이거 핵심
 
-  popup.hidden = !popup.hidden;
+    const popup = btn.nextElementSibling;
+    if (!popup) return;
+
+    popup.hidden = !popup.hidden;
+    return;
+  }
+
+  // 🔥 바깥 클릭하면 다 닫기
+  document.querySelectorAll(".menu-popup").forEach(p => {
+    p.hidden = true;
+  });
+
 });
 
 } // 🔥 init 끝
