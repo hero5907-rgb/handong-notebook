@@ -3593,23 +3593,24 @@ function appConfirm(message){
 }
 
 // 🔼 맨 위로 버튼
+
+ 
+
 window.addEventListener("DOMContentLoaded", () => {
 
   const scrollBtn = document.getElementById("btnScrollTop");
   if(!scrollBtn) return;
+ console.log("스크롤 버튼 이동 또 실행됨");  // 🔥 확인용
+  document.body.appendChild(scrollBtn);
 
-
-  console.log("스크롤 버튼 이동 실행됨");  // 🔥 확인용
-
-
-  document.body.appendChild(scrollBtn);   // 🔥 핵심
+  scrollBtn.hidden = false;                 // 🔥 추가
+  scrollBtn.removeAttribute("hidden");      // 🔥 추가
 
   const toggle = () => {
     scrollBtn.style.display = window.scrollY < 300 ? "none" : "block";
   };
 
-  toggle(); // 🔥 첫 로딩에도 적용
-
+  toggle();
   window.addEventListener("scroll", toggle);
 
   scrollBtn.onclick = () => {
