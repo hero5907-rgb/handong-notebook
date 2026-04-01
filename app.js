@@ -3755,7 +3755,8 @@ function editEvent(id){
     time: e.extendedProps.startTime,
     place: e.extendedProps.place,
     desc: e.extendedProps.desc,
-    popup: e.extendedProps.popup   // ⭐ 추가
+    popup: e.extendedProps.popup,  
+    gisu: e.extendedProps.gisu
 
   });
 }
