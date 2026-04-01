@@ -3599,7 +3599,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if(!scrollBtn) return;
 
   window.addEventListener("scroll", () => {
-    scrollBtn.hidden = window.scrollY < 300;
+    scrollBtn.style.display = window.scrollY < 300 ? "none" : "block";
   });
 
   scrollBtn.onclick = () => {
