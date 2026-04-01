@@ -3598,12 +3598,15 @@ window.addEventListener("DOMContentLoaded", () => {
   const scrollBtn = document.getElementById("btnScrollTop");
   if(!scrollBtn) return;
 
+  document.body.appendChild(scrollBtn);   // 🔥 핵심
 
-document.body.appendChild(scrollBtn);   // 🔥 여기 추가
-
-  window.addEventListener("scroll", () => {
+  const toggle = () => {
     scrollBtn.style.display = window.scrollY < 300 ? "none" : "block";
-  });
+  };
+
+  toggle(); // 🔥 첫 로딩에도 적용
+
+  window.addEventListener("scroll", toggle);
 
   scrollBtn.onclick = () => {
     window.scrollTo({
