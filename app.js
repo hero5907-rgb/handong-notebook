@@ -3598,6 +3598,10 @@ window.addEventListener("DOMContentLoaded", () => {
   const scrollBtn = document.getElementById("btnScrollTop");
   if(!scrollBtn) return;
 
+
+  console.log("스크롤 버튼 이동 실행됨");  // 🔥 확인용
+
+
   document.body.appendChild(scrollBtn);   // 🔥 핵심
 
   const toggle = () => {
