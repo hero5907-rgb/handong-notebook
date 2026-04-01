@@ -3598,6 +3598,9 @@ window.addEventListener("DOMContentLoaded", () => {
   const scrollBtn = document.getElementById("btnScrollTop");
   if(!scrollBtn) return;
 
+
+document.body.appendChild(scrollBtn);   // 🔥 여기 추가
+
   window.addEventListener("scroll", () => {
     scrollBtn.style.display = window.scrollY < 300 ? "none" : "block";
   });
