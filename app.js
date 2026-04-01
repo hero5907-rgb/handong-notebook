@@ -1801,7 +1801,15 @@ if (phone && code) {
 history.pushState({ app: true }, "", location.href);
 
 
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".menu-btn");
+  if (!btn) return;
 
+  const popup = btn.nextElementSibling;
+  if (!popup) return;
+
+  popup.hidden = !popup.hidden;
+});
 
 } // 🔥 init 끝
 
@@ -2886,8 +2894,14 @@ ${(
   )
 ) ? `
   <div style="display:flex;gap:6px;">
-    <button class="btn small" onclick="editEvent('${e.id}')">수정</button>
-    <button class="btn small btn-danger" onclick="deleteEvent('${e.id}')">삭제</button>
+<div class="menu-wrap">
+  <button class="menu-btn">⋯</button>
+
+  <div class="menu-popup" hidden>
+    <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
+    <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
+  </div>
+</div>
   </div>
 ` : ""}
 

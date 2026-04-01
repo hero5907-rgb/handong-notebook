@@ -3133,3 +3133,72 @@ button:active{
   color: #64748b;
   font-weight: 700;
 }
+
+
+
+
+
+
+
+
+
+/* ⋯ 버튼 */
+.menu-btn{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  border:none;
+  background:transparent;
+  font-size:20px;
+  color:#444;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  transition:background .2s;
+}
+
+.menu-btn:active{
+  background:rgba(0,0,0,.08);
+}
+
+
+/* 드롭다운 메뉴 */
+.menu-popup{
+  position:absolute;
+  top:36px;
+  right:0;
+
+  background:#fff;
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+
+  overflow:hidden;
+  min-width:100px;
+  z-index:9999;
+}
+
+/* 메뉴 아이템 */
+.menu-item{
+  padding:10px 14px;
+  font-size:14px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.menu-item:hover{
+  background:#f5f5f5;
+}
+
+/* 삭제 (위험) */
+.menu-item.danger{
+  color:#e53935;
+}
+
+
+.menu-wrap{
+  position:relative;
+  display:flex;
+  justify-content:flex-end;
+}
