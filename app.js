@@ -2527,7 +2527,19 @@ if (btnDelete){
   el("evPlace").value = data.place || "";
   el("evDesc").value = data.desc || "";
   el("evIsPopup").checked = String(data.popup).toLowerCase() === "true";
+  // 🔥 전체/기수 선택값 세팅
+const isAll = Number(data.gisu || 0) === 0;
 
+const rAll = document.querySelector('input[name="evScope"][value="all"]');
+const rMy  = document.querySelector('input[name="evScope"][value="my"]');
+
+if (rAll && rMy) {
+  if (isAll) {
+    rAll.checked = true;
+  } else {
+    rMy.checked = true;
+  }
+}
 
 // 🔵 권한별 UI 처리
 const box = el("evScopeBox");
