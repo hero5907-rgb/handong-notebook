@@ -1796,7 +1796,7 @@ if (phone && code) {
 
   // 🔥 이미 로그인 진행중이면 막기
   if (window.__loginLock) return;
-  window.__loginLock = true;
+ 
 
   state.navStack = ["boot"];
   showScreen("boot");
