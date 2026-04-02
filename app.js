@@ -1239,7 +1239,7 @@ __popupPromise.then(res=>{
   const myGisu = Number(state.me?.gisu || 0);
 
 const list = (res.events || []).filter(e => {
-  const g = Number(e.gisu || 0);
+  const g = Number(String(e.gisu || "0").trim());
   return g === 0 || g === myGisu;   // 🔥 동일 로직
 });
 
@@ -1713,12 +1713,6 @@ allEvents = [];
 loadCalendar();
 
   
-  // 🔥 추가
-setTimeout(()=>{
-  if(allEvents && allEvents.length){
-    openDayEvents(date);
-  }
-}, 600);
 
 
 
@@ -2733,14 +2727,17 @@ if (!need.length) {
   Promise.all(
     need.map(k =>
   new Promise((resolve)=>{
-    api("events", { yyyymm: k }, resolve);
+    api("events", {
+  ...getAuthSafe(),
+  yyyymm: k
+}, resolve);
   }).then(res => {
 
     const myGisu = Number(state.me?.gisu || 0);
 
 const list = (res?.events || [])
   .filter(e => {
-    const g = Number(e.gisu || 0);
+    const g = Number(String(e.gisu || "0").trim());
     return g === 0 || g === myGisu;   // 🔥 핵심
   })
   .map(e => ({
