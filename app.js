@@ -3097,8 +3097,11 @@ function openModal(html){
 
 
   // 🔥 기존 footer 닫기 버튼 숨김 (핵심)
+// 🔥 "day-wrap"일 때만 숨김
+if (html.includes("day-wrap")) {
   const defaultFooter = modal.querySelector(".modal-footer");
   if (defaultFooter) defaultFooter.style.display = "none";
+}
 
   modal.hidden = false;
 }
