@@ -816,7 +816,7 @@ font-size: clamp(15px, 5vw, 24px);
 
 
 .fc-daygrid-event {
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 #calendar, #calendar * {
