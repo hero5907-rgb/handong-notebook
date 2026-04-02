@@ -2929,7 +2929,7 @@ ${(
 ) ? `
   <div style="display:flex;gap:6px;">
 <div class="menu-wrap">
-  <button class="menu-btn">⋯</button>
+  <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
 
   <div class="menu-popup">
     <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
