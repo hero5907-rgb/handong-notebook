@@ -1807,16 +1807,23 @@ document.addEventListener("click", (e) => {
   const btn = e.target.closest(".menu-btn");
 
   if (btn) {
-    e.stopPropagation();   // 🔥 이거 핵심
-
     const popup = btn.nextElementSibling;
     if (!popup) return;
+
+    // 🔥 다른 메뉴 먼저 닫기
+    document.querySelectorAll(".menu-popup").forEach(p => {
+      if (p !== popup) p.hidden = true;
+    });
 
     popup.hidden = !popup.hidden;
     return;
   }
 
-  // 🔥 바깥 클릭하면 다 닫기
+  // 🔥 메뉴 내부 클릭이면 닫지 않음
+  const isInsideMenu = e.target.closest(".menu-popup");
+  if (isInsideMenu) return;
+
+  // 🔥 바깥 클릭 → 전부 닫기
   document.querySelectorAll(".menu-popup").forEach(p => {
     p.hidden = true;
   });
