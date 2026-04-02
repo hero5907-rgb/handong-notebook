@@ -1814,11 +1814,11 @@ document.addEventListener("click", (e) => {
 
   // 전부 닫고
   document.querySelectorAll(".menu-popup").forEach(p => {
-    p.hidden = true;
+    p.style.display = "none";
   });
 
   // 현재만 열기
-  popup.hidden = false;
+  popup.style.display = "block";
 });
 
 
@@ -1828,7 +1828,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest(".menu-wrap")) return;
 
   document.querySelectorAll(".menu-popup").forEach(p => {
-    p.hidden = true;
+    p.style.display = "none";
   });
 
 });
@@ -2931,7 +2931,7 @@ ${(
 <div class="menu-wrap">
   <button class="menu-btn">⋯</button>
 
-  <div class="menu-popup" hidden>
+  <div class="menu-popup">
     <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
     <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
   </div>
