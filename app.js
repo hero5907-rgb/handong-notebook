@@ -1256,7 +1256,61 @@ setTimeout(()=>{
       return dA - dB;
     });
 
-    openModal("중요일정 있음"); // 👉 기존 코드 넣어도 됨
+    openModal(`
+  <div class="day-wrap">
+
+    <div class="day-header">
+      <h3>📢 중요 일정 안내</h3>
+    </div>
+
+    <div class="day-scroll">
+
+      ${
+        list.map(e=>{
+
+          const d = e.date || "";
+          const t = e.startTime || "";
+
+          return `
+            <div class="event-item">
+
+              <div class="event-title">
+                <span style="
+                  width:8px;
+                  height:8px;
+                  border-radius:50%;
+                  display:inline-block;
+                  background:${Number(e.gisu||0) === 0 ? '#e53935' : '#111'};
+                "></span>
+                ${e.title || ""}
+              </div>
+
+              <div class="event-meta">
+                ${d} ${t}
+                ${e.place ? " / " + e.place : ""}
+              </div>
+
+              ${
+                e.desc
+                ? `<div class="event-desc">${e.desc}</div>`
+                : ""
+              }
+
+            </div>
+          `;
+        }).join("")
+      }
+
+    </div>
+
+    <div class="day-footer">
+      <button onclick="closeModal()" class="btn primary">
+        닫기
+      </button>
+    </div>
+
+  </div>
+`);
   });
 
 }, 300);

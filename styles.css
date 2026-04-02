@@ -3493,7 +3493,45 @@ button:active{
   color:#111;
 }
 
+/* 🔥 공용 모달 정리 */
+#modal{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
 
+#modalBody{
+  width:90%;
+  max-width:420px;
+  background:#fff;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+/* 🔥 내부 구조 */
+.day-wrap{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+.day-scroll{
+  max-height:60vh;
+  overflow-y:auto;
+  padding:16px;
+}
+
+/* 🔥 하단 버튼 고정 */
+.day-footer{
+  padding:12px;
+  border-top:1px solid #eee;
+}
+
+.day-footer .btn{
+  width:100%;
+  height:48px;
+  border-radius:12px;
+}
 
 
 
