@@ -3807,3 +3807,20 @@ loadCalendar();
   });
 }
 
+function toggleMenu(btn){
+
+  const popup = btn.nextElementSibling;
+  if (!popup) return;
+
+  // 전부 닫기
+  document.querySelectorAll(".menu-popup").forEach(p=>{
+    p.style.display = "none";
+  });
+
+  // 토글
+  if (popup.style.display === "block"){
+    popup.style.display = "none";
+  } else {
+    popup.style.display = "block";
+  }
+}
