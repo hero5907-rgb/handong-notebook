@@ -1234,91 +1234,37 @@ showScreen("home");
 
 
 
+// 🔥 로그인 후 popupEvents (지연 실행)
+setTimeout(()=>{
+
+  api("popupEvents", {}, (res)=>{
+    if (!res || res.ok !== true) return;
+
+    const myGisu = Number(state.me?.gisu || 0);
+
+    const list = (res.events || []).filter(e=>{
+      const g = Number(String(e.gisu || "0").trim());
+      return g === 0 || g === myGisu;
+    });
+
+    if (!list.length) return;
+
+    // 정렬
+    list.sort((a, b) => {
+      const dA = new Date(`${a.date||""} ${a.startTime||"00:00"}`);
+      const dB = new Date(`${b.date||""} ${b.startTime||"00:00"}`);
+      return dA - dB;
+    });
+
+    openModal("중요일정 있음"); // 👉 기존 코드 넣어도 됨
+  });
+
+}, 300);
+
+ 
 
 
-  if (!list.length) return;
 
-
-
-// 🔥 날짜 + 시간 오름차순 정렬 (빠른 일정이 위)
-list.sort((a, b) => {
-  const dateA = a.date || "";
-  const dateB = b.date || "";
-
-  const timeA = a.time || a.startTime || "00:00";
-  const timeB = b.time || b.startTime || "00:00";
-
-  const dA = new Date(`${dateA} ${timeA}`);
-  const dB = new Date(`${dateB} ${timeB}`);
-
-  return dA - dB;
-});
-
-
-
-
-
-  openModal(`
-    <div style="text-align:center;margin-bottom:18px;">
-      <div style="font-size:24px;">📢</div>
-      <div style="font-size:18px;font-weight:700;margin-top:6px;">
-        중요 일정 안내
-      </div>
-    </div>
-
-${list.map(e => {
-
-  const isAll = Number(e.gisu || 0) === 0;
-
-  const dot = isAll
-    ? '<span style="color:#e53935;">●</span>'
-    : '<span style="color:#111;">●</span>';
-
-const raw = String(e.startTime || "");
-const match = raw.match(/^(\d{2}):(\d{2})$/);
-
-let timeText = "";
-
-if (match){
-  let h = parseInt(match[1],10);
-  const m = match[2];
-
-  if (h >= 12){
-    timeText = "오후 " + (h - 12 || 12) + ":" + m;
-  } else {
-    timeText = "오전 " + h + ":" + m;
-  }
-}
-
-  return `
-  <div style="margin-bottom:20px;">
-    <div style="text-align:center;font-size:14px;color:#64748b;">
-      ${e.date || ""} ${timeText}
-    </div>
-
-    <div style="
-      text-align:center;
-      font-size:16px;
-      font-weight:600;
-      margin-top:4px;
-    ">
-      ${dot} ${e.title || ""}
-      ${e.place ? ` / ${e.place}` : ""}
-    </div>
-
-    <div style="
-      margin-top:10px;
-      white-space:pre-wrap;
-      line-height:1.6;
-      text-align:left;
-    ">${String(e.desc || "").trim()}</div>
-  </div>
-`;
-}).join("")}
-  `);
-
-  const rows = list.map(e => e.row);
-  api("markEventsNotified", { rows });
 });
 
 
