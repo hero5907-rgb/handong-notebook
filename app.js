@@ -2884,8 +2884,8 @@ if (loading) loading.style.display = "none";
 
 
 
-  // ===============================
-// 📅 일정 팝업 (통합 구조)
+ // ===============================
+// 📅 일정 팝업 (최종 구조)
 // ===============================
 function openDayEvents(date){
 
@@ -2897,17 +2897,17 @@ function openDayEvents(date){
   openModal(`
     <div class="day-wrap">
 
-      <div class="day-scroll">
+      <!-- 🔵 상단 (고정) -->
+      <div class="day-header">
+        <h3>🗓️ ${date}</h3>
+      </div>
 
-        <div style="text-align:center;margin-bottom:12px;">
-          <h3 style="margin:0;">🗓️ ${date}</h3>
-        </div>
+      <!-- 🔵 리스트만 스크롤 -->
+      <div class="day-scroll">
 
         ${
           !list.length
-          ? `<p style="text-align:center;margin-top:40px;color:#94a3b8;">
-              일정이 없습니다.
-            </p>`
+          ? `<p class="empty">일정이 없습니다.</p>`
           : list.map(e=>`
             <div class="event-item">
 
@@ -2987,22 +2987,30 @@ function openDayEvents(date){
 
       </div>
 
-      ${
-        state.me?.isAdmin === true &&
-        (state.me.adminLevel === 0 || state.me.adminLevel === 1)
-        ? `
-        <div class="day-footer">
+      <!-- 🔵 하단 고정 (여기 핵심) -->
+      <div class="day-footer">
+
+        ${
+          state.me?.isAdmin === true &&
+          (state.me.adminLevel === 0 || state.me.adminLevel === 1)
+          ? `
           <button id="btnAddEvent" class="btn primary">
             + 일정 등록
           </button>
-        </div>
-        `
-        : ""
-      }
+          `
+          : ""
+        }
+
+        <button onclick="closeModal()" class="btn">
+          닫기
+        </button>
+
+      </div>
 
     </div>
   `);
 
+  // 버튼 이벤트
   if (state.me?.isAdmin){
     setTimeout(()=>{
       const btn = el("btnAddEvent");
@@ -3014,7 +3022,6 @@ function openDayEvents(date){
     },0);
   }
 }
-
 
 
 function reloadMembers() {
