@@ -1801,29 +1801,34 @@ if (phone && code) {
 history.pushState({ app: true }, "", location.href);
 
 
+// 🔥 메뉴 버튼 → 열기 전용
 document.addEventListener("click", (e) => {
 
-  // 🔥 메뉴 버튼 클릭
   const btn = e.target.closest(".menu-btn");
+  if (!btn) return;
 
-  if (btn) {
-    const popup = btn.nextElementSibling;
-    if (!popup) return;
+  e.stopPropagation();   // 🔥 중요
 
-    // 🔥 다른 메뉴 먼저 닫기
-    document.querySelectorAll(".menu-popup").forEach(p => {
-      if (p !== popup) p.hidden = true;
-    });
+  const popup = btn.nextElementSibling;
+  if (!popup) return;
 
-    popup.hidden = !popup.hidden;
-    return;
-  }
+  document.querySelectorAll(".menu-popup").forEach(p => {
+    if (p !== popup) p.hidden = true;
+  });
 
-  // 🔥 메뉴 내부 클릭이면 닫지 않음
-  const isInsideMenu = e.target.closest(".menu-popup");
-  if (isInsideMenu) return;
+  popup.hidden = !popup.hidden;
 
-  // 🔥 바깥 클릭 → 전부 닫기
+});
+
+// 🔥 바깥 클릭 → 닫기 전용
+document.addEventListener("click", (e) => {
+
+  const isInside =
+    e.target.closest(".menu-btn") ||
+    e.target.closest(".menu-popup");
+
+  if (isInside) return;
+
   document.querySelectorAll(".menu-popup").forEach(p => {
     p.hidden = true;
   });
