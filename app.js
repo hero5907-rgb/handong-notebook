@@ -652,12 +652,11 @@ function apiJsonp(paramsObj) {
     script.src = url;
     document.body.appendChild(script);
 
-    setTimeout(() => {
-      if (done) return;
-      done = true;
-      cleanup();
-      reject(new Error("JSONP_TIMEOUT"));
-    }, 12000);
+setTimeout(() => {
+  if (done) return;
+  console.warn("⏱ JSONP 지연중 (계속 대기):", url);
+  // ❌ 실패시키지 말고 그냥 기다림
+}, 20000);
   });
 }
 
