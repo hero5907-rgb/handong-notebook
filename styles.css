@@ -3213,3 +3213,107 @@ button:active{
   border-top: 1px solid #eee;
   background: #fff;
 }
+
+
+
+
+
+/* =========================
+   📅 일정 팝업 UI 개선
+========================= */
+
+/* 전체 모달 안쪽 여백 */
+#modalBody {
+  padding: 18px 16px 12px;
+}
+
+/* 날짜 제목 */
+#modalBody h3 {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+/* =========================
+   ❌ 일정 없음 상태
+========================= */
+#modalBody p {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 15px;
+  margin: 40px 0 20px;
+}
+
+/* =========================
+   ✅ 일정 카드 스타일
+========================= */
+#modalBody > div > div {
+  padding: 14px 2px;
+  border-bottom: 1px solid #eef2f7;
+}
+
+/* 마지막 줄 밑줄 제거 */
+#modalBody > div > div:last-child {
+  border-bottom: none;
+}
+
+/* 제목 라인 */
+#modalBody > div > div > div:first-child {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* 날짜/시간 */
+#modalBody > div > div > div:nth-child(2) {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* 내용 */
+#modalBody > div > div > div:nth-child(3) {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* =========================
+   🔘 버튼 영역 개선
+========================= */
+
+/* 버튼 기본 */
+#modalBody .btn {
+  width: 100%;
+  height: 52px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+/* 등록 버튼 */
+#btnAddEvent {
+  margin-top: 20px;
+}
+
+/* 닫기 버튼 하단 고정 느낌 */
+#modalBody .btn:last-child {
+  margin-top: 14px;
+}
+
+/* =========================
+   📱 스크롤 개선
+========================= */
+#modalBody {
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+/* 스크롤바 살짝 */
+#modalBody::-webkit-scrollbar {
+  width: 6px;
+}
+#modalBody::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
