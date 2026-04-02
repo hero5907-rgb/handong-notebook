@@ -1423,9 +1423,11 @@ else if (target === "events") {
 else if (target === "calendar") {
   pushNav("calendar");
 
-  // 🔥 추가 (핵심)
-  __calendarReloading = false;
+  // 🔥 캐시 완전 초기화 (핵심)
+  calendarCache = {};
+  allEvents = [];
 
+  __calendarReloading = false;
 
   loadCalendar();
 }
