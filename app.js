@@ -2780,7 +2780,7 @@ if (loading) loading.style.display = "block";
 if (calendar) {
   calendar.removeAllEvents();
   calendar.addEventSource(events);
-  calendar.render();
+  
 
   // 🔥 추가 (이거 한줄이 핵심)
   const loading = document.getElementById("calendarLoading");
@@ -2836,11 +2836,18 @@ eventContent(arg) {
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
-  if (__calendarReloading) return;  // 🔥 중복 방지
 
+  // 🔥 렌더 중에는 절대 호출 금지
+  if (__calendarReloading === true) return;
+
+  // 🔥 이미 같은 달이면 막기 (핵심)
   const yyyymm =
     info.start.getFullYear() +
     String(info.start.getMonth() + 1).padStart(2, "0");
+
+  if (loadCalendar._lastYM === yyyymm) return;
+
+  loadCalendar._lastYM = yyyymm;
 
   loadCalendar(yyyymm);
 },
