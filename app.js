@@ -2882,13 +2882,7 @@ if (loading) loading.style.display = "none";
 
 }
 
-function openDayEvents(date){
 
-currentEventDate = date;   // 🔥 추가
-
-  const list = allEvents.filter(e =>
-    e.extendedProps?.date === date
-  );
 
   // ===============================
 // 📅 일정 팝업 (통합 구조)
