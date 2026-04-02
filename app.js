@@ -1804,17 +1804,38 @@ history.pushState({ app: true }, "", location.href);
 document.addEventListener("click", (e) => {
 
   // 🔥 메뉴 버튼 클릭
-  const btn = e.target.closest(".menu-btn");
+const btn = e.target.closest(".menu-btn");
 
-  if (btn) {
-    e.stopPropagation();   // 🔥 이거 핵심
+if (btn) {
+  e.stopPropagation();
 
-    const popup = btn.nextElementSibling;
-    if (!popup) return;
+  let popup = btn.nextElementSibling;
+  if (!popup) return;
 
-    popup.hidden = !popup.hidden;
+  // 🔥 이미 열려있으면 닫기
+  if (!popup.hidden) {
+    popup.hidden = true;
     return;
   }
+
+  // 🔥 기존 다른 popup 다 닫기
+  document.querySelectorAll(".menu-popup").forEach(p => p.hidden = true);
+
+  // 🔥 body로 이동 (핵심)
+  document.body.appendChild(popup);
+
+  // 🔥 버튼 위치 기준으로 좌표 계산
+  const rect = btn.getBoundingClientRect();
+
+  popup.style.position = "fixed";
+  popup.style.top = (rect.bottom + 6) + "px";
+  popup.style.left = (rect.right - 120) + "px"; // 너비 맞게 조절
+  popup.style.zIndex = 9999999;
+
+  popup.hidden = false;
+
+  return;
+}
 
   // 🔥 바깥 클릭하면 다 닫기
   document.querySelectorAll(".menu-popup").forEach(p => {
