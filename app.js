@@ -1123,11 +1123,7 @@ try {
     throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
   }
 
-  const __popupPromise = apiJsonp({
-    action:"popupEvents",
-    phone,
-    code
-  });
+
 
   const json = await apiJsonp({ action: "data", phone, code });
 
@@ -1238,15 +1234,7 @@ showScreen("home");
 
 
 
-__popupPromise.then(res=>{
-  if (!res || res.ok !== true) return;
 
-  const myGisu = Number(state.me?.gisu || 0);
-
-const list = (res.events || []).filter(e => {
-  const g = Number(String(e.gisu || "0").trim());
-  return g === 0 || g === myGisu;   // 🔥 동일 로직
-});
 
   if (!list.length) return;
 
