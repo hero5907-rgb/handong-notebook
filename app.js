@@ -3824,3 +3824,27 @@ function toggleMenu(btn){
     popup.style.display = "block";
   }
 }
+
+
+
+
+document.addEventListener("click", function(e){
+
+  // 메뉴 버튼 클릭이면 무시 (이미 toggleMenu에서 처리함)
+  if (e.target.closest(".menu-btn")) return;
+
+  // 메뉴 영역 클릭이면 무시
+  if (e.target.closest(".menu-popup")) return;
+
+  // 그 외 → 전부 닫기
+  document.querySelectorAll(".menu-popup").forEach(p=>{
+    p.style.display = "none";
+  });
+
+});
+
+
+
+
+
+
