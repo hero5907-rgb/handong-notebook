@@ -2891,125 +2891,122 @@ currentEventDate = date;   // 🔥 추가
   );
 
   // ===============================
-  // ❌ 일정 없음
-  // ===============================
-  if (!list.length){
+// 📅 일정 팝업 (통합 구조)
+// ===============================
+function openDayEvents(date){
 
-    openModal(`
-      <h3>${date}</h3>
-      <p>일정이 없습니다.</p>
+  const list = (allEvents || []).filter(e=>{
+    const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+    return d === date;
+  });
 
-      ${(state.me?.isAdmin === true && (state.me.adminLevel === 0 || state.me.adminLevel === 1)) ? `
-        <button id="btnAddEvent" class="btn primary" style="margin-top:12px;">
-          + 일정 등록
-        </button>
-      ` : ""}
-    `);
-
-    if (state.me?.isAdmin){
-      setTimeout(()=>{
-        const btn = el("btnAddEvent");
-        if (btn){
-          btn.onclick = ()=>{
-            openEventSheet({ date });
-          };
-        }
-      },0);
-    }
-
-    return;
-  }
-
-  // ===============================
-  // ✅ 일정 있음
-  // ===============================
   openModal(`
-    <div style="text-align:center;margin-bottom:12px;">
-      <h3 style="margin:0;">🗓️ ${date}</h3>
-    </div>
+    <div class="day-wrap">
 
-    ${list.map(e=>`
-  <div style="margin-top:14px;padding-bottom:14px;border-bottom:1px solid #eee;">
-    
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      
-<div style="font-weight:700; display:flex; align-items:center; gap:6px;">
-  <span style="
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    display:inline-block;
-    background:${e.extendedProps?.gisu === 0 ? '#e53935' : '#111'};
-  "></span>
-  ${e.title || ""}
-</div>
+      <div class="day-scroll">
 
-${(
-  state.me?.isAdmin === true &&
-  (
-    state.me.adminLevel === 0 || 
-    (
-  state.me.adminLevel === 1 &&
-  Number(e.extendedProps?.gisu) !== 0 &&   // 🔥 이거 추가
-  Number(e.extendedProps?.gisu) === Number(state.me.gisu)
-)
-  )
-) ? `
-  <div style="display:flex;gap:6px;">
-<div class="menu-wrap">
-  <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
+        <div style="text-align:center;margin-bottom:12px;">
+          <h3 style="margin:0;">🗓️ ${date}</h3>
+        </div>
 
-  <div class="menu-popup">
-    <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
-    <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
-  </div>
-</div>
-  </div>
-` : ""}
+        ${
+          !list.length
+          ? `<p style="text-align:center;margin-top:40px;color:#94a3b8;">
+              일정이 없습니다.
+            </p>`
+          : list.map(e=>`
+            <div class="event-item">
 
-    </div>
+              <div class="event-top">
 
-${(()=>{
-  const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+                <div class="event-title">
+                  <span style="
+                    width:8px;
+                    height:8px;
+                    border-radius:50%;
+                    display:inline-block;
+                    background:${e.extendedProps?.gisu === 0 ? '#e53935' : '#111'};
+                  "></span>
+                  ${e.title || ""}
+                </div>
 
-const raw = String(e.extendedProps?.startTime || "");
-const match = raw.match(/^(\d{2}):(\d{2})$/);
+                ${
+                  (
+                    state.me?.isAdmin === true &&
+                    (
+                      state.me.adminLevel === 0 ||
+                      (
+                        state.me.adminLevel === 1 &&
+                        Number(e.extendedProps?.gisu) !== 0 &&
+                        Number(e.extendedProps?.gisu) === Number(state.me.gisu)
+                      )
+                    )
+                  ) ? `
+                  <div class="menu-wrap">
+                    <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
+                    <div class="menu-popup">
+                      <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
+                      <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
+                    </div>
+                  </div>
+                ` : ""
+                }
 
-let timeText = "";
+              </div>
 
-if (match){
-  let h = parseInt(match[1],10);
-  const m = match[2];
+              ${(()=>{
+                const d = (e.extendedProps?.date || e.start || "").slice(0,10);
 
-  if (h >= 12){
-    timeText = "오후 " + (h - 12 || 12) + ":" + m;
-  } else {
-    timeText = "오전 " + h + ":" + m;
-  }
-}
+                const raw = String(e.extendedProps?.startTime || "");
+                const match = raw.match(/^(\d{2}):(\d{2})$/);
 
-  return `
-    <div style="font-size:13px;color:#64748b;">
-      ${d} ${timeText}
-      ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
-    </div>
-  `;
-})()}
+                let timeText = "";
 
-    ${e.extendedProps?.desc ? `
-      <div style="margin-top:6px;white-space:pre-wrap;">
-        ${e.extendedProps.desc}
+                if (match){
+                  let h = parseInt(match[1],10);
+                  const m = match[2];
+
+                  if (h >= 12){
+                    timeText = "오후 " + (h - 12 || 12) + ":" + m;
+                  } else {
+                    timeText = "오전 " + h + ":" + m;
+                  }
+                }
+
+                return `
+                  <div class="event-meta">
+                    ${d} ${timeText}
+                    ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
+                  </div>
+                `;
+              })()}
+
+              ${e.extendedProps?.desc ? `
+                <div class="event-desc">
+                  ${e.extendedProps.desc}
+                </div>
+              ` : ""}
+
+            </div>
+          `).join("")
+        }
+
       </div>
-    ` : ""}
 
-  </div>
-`).join("")}
+      ${
+        state.me?.isAdmin === true &&
+        (state.me.adminLevel === 0 || state.me.adminLevel === 1)
+        ? `
+        <div class="day-footer">
+          <button id="btnAddEvent" class="btn primary">
+            + 일정 등록
+          </button>
+        </div>
+        `
+        : ""
+      }
 
-    ${(state.me?.isAdmin === true && (state.me.adminLevel === 0 || state.me.adminLevel === 1)) ? `
-      <button id="btnAddEvent" class="btn primary" style="margin-top:16px;">
-        + 일정 등록
-      </button>
-    ` : ""}
+    </div>
   `);
 
   if (state.me?.isAdmin){
@@ -3022,10 +3019,7 @@ if (match){
       }
     },0);
   }
-
 }
-
-
 
 
 
