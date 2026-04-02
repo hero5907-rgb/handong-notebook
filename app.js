@@ -1803,41 +1803,23 @@ history.pushState({ app: true }, "", location.href);
 
 document.addEventListener("click", (e) => {
 
-  // 🔥 메뉴 버튼 클릭
-const btn = e.target.closest(".menu-btn");
+  const btn = e.target.closest(".menu-btn");
+  const wrap = e.target.closest(".menu-wrap");  // 🔥 추가
 
-if (btn) {
-  e.stopPropagation();
+  // 🔥 메뉴 영역 클릭이면 아무것도 안닫음
+  if (wrap) {
+    if (btn) {
+      e.stopPropagation();
 
-  let popup = btn.nextElementSibling;
-  if (!popup) return;
+      const popup = btn.nextElementSibling;
+      if (!popup) return;
 
-  // 🔥 이미 열려있으면 닫기
-  if (!popup.hidden) {
-    popup.hidden = true;
-    return;
+      popup.hidden = !popup.hidden;
+    }
+    return;  // 🔥 핵심 (여기서 끝내야됨)
   }
 
-  // 🔥 기존 다른 popup 다 닫기
-  document.querySelectorAll(".menu-popup").forEach(p => p.hidden = true);
-
-  // 🔥 body로 이동 (핵심)
-  document.body.appendChild(popup);
-
-  // 🔥 버튼 위치 기준으로 좌표 계산
-  const rect = btn.getBoundingClientRect();
-
-  popup.style.position = "fixed";
-  popup.style.top = (rect.bottom + 6) + "px";
-  popup.style.left = (rect.right - 120) + "px"; // 너비 맞게 조절
-  popup.style.zIndex = 9999999;
-
-  popup.hidden = false;
-
-  return;
-}
-
-  // 🔥 바깥 클릭하면 다 닫기
+  // 🔥 바깥 클릭만 닫기
   document.querySelectorAll(".menu-popup").forEach(p => {
     p.hidden = true;
   });
