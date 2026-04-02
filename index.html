@@ -607,9 +607,17 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 <!-- ✅ 공용 모달 -->
 <div id="modal" class="modal" hidden>
   <div class="modal-backdrop" onclick="closeModal()"></div>
+
   <div class="modal-card">
+
+    <!-- 🔥 내용 (스크롤 영역) -->
     <div id="modalBody"></div>
-    <button class="modal-close" onclick="closeModal()">닫기</button>
+
+    <!-- 🔥 하단 고정 -->
+    <div class="modal-footer">
+      <button class="modal-close" onclick="closeModal()">닫기</button>
+    </div>
+
   </div>
 </div>
 
