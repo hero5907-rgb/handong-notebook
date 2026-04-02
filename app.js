@@ -3094,11 +3094,22 @@ function openModal(html){
   const body  = document.getElementById("modalBody");
   body.innerHTML = html;
   body.scrollTop = 0;   // ✅ 이 줄 추가
+
+
+  // 🔥 기존 footer 닫기 버튼 숨김 (핵심)
+  const defaultFooter = modal.querySelector(".modal-footer");
+  if (defaultFooter) defaultFooter.style.display = "none";
+
   modal.hidden = false;
 }
 
 function closeModal(){
   const modal = document.getElementById("modal");
+
+  // 🔥 다시 살려줌 (다른 모달 위해)
+  const defaultFooter = modal.querySelector(".modal-footer");
+  if (defaultFooter) defaultFooter.style.display = "";
+
   modal.hidden = true;
 }
 
