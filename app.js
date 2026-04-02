@@ -1078,6 +1078,12 @@ function renderLatest() {
 }
 
 async function handleLogin() {
+
+// 🔥 중복 로그인 차단 (핵심)
+if (window.__loginLock) return;
+window.__loginLock = true;
+
+
   const rawPhone = el("inputPhone")?.value || "";
   const rawCode  = el("inputCode")?.value || "";
 
@@ -1354,9 +1360,9 @@ catch (err) {
 
 }
 finally {
-
-    if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
-  }
+  window.__loginLock = false;   // 🔥 이거 추가
+  if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
+}
 }
 
 
@@ -1802,8 +1808,14 @@ loadCalendar();
       if (el("keepLogin"))  el("keepLogin").checked = true;
 
 if (phone && code) {
+
+  // 🔥 이미 로그인 진행중이면 막기
+  if (window.__loginLock) return;
+  window.__loginLock = true;
+
   state.navStack = ["boot"];
   showScreen("boot");
+
   setTimeout(() => handleLogin(), 50);
   return;
 }
