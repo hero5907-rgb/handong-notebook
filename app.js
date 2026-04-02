@@ -1713,6 +1713,13 @@ allEvents = [];
 loadCalendar();
 
   
+  // 🔥 추가
+  setTimeout(()=>{
+    openDayEvents(date);
+  }, 200);
+
+
+
 
       } else {
         toast("실패");
