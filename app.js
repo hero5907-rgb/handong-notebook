@@ -2709,6 +2709,10 @@ if (!need.length) {
   allEvents = keys.flatMap(k => calendarCache[k]);
   initCalendar(allEvents);
   __calendarReloading = false;   // 🔥 반드시 풀어준다
+
+
+    hideLoading();   // 🔥🔥🔥 이거 추가 (핵심)
+
   return;
 }
 
