@@ -2665,10 +2665,14 @@ let currentEventDate = null;   // 🔥 추가
 function loadCalendar(yyyymm){
 
 
-showLoading();   // 🔥 여기 (첫 줄)
+  showLoading();
 
+  // 🔥 이거 추가 (핵심)
+  if (__calendarReloading){
+    hideLoading();   // ← 이거 없어서 무한로딩
+    return;
+  }
 
-  if (__calendarReloading) return;
   __calendarReloading = true;
 
   const base = yyyymm
