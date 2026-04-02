@@ -459,6 +459,13 @@ function hideLoading(){
 
 
 function showScreen(name) {
+
+
+  // 🔥 달력 다시 들어올 때 상태 초기화
+  if (name === "calendar"){
+    __calendarReloading = false;
+  }
+
  
 stopCeremony();   // 🔥 화면 이동시 무조건 정지
 
@@ -1415,6 +1422,11 @@ else if (target === "events") {
 
 else if (target === "calendar") {
   pushNav("calendar");
+
+  // 🔥 추가 (핵심)
+  __calendarReloading = false;
+
+
   loadCalendar();
 }
 
