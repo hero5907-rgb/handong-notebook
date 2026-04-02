@@ -3472,7 +3472,7 @@ button:active{
   flex-direction:column;
 
   /* 🔥 버튼 간격 거의 붙이기 */
-  gap:8px;
+  gap:2px;
 }
 
 /* 버튼 공통 */
