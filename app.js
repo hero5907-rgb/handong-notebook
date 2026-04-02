@@ -1804,9 +1804,8 @@ history.pushState({ app: true }, "", location.href);
 document.addEventListener("click", (e) => {
 
   const btn = e.target.closest(".menu-btn");
-  const wrap = e.target.closest(".menu-wrap");  // 🔥 추가
+  const wrap = e.target.closest(".menu-wrap");
 
-  // 🔥 메뉴 영역 클릭이면 아무것도 안닫음
   if (wrap) {
     if (btn) {
       e.stopPropagation();
@@ -1814,12 +1813,17 @@ document.addEventListener("click", (e) => {
       const popup = btn.nextElementSibling;
       if (!popup) return;
 
-      popup.hidden = !popup.hidden;
+      // 🔥 핵심 수정
+      document.querySelectorAll(".menu-popup").forEach(p => {
+        p.hidden = true;
+      });
+
+      popup.hidden = false;
     }
-    return;  // 🔥 핵심 (여기서 끝내야됨)
+    return;
   }
 
-  // 🔥 바깥 클릭만 닫기
+  // 바깥 클릭 → 전부 닫기
   document.querySelectorAll(".menu-popup").forEach(p => {
     p.hidden = true;
   });
