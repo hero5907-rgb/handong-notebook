@@ -1423,6 +1423,9 @@ else if (target === "events") {
 else if (target === "calendar") {
   pushNav("calendar");
 
+
+currentEventDate = null;   // 🔥 이거 추가
+
   // 🔥 캐시 완전 초기화 (핵심)
   calendarCache = {};
   allEvents = [];
@@ -2763,10 +2766,6 @@ const list = (res?.events || [])
   initCalendar(allEvents);
   __calendarReloading = false;
 
-  // 🔥🔥🔥 이거 추가 (핵심)
-  if (currentEventDate) {
-    openDayEvents(currentEventDate);
-  }
 
  hideLoading();   // 🔥 여기
 
