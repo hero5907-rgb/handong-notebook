@@ -1714,10 +1714,11 @@ loadCalendar();
 
   
   // 🔥 추가
-  setTimeout(()=>{
+setTimeout(()=>{
+  if(allEvents && allEvents.length){
     openDayEvents(date);
-  }, 200);
-
+  }
+}, 600);
 
 
 
