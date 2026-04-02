@@ -2897,7 +2897,7 @@ function openDayEvents(date){
   openModal(`
     <div class="day-wrap">
 
-      <!-- 🔵 상단 (고정) -->
+      <!-- 🔵 상단 -->
       <div class="day-header">
         <h3>🗓️ ${date}</h3>
       </div>
@@ -2987,25 +2987,19 @@ function openDayEvents(date){
 
       </div>
 
-      <!-- 🔵 하단 고정 (여기 핵심) -->
-      <div class="day-footer">
-
-        ${
-          state.me?.isAdmin === true &&
-          (state.me.adminLevel === 0 || state.me.adminLevel === 1)
-          ? `
+      <!-- 🔵 하단 고정 -->
+      ${
+        state.me?.isAdmin === true &&
+        (state.me.adminLevel === 0 || state.me.adminLevel === 1)
+        ? `
+        <div class="day-footer">
           <button id="btnAddEvent" class="btn primary">
             + 일정 등록
           </button>
-          `
-          : ""
-        }
-
-        <button onclick="closeModal()" class="btn">
-          닫기
-        </button>
-
-      </div>
+        </div>
+        `
+        : ""
+      }
 
     </div>
   `);
@@ -3022,6 +3016,12 @@ function openDayEvents(date){
     },0);
   }
 }
+
+
+
+
+
+
 
 
 function reloadMembers() {
