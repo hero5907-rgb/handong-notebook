@@ -3309,7 +3309,32 @@ button:active{
 }
 
 
+/* 🔥 스크롤바 iOS 스타일 (얇고 우측 밀착) */
+.day-scroll{
+  overflow-y:auto;
 
+  /* 🔥 파이어폭스 */
+  scrollbar-width:thin;
+  scrollbar-color:rgba(0,0,0,0.25) transparent;
+}
+
+/* 🔥 크롬, 엣지, 사파리 */
+.day-scroll::-webkit-scrollbar{
+  width:4px;   /* 👉 얇게 */
+}
+
+.day-scroll::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+.day-scroll::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,0.25);
+  border-radius:10px;
+}
+
+.day-scroll::-webkit-scrollbar-thumb:hover{
+  background:rgba(0,0,0,0.4);
+}
 
 
 
