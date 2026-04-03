@@ -732,7 +732,7 @@ font-size: clamp(15px, 5vw, 24px);
   width: min(92vw, 420px);
 
   max-height: 75vh;
-  overflow: hidden;   /* 🔥 바깥 스크롤 제거 */
+  overflow: hidden !important;   /* 🔥 바깥 스크롤 제거 */
 
 
   border-radius: 18px;
