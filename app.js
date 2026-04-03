@@ -2314,9 +2314,6 @@ if (scrollBtn) scrollBtn.style.display = "none";
 
 document.body.classList.add("modal-open");
 
-const scrollBtn = document.getElementById("btnScrollTop");
-if (scrollBtn) scrollBtn.style.display = "block";
-
 
 
 // ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐
@@ -2360,6 +2357,11 @@ function closeProfile() {
 
   resetPhotoTransform();
   document.body.classList.remove("modal-open");
+
+const scrollBtn = document.getElementById("btnScrollTop");
+if (scrollBtn) scrollBtn.style.display = "block";
+
+
 }
 
 
