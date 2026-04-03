@@ -1125,7 +1125,11 @@ try {
 
 
 
-  const json = await apiJsonp({ action: "data", phone, code });
+  // 🔥 data + popupEvents 동시에 호출
+const [json, popupRes] = await Promise.all([
+  apiJsonp({ action: "data", phone, code }),
+  apiJsonp({ action: "popupEvents", phone, code })
+]);
 
 
 
@@ -1234,90 +1238,89 @@ showScreen("home");
 
 
 
-// 🔥 로그인 후 popupEvents (지연 실행)
-setTimeout(()=>{
 
-  api("popupEvents", {}, (res)=>{
-    if (!res || res.ok !== true) return;
+ 
 
-    const myGisu = Number(state.me?.gisu || 0);
+// 🔥 바로 팝업 실행 (지연 없음)
+if (popupRes && popupRes.ok === true){
 
-    const list = (res.events || []).filter(e=>{
-      const g = Number(String(e.gisu || "0").trim());
-      return g === 0 || g === myGisu;
-    });
+  const myGisu = Number(state.me?.gisu || 0);
 
-    if (!list.length) return;
+  const list = (popupRes.events || []).filter(e=>{
+    const g = Number(String(e.gisu || "0").trim());
+    return g === 0 || g === myGisu;
+  });
 
-    // 정렬
+  if (list.length){
+
     list.sort((a, b) => {
       const dA = new Date(`${a.date||""} ${a.startTime||"00:00"}`);
       const dB = new Date(`${b.date||""} ${b.startTime||"00:00"}`);
       return dA - dB;
     });
 
-    openModal(`
-  <div class="day-wrap">
+    requestAnimationFrame(()=>{
 
-    <div class="day-header">
-      <h3>📢 중요 일정 안내</h3>
-    </div>
+      openModal(`
+        <div class="day-wrap">
 
-    <div class="day-scroll">
+          <div class="day-header">
+            <h3>📢 중요 일정 안내</h3>
+          </div>
 
-      ${
-        list.map(e=>{
+          <div class="day-scroll">
 
-          const d = e.date || "";
-          const t = e.startTime || "";
+            ${
+              list.map(e=>{
 
-          return `
-            <div class="event-item">
+                const d = e.date || "";
+                const t = e.startTime || "";
 
-              <div class="event-title">
-                <span style="
-                  width:8px;
-                  height:8px;
-                  border-radius:50%;
-                  display:inline-block;
-                  background:${Number(e.gisu||0) === 0 ? '#e53935' : '#111'};
-                "></span>
-                ${e.title || ""}
-              </div>
+                return `
+                  <div class="event-item">
 
-              <div class="event-meta">
-                ${d} ${t}
-                ${e.place ? " / " + e.place : ""}
-              </div>
+                    <div class="event-title">
+                      <span style="
+                        width:8px;
+                        height:8px;
+                        border-radius:50%;
+                        display:inline-block;
+                        background:${Number(e.gisu||0) === 0 ? '#e53935' : '#111'};
+                      "></span>
+                      ${e.title || ""}
+                    </div>
 
-              ${
-                e.desc
-                ? `<div class="event-desc">${e.desc}</div>`
-                : ""
-              }
+                    <div class="event-meta">
+                      ${d} ${t}
+                      ${e.place ? " / " + e.place : ""}
+                    </div>
 
-            </div>
-          `;
-        }).join("")
-      }
+                    ${
+                      e.desc
+                      ? `<div class="event-desc">${e.desc}</div>`
+                      : ""
+                    }
 
-    </div>
+                  </div>
+                `;
+              }).join("")
+            }
 
-    <div class="day-footer">
-      <button onclick="closeModal()" class="btn primary">
-        닫기
-      </button>
-    </div>
+          </div>
 
-  </div>
-`);
-  });
+          <div class="day-footer">
+            <button onclick="closeModal()" class="btn primary">
+              닫기
+            </button>
+          </div>
 
-}, 300);
+        </div>
+      `);
 
- 
+    });
 
-
+  }
+}
 
 
 
