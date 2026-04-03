@@ -1694,7 +1694,9 @@ showLoading();   // 🔥
 toast("등록 완료");
 closeEventSheet();
 
-
+setTimeout(()=>{
+  openDayEvents(currentEventDate);
+}, 200);
 
 
 // 🔥 추가 (캐시 초기화)
@@ -2903,6 +2905,8 @@ if (loading) loading.style.display = "none";
 // ===============================
 function openDayEvents(date){
 
+currentEventDate = date;   // 🔥 이거 추가
+
   const list = (allEvents || []).filter(e=>{
     const d = (e.extendedProps?.date || e.start || "").slice(0,10);
     return d === date;
@@ -3853,7 +3857,12 @@ allEvents = [];
 
 loadCalendar();
 
+loadCalendar();
 
+// 🔥 현재 날짜 다시 열기
+setTimeout(()=>{
+  openDayEvents(currentEventDate);
+}, 200);
  
     } else {
       toast("삭제 실패");
