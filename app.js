@@ -2367,7 +2367,9 @@ function closeProfile() {
   document.body.classList.remove("modal-open");
 
 const scrollBtn = document.getElementById("btnScrollTop");
-if (scrollBtn) scrollBtn.style.display = "block";
+if (scrollBtn) {
+  scrollBtn.style.display = window.scrollY < 300 ? "none" : "block";
+}
 
 
 }
