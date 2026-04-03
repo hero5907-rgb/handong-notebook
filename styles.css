@@ -3337,4 +3337,21 @@ button:active{
 }
 
 
+/* 🔥 실제 스크롤 요소에 적용 */
+#modalBody{
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,0,0,0.25) transparent;
+}
 
+#modalBody::-webkit-scrollbar{
+  width:4px;
+}
+
+#modalBody::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+#modalBody::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,0.25);
+  border-radius:10px;
+}
