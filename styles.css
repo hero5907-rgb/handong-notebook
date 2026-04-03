@@ -3246,7 +3246,7 @@ button:active{
 .modal-x{
   position:absolute;
   top:-6px;
-  right:-6px;
+  right:0px;
 
   width:30px;
   height:30px;
