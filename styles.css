@@ -3463,8 +3463,10 @@ button:active{
 }
 
 
-/* 🍎 진짜 iOS 스타일 새로고침 버튼 */
-.refresh-btn{
+
+/* 🍎 카드 안 새로고침 버튼 (iOS 고급형) */
+.card .icon-btn{
+
   width:34px;
   height:34px;
 
@@ -3474,38 +3476,39 @@ button:active{
 
   border-radius:50%;
 
-  /* 🔥 핵심: 유리 느낌 */
-  background: rgba(255,255,255,0.6);
+  /* 🔥 유리 느낌 */
+  background: rgba(255,255,255,0.65);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 
-  border: 1px solid rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.8);
 
   /* 🔥 iOS 그림자 */
   box-shadow:
-    0 4px 10px rgba(0,0,0,0.12),
-    inset 0 1px 0 rgba(255,255,255,0.6);
+    0 4px 12px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.7);
 
   /* 아이콘 */
   font-size:16px;
-  color:#0b4ea2;
   font-weight:700;
+  color:#0b4ea2;
 
   cursor:pointer;
   transition: all .15s ease;
 }
 
 /* hover */
-.refresh-btn:hover{
-  background: rgba(255,255,255,0.75);
+.card .icon-btn:hover{
+  background: rgba(255,255,255,0.85);
 }
 
 /* 클릭 */
-.refresh-btn:active{
-  transform: scale(0.92);
+.card .icon-btn:active{
+  transform: scale(0.9);
   box-shadow:
     0 2px 6px rgba(0,0,0,0.15) inset;
 }
+
 
 
 
