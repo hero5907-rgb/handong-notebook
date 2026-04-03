@@ -2307,7 +2307,17 @@ if (phoneEl) {
   resetPhotoTransform();
 el("profileModal").hidden = false;
 
+const scrollBtn = document.getElementById("btnScrollTop");
+if (scrollBtn) scrollBtn.style.display = "none";
+
+
+
 document.body.classList.add("modal-open");
+
+const scrollBtn = document.getElementById("btnScrollTop");
+if (scrollBtn) scrollBtn.style.display = "block";
+
+
 
 // ⭐⭐⭐ 여기부터 추가 ⭐⭐⭐
 
