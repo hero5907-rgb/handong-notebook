@@ -2900,9 +2900,10 @@ function openDayEvents(date){
     <div class="day-wrap">
 
       <!-- 🔵 상단 -->
-      <div class="day-header">
-        <h3>🗓️ ${date}</h3>
-      </div>
+<div class="day-header">
+  <h3>🗓️ ${date}</h3>
+  <button class="modal-x" onclick="closeModal()">✕</button>
+</div>
 
       <!-- 🔵 리스트만 스크롤 -->
       <div class="day-scroll">
