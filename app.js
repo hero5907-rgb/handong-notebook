@@ -3197,16 +3197,23 @@ if (loading) loading.style.display = "block";
 
 // 🔄 공지사항 다시 불러오기
 function reloadAnnouncements(){
-  api("data", {}, (json)=>{
+
+  toast("공지 업데이트 중..."); // 🔥 먼저 보여줘서 체감속도 개선
+
+  api("announcements", {}, (json)=>{
+
     if (!json || json.ok !== true) {
       toast("공지 새로고침 실패");
       return;
     }
 
     state.announcements = json.announcements || [];
+
     renderAnnouncements();
-    renderLatest(); // 홈 최신공지도 같이 갱신
-    toast("공지사항 새로고침 완료");
+    renderLatest();
+
+    toast("공지 업데이트 완료");
+
   });
 }
 
