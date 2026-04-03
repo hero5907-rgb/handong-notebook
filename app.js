@@ -3199,8 +3199,6 @@ if (loading) loading.style.display = "block";
 function reloadAnnouncements(){
 
 
-  const btn = el("btnAnnRefresh");
-  if (btn) btn.classList.add("spinning"); // 🔥 회전 시작
 
 
   toast("공지 업데이트 중..."); // 🔥 먼저 보여줘서 체감속도 개선
@@ -3208,7 +3206,7 @@ function reloadAnnouncements(){
   api("announcements", {}, (json)=>{
 
 
-if (btn) btn.classList.remove("spinning"); // 🔥 회전 멈춤
+
 
     if (!json || json.ok !== true) {
       toast("공지 새로고침 실패");
