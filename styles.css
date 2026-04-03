@@ -3410,3 +3410,46 @@ button:active{
 .fc .fc-button-primary{
   color:#0b4ea2;
 }
+
+
+
+
+/* 🔵 iOS 스타일 새로고침 버튼 */
+.refresh-btn{
+  width:32px;
+  height:32px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+  border:none;
+
+  font-size:16px;
+  font-weight:600;
+
+  color:#fff;
+  background:rgba(255,255,255,0.15);
+
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+  cursor:pointer;
+  transition: all .15s ease;
+}
+
+/* hover (PC용) */
+.refresh-btn:hover{
+  background:rgba(255,255,255,0.25);
+}
+
+/* 클릭 느낌 */
+.refresh-btn:active{
+  transform: scale(0.92);
+}
+
+
+
