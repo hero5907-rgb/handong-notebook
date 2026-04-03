@@ -3462,3 +3462,50 @@ button:active{
   border: 1px solid rgba(11,78,162,0.15);
 }
 
+
+/* 🍎 진짜 iOS 스타일 새로고침 버튼 */
+.refresh-btn{
+  width:34px;
+  height:34px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:50%;
+
+  /* 🔥 핵심: 유리 느낌 */
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  border: 1px solid rgba(255,255,255,0.7);
+
+  /* 🔥 iOS 그림자 */
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+
+  /* 아이콘 */
+  font-size:16px;
+  color:#0b4ea2;
+  font-weight:700;
+
+  cursor:pointer;
+  transition: all .15s ease;
+}
+
+/* hover */
+.refresh-btn:hover{
+  background: rgba(255,255,255,0.75);
+}
+
+/* 클릭 */
+.refresh-btn:active{
+  transform: scale(0.92);
+  box-shadow:
+    0 2px 6px rgba(0,0,0,0.15) inset;
+}
+
+
+
