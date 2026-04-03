@@ -1694,9 +1694,12 @@ showLoading();   // 🔥
 toast("등록 완료");
 closeEventSheet();
 
-setTimeout(()=>{
-  openDayEvents(currentEventDate);
-}, 200);
+const wait = setInterval(()=>{
+  if (!__calendarReloading){
+    clearInterval(wait);
+    openDayEvents(currentEventDate);
+  }
+}, 50);
 
 
 // 🔥 추가 (캐시 초기화)
@@ -3857,12 +3860,13 @@ allEvents = [];
 
 loadCalendar();
 
-loadCalendar();
-
-// 🔥 현재 날짜 다시 열기
-setTimeout(()=>{
-  openDayEvents(currentEventDate);
-}, 200);
+// 🔥 달력 로딩 끝날때까지 기다렸다 열기
+const wait = setInterval(()=>{
+  if (!__calendarReloading){
+    clearInterval(wait);
+    openDayEvents(currentEventDate);
+  }
+}, 50);
  
     } else {
       toast("삭제 실패");
