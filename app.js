@@ -2989,10 +2989,9 @@ function openDayEvents(date){
 
       </div>
 
-      <!-- 🔵 하단 고정 -->
+      <!-- 🔵 하단 -->
       ${
-        state.me?.isAdmin === true &&
-        (state.me.adminLevel === 0 || state.me.adminLevel === 1)
+        state.me?.isAdmin === true
         ? `
         <div class="day-footer">
           <button id="btnAddEvent" class="btn primary">
@@ -3005,6 +3004,13 @@ function openDayEvents(date){
 
     </div>
   `);
+
+  // 🔥 여기 넣는게 정답
+  setTimeout(()=>{
+    document.querySelectorAll(".menu-popup").forEach(p=>{
+      p.style.display = "none";
+    });
+  },0);
 
   // 버튼 이벤트
   if (state.me?.isAdmin){
