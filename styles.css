@@ -1167,12 +1167,11 @@ font-size: clamp(15px, 5vw, 24px);
 }
 
 
-/* 🔥 모달 구조 최종 (스크롤/고정 완성) */
-#modalBody{
-  display:flex;
-  flex-direction:column;
-  height:calc(80vh - 60px);   /* 🔥 모달 높이에 맞춤 */
-  overflow:hidden;
+
+
+
+
+
 
   /* 🔥 스크롤 스타일 */
   scrollbar-width: thin;
@@ -3359,3 +3358,29 @@ button:active{
   background:rgba(0,0,0,0.25);
   border-radius:10px;
 }
+
+
+
+
+/* 🔥 일정팝업 전용 구조 */
+.day-wrap{
+  display:flex;
+  flex-direction:column;
+  max-height:65vh;
+}
+
+.day-scroll{
+  flex:1;
+  overflow-y:auto;
+}
+
+.day-footer{
+  position:sticky;
+  bottom:0;
+  background:#fff;
+  padding-top:10px;
+}
+
+
+
+
