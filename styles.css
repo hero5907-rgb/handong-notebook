@@ -732,7 +732,8 @@ font-size: clamp(15px, 5vw, 24px);
   width: min(92vw, 420px);
 
   max-height: 75vh;
-  overflow-y: auto;   /* 🔥 이걸로 교체 */
+  overflow: hidden;   /* 🔥 바깥 스크롤 제거 */
+
 
   border-radius: 18px;
   padding: 16px;
