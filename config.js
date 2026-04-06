@@ -7,9 +7,9 @@ window.APP_CONFIG = {
 
   address: "37554 경북 포항시 북구 흥해읍 한동로 558 한동대학교",
 
-  phone: "054-260-1111",
+  phone: "054-260-3044",
 
-  copyright: "Developed by 한동회 55기 황문기",
+  copyright: "Developed by Hwang Moongi, Class of 55, Handong",
 
   // (선택) 기본 이미지 (설정시트에 로고/배경이 있으면 그게 우선)
   logoUrl: "./logo.png",
