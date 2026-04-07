@@ -1628,8 +1628,6 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
 });
 
 
-
-
 // ✅ 저장 버튼
 // ✅ 저장 버튼
 el("btnEventSave")?.addEventListener("click", ()=>{
@@ -2927,14 +2925,8 @@ currentEventDate = date;   // 🔥 이거 추가
 
       <!-- 🔵 상단 -->
 <div class="day-header">
-
-  <div class="day-header-right">
-    <button id="btnAddEventTop" class="ios-add-btn">+</button>
-    <button class="ios-close-btn" onclick="closeModal()">✕</button>
-  </div>
-
   <h3>🗓️ ${date}</h3>
-
+  <button class="modal-x" onclick="closeModal()">✕</button>
 </div>
 
       <!-- 🔵 리스트만 스크롤 -->
@@ -3026,7 +3018,11 @@ currentEventDate = date;   // 🔥 이거 추가
       ${
         state.me?.isAdmin === true
         ? `
-
+        <div class="day-footer">
+          <button id="btnAddEvent" class="btn primary">
+            + 일정 등록
+          </button>
+        </div>
         `
         : ""
       }
@@ -3052,18 +3048,6 @@ currentEventDate = date;   // 🔥 이거 추가
       }
     },0);
   }
-
-// 🔥 상단 + 버튼 연결 (추가)
-setTimeout(()=>{
-  const btnTop = el("btnAddEventTop");
-  if (btnTop){
-    btnTop.onclick = ()=>{
-      openEventSheet({ date });
-    };
-  }
-},0);
-
-
 }
 
 
