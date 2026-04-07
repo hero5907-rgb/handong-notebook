@@ -3542,18 +3542,20 @@ button:active{
   gap:6px;
 }
 
-/* ===== 아이콘 버튼 ( + / X 통일 ) ===== */
+
+/* ===== iOS 스타일 아이콘 버튼 (최종) ===== */
 .ios-icon-btn{
   width:32px;
   height:32px;
 
   border:none;
-  background:transparent;
+  outline:none;
+  background:transparent;   /* 🔥 핵심 */
 
-  font-size:20px;
-  font-weight:400;
+  font-size:22px;
+  font-weight:300;
 
-  color:#64748b;
+  color:#6b7280;
 
   display:flex;
   align-items:center;
@@ -3563,8 +3565,8 @@ button:active{
   cursor:pointer;
 }
 
-/* 터치 느낌 */
+/* 터치 느낌 (아이폰 스타일) */
 .ios-icon-btn:active{
-  background:rgba(0,0,0,0.06);
+  background:rgba(0,0,0,0.08);
   transform:scale(0.9);
 }
