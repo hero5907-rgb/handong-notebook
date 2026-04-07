@@ -3515,46 +3515,56 @@ button:active{
   align-items:center;
   justify-content:space-between;
 }
-
-.day-header-right{
+/* ===== 헤더 전체 ===== */
+.day-header{
+  position:relative;
   display:flex;
   align-items:center;
+  justify-content:center; /* 🔥 가운데 정렬 핵심 */
+  padding:12px 16px;
+}
+
+/* ===== 날짜 ===== */
+.day-header h3{
+  margin:0;
+  font-size:16px;
+  font-weight:600;
+}
+
+/* ===== 오른쪽 버튼 영역 ===== */
+.day-header-right{
+  position:absolute;
+  right:12px;
+  top:50%;
+  transform:translateY(-50%);
+
+  display:flex;
   gap:6px;
 }
 
-/* + 버튼 */
-.ios-add-btn{
+/* ===== 아이콘 버튼 ( + / X 통일 ) ===== */
+.ios-icon-btn{
   width:32px;
   height:32px;
+
   border:none;
   background:transparent;
-  font-size:24px;
-  font-weight:300;
-  color:#0b4ea2;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
 
-.ios-add-btn:active{
-  transform:scale(0.9);
-  opacity:0.6;
-}
-
-/* X 버튼 */
-.ios-close-btn{
-  width:32px;
-  height:32px;
-  border:none;
-  background:transparent;
   font-size:20px;
+  font-weight:400;
+
   color:#64748b;
+
   display:flex;
   align-items:center;
   justify-content:center;
+
+  border-radius:50%;
+  cursor:pointer;
 }
 
-.ios-close-btn:active{
+/* 터치 느낌 */
+.ios-icon-btn:active{
+  background:rgba(0,0,0,0.06);
   transform:scale(0.9);
-  opacity:0.6;
 }
