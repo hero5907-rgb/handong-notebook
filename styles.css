@@ -3544,29 +3544,50 @@ button:active{
 
 
 /* ===== iOS 스타일 아이콘 버튼 (최종) ===== */
-.ios-icon-btn{
-  width:32px;
-  height:32px;
+/* ===============================
+   📅 모달 상단 + / X 버튼 iOS 스타일 강제
+   =============================== */
 
-  border:none;
-  outline:none;
-  background:transparent;   /* 🔥 핵심 */
+/* 버튼 영역 (우측 정렬 + 간격 줄이기) */
+.day-header > div:last-child{
+  display:flex;
+  gap:6px;             /* 🔥 버튼 간격 */
+  align-items:center;
+}
 
-  font-size:22px;
-  font-weight:300;
+/* + / X 공통 */
+.day-header button{
+  width:28px !important;
+  height:28px !important;
 
-  color:#6b7280;
+  border-radius:50% !important;
+  border:none !important;
+
+  background:rgba(0,0,0,0.06) !important;
+  color:#333 !important;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  border-radius:50%;
+  font-size:15px !important;
+  font-weight:600;
+
+  padding:0 !important;
+  margin:0 !important;
+
   cursor:pointer;
+
+  transition:all .12s ease;
 }
 
-/* 터치 느낌 (아이폰 스타일) */
-.ios-icon-btn:active{
-  background:rgba(0,0,0,0.08);
-  transform:scale(0.9);
+/* 눌림 효과 */
+.day-header button:active{
+  transform:scale(0.88);
+  background:rgba(0,0,0,0.12);
+}
+
+/* hover (PC 대응) */
+.day-header button:hover{
+  background:rgba(0,0,0,0.10);
 }
