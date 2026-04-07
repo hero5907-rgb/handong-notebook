@@ -3510,45 +3510,51 @@ button:active{
 }
 
 
-
-/* ===============================
-   🔵 X 옆 + 버튼 (완전 동일 사이즈)
-   =============================== */
-
-/* 버튼 위치: X 왼쪽 */
-#btnAddEvent{
-  position: absolute;
-  top: 10px;
-  right: 48px;   /* 🔥 X 바로 왼쪽 (핵심값) */
-
-  width: 30px;
-  height: 30px;
-
-  border-radius: 50%;
-  border: none;
-
-  background: rgba(0,0,0,0.05);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-
-  /* 🔥 기존 텍스트 제거 */
-  font-size: 0;
-  padding: 0;
+.day-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
 
-/* + 아이콘 */
-#btnAddEvent::after{
-  content: "+";
-  font-size: 18px;
-  font-weight: 600;
-  color: #0b4ea2;
+.day-header-right{
+  display:flex;
+  align-items:center;
+  gap:6px;
 }
 
-/* 눌림 효과 */
-#btnAddEvent:active{
-  transform: scale(0.9);
+/* + 버튼 */
+.ios-add-btn{
+  width:32px;
+  height:32px;
+  border:none;
+  background:transparent;
+  font-size:24px;
+  font-weight:300;
+  color:#0b4ea2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ios-add-btn:active{
+  transform:scale(0.9);
+  opacity:0.6;
+}
+
+/* X 버튼 */
+.ios-close-btn{
+  width:32px;
+  height:32px;
+  border:none;
+  background:transparent;
+  font-size:20px;
+  color:#64748b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.ios-close-btn:active{
+  transform:scale(0.9);
+  opacity:0.6;
 }
