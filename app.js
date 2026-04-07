@@ -1627,9 +1627,6 @@ el("btnAddEvent")?.addEventListener("click", ()=>{
   openEventSheet();
 });
 
-el("btnAddEventTop")?.addEventListener("click", ()=>{
-  openEventSheet({ date });
-});
 
 
 
@@ -3055,6 +3052,18 @@ currentEventDate = date;   // 🔥 이거 추가
       }
     },0);
   }
+
+// 🔥 상단 + 버튼 연결 (추가)
+setTimeout(()=>{
+  const btnTop = el("btnAddEventTop");
+  if (btnTop){
+    btnTop.onclick = ()=>{
+      openEventSheet({ date });
+    };
+  }
+},0);
+
+
 }
 
 
