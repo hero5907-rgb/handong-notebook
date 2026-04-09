@@ -1843,6 +1843,21 @@ document.addEventListener("click", (e) => {
 
   // 현재만 열기
   popup.classList.add("show");
+
+
+// 🔥 위치 강제 고정 (이거 추가)
+const rect = btn.getBoundingClientRect();
+
+// width 먼저 계산 (핵심)
+popup.style.display = "block";   // 🔥 이거 먼저 넣어야 width 잡힘
+
+const w = popup.offsetWidth;
+
+popup.style.position = "fixed";
+popup.style.top = (rect.top + rect.height / 2) + "px";
+popup.style.left = (rect.left - w - 6) + "px";
+popup.style.transform = "translateY(-50%)";
+
 });
 
 
