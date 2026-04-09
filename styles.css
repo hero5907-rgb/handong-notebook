@@ -3178,10 +3178,10 @@ button:active{
 .menu-popup{
   position:absolute;
 
-  top:100%;              /* 🔥 버튼 아래 */
-  right:0;               /* 🔥 버튼 기준 */
+  top:100%;
+  left:0;              /* 🔥 기준 변경 */
+  transform:none;      /* 🔥 이거 무조건 제거 */
 
-  transform:translateX(-100%);  /* 🔥 왼쪽으로 딱 붙임 */
   margin-top:6px;
 
   background:#fff;
