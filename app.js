@@ -1852,7 +1852,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest(".menu-wrap")) return;
 
   document.querySelectorAll(".menu-popup").forEach(p => {
-    p.style.display = "none";
+     p.classList.remove("show");
   });
 
 });
