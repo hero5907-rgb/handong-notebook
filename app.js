@@ -1847,10 +1847,9 @@ popup.classList.add("show");
 // 🔥 위치 강제 (최종 안정)
 const rect = btn.getBoundingClientRect();
 
-// 먼저 보여서 width 계산
-popup.style.visibility = "hidden";
-popup.style.display = "block";
-popup.style.transform = "none";
+
+
+
 
 const w = popup.offsetWidth;
 
