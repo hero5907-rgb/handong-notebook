@@ -1833,35 +1833,16 @@ document.addEventListener("click", (e) => {
 
   e.stopPropagation();
 
-  const popup = btn.closest(".menu-wrap").querySelector(".menu-popup");
+  const popup = btn.nextElementSibling;
   if (!popup) return;
 
   // 전부 닫고
   document.querySelectorAll(".menu-popup").forEach(p => {
-    p.classList.remove("show");
+    p.style.display = "none";
   });
 
-// 현재만 열기
-popup.classList.add("show");
-
-// 🔥 위치 강제 (최종 안정)
-const rect = btn.getBoundingClientRect();
-
-
-
-
-
-const w = popup.offsetWidth;
-
-// 원상복구
-popup.style.visibility = "";
-
-// 위치 지정
-popup.style.position = "fixed";
-popup.style.top = (rect.top + rect.height / 2) + "px";
-popup.style.left = (rect.left - w - 6) + "px";
-popup.style.transform = "translateY(-50%)";
-
+  // 현재만 열기
+  popup.style.display = "block";
 });
 
 
@@ -1871,7 +1852,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest(".menu-wrap")) return;
 
   document.querySelectorAll(".menu-popup").forEach(p => {
-     p.classList.remove("show");
+    p.style.display = "none";
   });
 
 });
@@ -2944,31 +2925,8 @@ currentEventDate = date;   // 🔥 이거 추가
 
       <!-- 🔵 상단 -->
 <div class="day-header">
-
-  ${
-    state.me?.isAdmin === true
-    ? `<button id="btnAddEventTop" class="icon-btn">
-        <svg viewBox="0 0 24 24" class="ico">
-          <path d="M12 5v14M5 12h14"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"/>
-        </svg>
-      </button>`
-    : `<div style="width:32px"></div>`
-  }
-
   <h3>🗓️ ${date}</h3>
-
-  <button class="icon-btn" onclick="closeModal()">
-    <svg viewBox="0 0 24 24" class="ico">
-      <path d="M6 6l12 12M18 6l-12 12"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"/>
-    </svg>
-  </button>
-
+  <button class="modal-x" onclick="closeModal()">✕</button>
 </div>
 
       <!-- 🔵 리스트만 스크롤 -->
@@ -3006,7 +2964,7 @@ currentEventDate = date;   // 🔥 이거 추가
                     )
                   ) ? `
                   <div class="menu-wrap">
-                    <button class="menu-btn">⋯</button>
+                    <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
                     <div class="menu-popup">
                       <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
                       <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
@@ -3057,29 +3015,39 @@ currentEventDate = date;   // 🔥 이거 추가
       </div>
 
       <!-- 🔵 하단 -->
-
+      ${
+        state.me?.isAdmin === true
+        ? `
+        <div class="day-footer">
+          <button id="btnAddEvent" class="btn primary">
+            + 일정 등록
+          </button>
+        </div>
+        `
+        : ""
+      }
 
     </div>
   `);
 
   // 🔥 여기 넣는게 정답
-
-
-
+  setTimeout(()=>{
+    document.querySelectorAll(".menu-popup").forEach(p=>{
+      p.style.display = "none";
+    });
+  },0);
 
   // 버튼 이벤트
-if (state.me?.isAdmin){
-  setTimeout(()=>{
-
-    const btn = el("btnAddEventTop");
-    if (btn){
-      btn.onclick = ()=>{
-        openEventSheet({ date });
-      };
-    }
-
-  },0);
-}
+  if (state.me?.isAdmin){
+    setTimeout(()=>{
+      const btn = el("btnAddEvent");
+      if (btn){
+        btn.onclick = ()=>{
+          openEventSheet({ date });
+        };
+      }
+    },0);
+  }
 }
 
 
@@ -3928,6 +3896,23 @@ const wait = setInterval(()=>{
   });
 }
 
+function toggleMenu(btn){
+
+  const popup = btn.nextElementSibling;
+  if (!popup) return;
+
+  // 전부 닫기
+  document.querySelectorAll(".menu-popup").forEach(p=>{
+    p.style.display = "none";
+  });
+
+  // 토글
+  if (popup.style.display === "block"){
+    popup.style.display = "none";
+  } else {
+    popup.style.display = "block";
+  }
+}
 
 
 
