@@ -3178,17 +3178,15 @@ button:active{
 .menu-popup{
   position:absolute;
 
-  top:100%;
+  top:50%;
   right:0;
 
-  transform:translateX(-100%);
-  margin-top:6px;
+  transform:translate(-100%, -50%);  /* 🔥 핵심 */
 
   background:#fff;
   border-radius:10px;
   box-shadow:0 6px 16px rgba(0,0,0,.12);
 
-  overflow:hidden;
   min-width:80px;
   z-index:9999;
 }
@@ -3213,9 +3211,7 @@ button:active{
 /* 래퍼 */
 .menu-wrap{
   position:relative;
-  display:flex;
-  justify-content:flex-end;
-  width:auto;          /* 🔥 추가 */
+  display:inline-flex;   /* 🔥 핵심 */
 }
 
 /* 🔥 중요 일정 안내 제목만 가운데 */
