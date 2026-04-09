@@ -3211,7 +3211,8 @@ button:active{
 /* 래퍼 */
 .menu-wrap{
   position:relative;
-  display:inline-block;   /* 🔥 핵심 */
+  display:flex;
+  justify-content:flex-end;
 }
 
 
