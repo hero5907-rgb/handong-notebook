@@ -3710,3 +3710,20 @@ button:active{
   display: flex;
   align-items: center;
 }
+
+
+.menu-wrap {
+  position: relative;
+}
+
+.menu-popup {
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  transform: translateY(-50%);
+  display: none;
+}
+
+.menu-popup.show {
+  display: block;
+}
