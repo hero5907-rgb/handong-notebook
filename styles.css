@@ -3574,3 +3574,9 @@ button:active{
   transform:scale(.9);
   background:rgba(0,0,0,0.12);
 }
+
+
+.menu-popup{
+  right:0 !important;
+  transform:translateX(-100%) !important;
+}
