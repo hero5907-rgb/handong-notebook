@@ -1265,7 +1265,7 @@ if (popupRes && popupRes.ok === true){
         <div class="day-wrap">
 
           <div class="day-header">
-            <h3>📢 중요 일정 안내</h3>
+            <h3>중요 일정 안내</h3>
           </div>
 
           <div class="day-scroll">

@@ -3575,3 +3575,13 @@ button:active{
   transform:scale(.9);
   background:rgba(0,0,0,0.12);
 }
+
+
+.day-header {
+  display: flex;
+  justify-content: center;
+}
+
+.day-header h3 {
+  margin: 0;
+}
