@@ -3727,3 +3727,29 @@ button:active{
 .menu-popup.show {
   display: block;
 }
+
+
+/* 🔥 드롭다운 최종 안정화 */
+
+.menu-wrap{
+  position: relative !important;
+}
+
+.menu-popup{
+  position: absolute !important;
+  top: 50% !important;
+  right: 100% !important;
+  transform: translateY(-50%) !important;
+
+  display: none !important;
+  z-index: 9999 !important;
+}
+
+.menu-popup.show{
+  display: block !important;
+}
+
+/* 🔥 모달에서 잘리는거 방지 */
+.modal-card{
+  overflow: visible !important;
+}

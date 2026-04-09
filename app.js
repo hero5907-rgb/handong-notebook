@@ -2989,7 +2989,7 @@ currentEventDate = date;   // 🔥 이거 추가
                     )
                   ) ? `
                   <div class="menu-wrap">
-                    <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
+                    <button class="menu-btn">⋯</button>
                     <div class="menu-popup">
                       <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
                       <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
@@ -3913,23 +3913,6 @@ const wait = setInterval(()=>{
   });
 }
 
-function toggleMenu(btn){
-
-  const popup = btn.nextElementSibling;
-  if (!popup) return;
-
-  // 전부 닫기
-  document.querySelectorAll(".menu-popup").forEach(p=>{
-    p.style.display = "none";
-  });
-
-  // 토글
-  if (popup.style.display === "block"){
-    popup.classList.remove("show");
-  } else {
-    popup.style.display = "block";
-  }
-}
 
 
 
