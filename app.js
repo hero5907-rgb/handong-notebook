@@ -1844,6 +1844,24 @@ document.addEventListener("click", (e) => {
 // 현재만 열기
 popup.classList.add("show");
 
+// 🔥 위치 강제 (최종 안정)
+const rect = btn.getBoundingClientRect();
+
+// 먼저 보여서 width 계산
+popup.style.visibility = "hidden";
+popup.style.display = "block";
+popup.style.transform = "none";
+
+const w = popup.offsetWidth;
+
+// 원상복구
+popup.style.visibility = "";
+
+// 위치 지정
+popup.style.position = "fixed";
+popup.style.top = (rect.top + rect.height / 2) + "px";
+popup.style.left = (rect.left - w - 6) + "px";
+popup.style.transform = "translateY(-50%)";
 
 });
 
