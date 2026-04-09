@@ -3579,9 +3579,12 @@ button:active{
 
 .day-header {
   display: flex;
-  justify-content: center;
+  align-items: center;
+  justify-content: space-between;  /* 🔥 핵심 */
 }
 
 .day-header h3 {
   margin: 0;
+  text-align: center;
+  flex: 1;                        /* 🔥 가운데 고정 */
 }

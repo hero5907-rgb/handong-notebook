@@ -2939,7 +2939,7 @@ currentEventDate = date;   // 🔥 이거 추가
     : `<div style="width:32px"></div>`
   }
 
-  <h3>🗓️ ${date}</h3>
+  <h3>${date}</h3>
 
   <button class="icon-btn" onclick="closeModal()">
     <svg viewBox="0 0 24 24" class="ico">
