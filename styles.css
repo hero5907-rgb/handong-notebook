@@ -3211,8 +3211,7 @@ button:active{
 /* 래퍼 */
 .menu-wrap{
   position:relative;
-  display:flex;
-  justify-content:flex-end;
+  margin-left:auto;   /* 🔥 이거 한줄이 핵심 */
 }
 
 
