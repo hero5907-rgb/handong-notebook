@@ -3174,29 +3174,25 @@ button:active{
 }
 
 
-/* ===== 드롭다운 메뉴 (왼쪽 + 슬림) ===== */
+/* 드롭다운 메뉴 */
 .menu-popup{
   position:absolute;
-
-  top:0;
-  right:100%;
-  margin-right:6px;
+  top:36px;
+  right:0;
 
   background:#fff;
-  border-radius:10px;
-  box-shadow:0 6px 16px rgba(0,0,0,.12);
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
 
   overflow:hidden;
-  min-width:80px;
+  min-width:100px;
   z-index:9999;
-
-  transform:translateY(-6px);
 }
 
-/* 메뉴 아이템 (슬림) */
+/* 메뉴 아이템 */
 .menu-item{
-  padding:8px 10px;
-  font-size:13px;
+  padding:10px 14px;
+  font-size:14px;
   cursor:pointer;
   white-space:nowrap;
 }
@@ -3210,12 +3206,13 @@ button:active{
   color:#e53935;
 }
 
-/* 래퍼 */
+
 .menu-wrap{
   position:relative;
   display:flex;
   justify-content:flex-end;
 }
+
 
 
 /* 🔥 중요 일정 안내 제목만 가운데 */
