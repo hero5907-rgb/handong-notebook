@@ -3178,8 +3178,11 @@ button:active{
 .menu-popup{
   position:absolute;
 
-  top:36px;          /* 🔥 아래로 내림 (원래 위치 복구) */
-  right:100%;        /* 🔥 왼쪽으로 뜨게 유지 */
+  top:36px;
+  right:0;              /* 🔥 다시 오른쪽 기준으로 */
+  
+  transform: translateX(-100%);  /* 🔥 왼쪽으로 이동 */
+
   margin-right:6px;
 
   background:#fff;
