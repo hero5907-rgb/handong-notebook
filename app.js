@@ -3063,11 +3063,9 @@ currentEventDate = date;   // 🔥 이거 추가
   `);
 
   // 🔥 여기 넣는게 정답
-  setTimeout(()=>{
-    document.querySelectorAll(".menu-popup").forEach(p=>{
-      p.style.display = "none";
-    });
-  },0);
+
+
+
 
   // 버튼 이벤트
 if (state.me?.isAdmin){
