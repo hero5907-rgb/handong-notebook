@@ -2925,8 +2925,31 @@ currentEventDate = date;   // 🔥 이거 추가
 
       <!-- 🔵 상단 -->
 <div class="day-header">
+
+  ${
+    state.me?.isAdmin === true
+    ? `<button id="btnAddEventTop" class="icon-btn">
+        <svg viewBox="0 0 24 24" class="ico">
+          <path d="M12 5v14M5 12h14"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"/>
+        </svg>
+      </button>`
+    : `<div style="width:32px"></div>`
+  }
+
   <h3>🗓️ ${date}</h3>
-  <button class="modal-x" onclick="closeModal()">✕</button>
+
+  <button class="icon-btn" onclick="closeModal()">
+    <svg viewBox="0 0 24 24" class="ico">
+      <path d="M6 6l12 12M18 6l-12 12"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"/>
+    </svg>
+  </button>
+
 </div>
 
       <!-- 🔵 리스트만 스크롤 -->
@@ -3015,17 +3038,7 @@ currentEventDate = date;   // 🔥 이거 추가
       </div>
 
       <!-- 🔵 하단 -->
-      ${
-        state.me?.isAdmin === true
-        ? `
-        <div class="day-footer">
-          <button id="btnAddEvent" class="btn primary">
-            + 일정 등록
-          </button>
-        </div>
-        `
-        : ""
-      }
+
 
     </div>
   `);
@@ -3038,16 +3051,18 @@ currentEventDate = date;   // 🔥 이거 추가
   },0);
 
   // 버튼 이벤트
-  if (state.me?.isAdmin){
-    setTimeout(()=>{
-      const btn = el("btnAddEvent");
-      if (btn){
-        btn.onclick = ()=>{
-          openEventSheet({ date });
-        };
-      }
-    },0);
-  }
+if (state.me?.isAdmin){
+  setTimeout(()=>{
+
+    const btn = el("btnAddEventTop");
+    if (btn){
+      btn.onclick = ()=>{
+        openEventSheet({ date });
+      };
+    }
+
+  },0);
+}
 }
 
 
