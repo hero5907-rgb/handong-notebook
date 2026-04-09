@@ -2925,8 +2925,17 @@ currentEventDate = date;   // 🔥 이거 추가
 
       <!-- 🔵 상단 -->
 <div class="day-header">
+
+  ${
+    state.me?.isAdmin === true
+    ? `<button id="btnAddEventTop" class="modal-x">+</button>`
+    : ""
+  }
+
   <h3>🗓️ ${date}</h3>
+
   <button class="modal-x" onclick="closeModal()">✕</button>
+
 </div>
 
       <!-- 🔵 리스트만 스크롤 -->
@@ -3015,17 +3024,7 @@ currentEventDate = date;   // 🔥 이거 추가
       </div>
 
       <!-- 🔵 하단 -->
-      ${
-        state.me?.isAdmin === true
-        ? `
-        <div class="day-footer">
-          <button id="btnAddEvent" class="btn primary">
-            + 일정 등록
-          </button>
-        </div>
-        `
-        : ""
-      }
+
 
     </div>
   `);
@@ -3038,16 +3037,18 @@ currentEventDate = date;   // 🔥 이거 추가
   },0);
 
   // 버튼 이벤트
-  if (state.me?.isAdmin){
-    setTimeout(()=>{
-      const btn = el("btnAddEvent");
-      if (btn){
-        btn.onclick = ()=>{
-          openEventSheet({ date });
-        };
-      }
-    },0);
-  }
+if (state.me?.isAdmin){
+  setTimeout(()=>{
+
+    const btn = el("btnAddEventTop");
+    if (btn){
+      btn.onclick = ()=>{
+        openEventSheet({ date });
+      };
+    }
+
+  },0);
+}
 }
 
 
