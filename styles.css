@@ -3184,10 +3184,6 @@ button:active{
   transform:translateX(-100%);
   margin-top:6px;
 
-  /* 🔥 핵심 2줄 */
-  display:block;
-  width:max-content;
-
   background:#fff;
   border-radius:10px;
   box-shadow:0 6px 16px rgba(0,0,0,.12);
@@ -3219,8 +3215,8 @@ button:active{
   position:relative;
   display:flex;
   justify-content:flex-end;
+  width:auto;          /* 🔥 추가 */
 }
-
 
 /* 🔥 중요 일정 안내 제목만 가운데 */
 #modalBody h3{
