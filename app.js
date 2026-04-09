@@ -1842,7 +1842,7 @@ document.addEventListener("click", (e) => {
   });
 
   // 현재만 열기
-  popup.style.display = "block";
+  popup.classList.add("show");
 });
 
 
@@ -3923,7 +3923,7 @@ function toggleMenu(btn){
 
   // 토글
   if (popup.style.display === "block"){
-    popup.style.display = "none";
+    popup.classList.remove("show");
   } else {
     popup.style.display = "block";
   }
