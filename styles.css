@@ -3608,12 +3608,12 @@ button:active{
   position: absolute;
 
   top: 50%;
-  right: 100%;
+  right: 0;
 
   transform: translateY(-50%) scale(0.95);
   transform-origin: right center;
 
-  margin-right: 6px;
+  margin-right: 0;
 
   min-width: 88px;
   padding: 6px;
