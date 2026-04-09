@@ -3584,3 +3584,13 @@ button:active{
 .menu-popup.show{
   display: block;
 }
+
+
+/* 🔥 최종 - 버튼 바로 왼쪽 고정 */
+.menu-popup{
+  top:50% !important;
+  right:36px !important;   /* ← 버튼 왼쪽으로 이동 */
+  transform:translateY(-50%) !important;
+}
+
+
