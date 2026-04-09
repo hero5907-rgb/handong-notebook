@@ -1838,7 +1838,7 @@ document.addEventListener("click", (e) => {
 
   // 전부 닫고
   document.querySelectorAll(".menu-popup").forEach(p => {
-    p.style.display = "none";
+    p.classList.remove("show");
   });
 
   // 현재만 열기
