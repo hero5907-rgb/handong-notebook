@@ -3213,7 +3213,7 @@ button:active{
 /* 래퍼 */
 .menu-wrap{
   position:relative;
-  display:flex;
+  display:inline-flex;
   justify-content:flex-end;
 }
 
