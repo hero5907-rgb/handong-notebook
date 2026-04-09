@@ -3174,27 +3174,25 @@ button:active{
 }
 
 
-/* ===== 드롭다운 메뉴 (왼쪽 + 슬림) ===== */
+/* 드롭다운 메뉴 */
 .menu-popup{
   position:absolute;
-
-  top:50%;
+  top:36px;
   right:0;
 
-  transform:translate(-100%, -50%);  /* 🔥 핵심 */
-
   background:#fff;
-  border-radius:10px;
-  box-shadow:0 6px 16px rgba(0,0,0,.12);
+  border-radius:12px;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
 
-  min-width:80px;
+  overflow:hidden;
+  min-width:100px;
   z-index:9999;
 }
 
-/* 메뉴 아이템 (슬림) */
+/* 메뉴 아이템 */
 .menu-item{
-  padding:8px 10px;
-  font-size:13px;
+  padding:10px 14px;
+  font-size:14px;
   cursor:pointer;
   white-space:nowrap;
 }
@@ -3208,11 +3206,14 @@ button:active{
   color:#e53935;
 }
 
-/* 래퍼 */
+
 .menu-wrap{
   position:relative;
-  display:inline-flex;   /* 🔥 핵심 */
+  display:flex;
+  justify-content:flex-end;
 }
+
+
 
 /* 🔥 중요 일정 안내 제목만 가운데 */
 #modalBody h3{
@@ -3573,10 +3574,4 @@ button:active{
 .day-header .icon-btn:active{
   transform:scale(.9);
   background:rgba(0,0,0,0.12);
-}
-
-
-.menu-popup{
-  right:0 !important;
-  transform:translateX(-100%) !important;
 }
