@@ -3177,7 +3177,7 @@ button:active{
 /* 드롭다운 메뉴 */
 .menu-popup{
   position:absolute;
-  top:36px;
+  top:1px;
   right:36px;
 
   background:#fff;
