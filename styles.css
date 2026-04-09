@@ -3587,4 +3587,7 @@ button:active{
   margin: 0;
   text-align: center;
   flex: 1;                        /* 🔥 가운데 고정 */
+  margin: 6px 0 10px;
+
+
 }
