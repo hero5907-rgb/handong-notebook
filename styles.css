@@ -3774,3 +3774,25 @@ button:active{
 .menu-popup.show{
   display: block !important;
 }
+
+
+
+
+/* 🔥 진짜 최종 (버튼 기준으로 붙이기) */
+.menu-wrap{
+  position: static !important;   /* 🔥 이게 핵심 */
+}
+
+.menu-popup{
+  position: absolute !important;
+  top: 50% !important;
+  right: 40px !important;   /* 버튼 위치 보정 */
+  transform: translateY(-50%) !important;
+
+  display: none !important;
+  z-index: 9999 !important;
+}
+
+.menu-popup.show{
+  display: block !important;
+}
