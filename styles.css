@@ -3753,3 +3753,24 @@ button:active{
 .modal-card{
   overflow: visible !important;
 }
+
+
+
+/* 🔥 드롭다운 위치 최종 고정 (덮어쓰기) */
+.menu-wrap{
+  position: relative !important;
+}
+
+.menu-popup{
+  position: absolute !important;
+  top: 50% !important;
+  left: -100% !important;   /* 버튼 왼쪽 */
+  transform: translate(-8px, -50%) !important;
+
+  display: none !important;
+  z-index: 9999 !important;
+}
+
+.menu-popup.show{
+  display: block !important;
+}
