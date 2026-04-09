@@ -3185,13 +3185,13 @@ button:active{
   box-shadow:0 8px 20px rgba(0,0,0,.15);
 
   overflow:hidden;
-  min-width:80px;
+  min-width:70px;
   z-index:9999;
 }
 
 /* 메뉴 아이템 */
 .menu-item{
-  padding:6px 10px;
+  padding:7px 12px;
   font-size:14px;
   cursor:pointer;
   white-space:nowrap;
