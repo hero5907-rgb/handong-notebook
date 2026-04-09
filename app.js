@@ -1833,7 +1833,7 @@ document.addEventListener("click", (e) => {
 
   e.stopPropagation();
 
-  const popup = btn.nextElementSibling;
+  const popup = btn.closest(".menu-wrap").querySelector(".menu-popup");
   if (!popup) return;
 
   // 전부 닫고
