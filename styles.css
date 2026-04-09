@@ -3254,7 +3254,7 @@ button:active{
 }
 
 .modal-x{
-  position:absolute;
+  position:static !important;
   top:-6px;
   right:0px;
 
@@ -3531,6 +3531,47 @@ button:active{
 }
 
 .modal-add:active{
+  transform:scale(.9);
+  background:rgba(0,0,0,0.12);
+}
+
+
+/* ===== 일정 팝업 헤더 (최종) ===== */
+.day-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+/* 기존 absolute 제거 (핵심) */
+.modal-x{
+  position:static !important;
+}
+
+/* 좌우 아이콘 버튼 통일 */
+.day-header .icon-btn{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+
+  background:rgba(0,0,0,0.05);
+  color:#111;
+
+  border:none;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* 아이콘 크기 (얇은선 느낌) */
+.day-header .ico{
+  width:18px;
+  height:18px;
+}
+
+/* 눌림 효과 */
+.day-header .icon-btn:active{
   transform:scale(.9);
   background:rgba(0,0,0,0.12);
 }
