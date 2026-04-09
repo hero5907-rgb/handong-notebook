@@ -3179,10 +3179,14 @@ button:active{
   position:absolute;
 
   top:100%;
-  left:0;              /* 🔥 기준 변경 */
-  transform:none;      /* 🔥 이거 무조건 제거 */
+  right:0;
 
+  transform:translateX(-100%);
   margin-top:6px;
+
+  /* 🔥 핵심 2줄 */
+  display:block;
+  width:max-content;
 
   background:#fff;
   border-radius:10px;
