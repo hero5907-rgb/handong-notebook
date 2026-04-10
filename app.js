@@ -2819,9 +2819,16 @@ if (loading) loading.style.display = "block";
 
 
 if (calendar) {
-  calendar.removeAllEvents();
-  calendar.addEventSource(events);
-  
+calendar.removeAllEventSources();   // 🔥 핵심
+
+calendar.addEventSource(events);
+
+calendar.addEventSource({
+  googleCalendarId: "ko.south_korea#holiday@group.v.calendar.google.com",
+  className: "holiday-event",
+  color: "#d60000",
+  textColor: "#d60000"
+});
 
   // 🔥 추가 (이거 한줄이 핵심)
   const loading = document.getElementById("calendarLoading");
