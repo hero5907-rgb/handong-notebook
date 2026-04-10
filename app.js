@@ -2889,9 +2889,9 @@ datesSet(info){
   if (__calendarReloading === true) return;
 
   // 🔥 이미 같은 달이면 막기 (핵심)
-  const yyyymm =
-    info.start.getFullYear() +
-    String(info.start.getMonth() + 1).padStart(2, "0");
+const yyyymm =
+  info.view.currentStart.getFullYear() +
+  String(info.view.currentStart.getMonth() + 1).padStart(2, "0");
 
   if (loadCalendar._lastYM === yyyymm) return;
 
