@@ -2969,12 +2969,9 @@ const holidays = (state.announcements || []).filter(a=>{
 <h3>
   ${date}
   ${
-    (allEvents || [])
-      .filter(e => {
-        const d = (e.extendedProps?.date || e.start || "").slice(0,10);
-        return d === date && Number(e.extendedProps?.gisu || 0) === 0;
-      })
-      .map(e => `<div class="holiday-item">${e.title}</div>`)
+    (state.announcements || [])
+      .filter(a => (a.date || "").slice(0,10) === date)
+      .map(a => `<div class="holiday-item">${a.title}</div>`)
       .join("")
   }
 </h3>
