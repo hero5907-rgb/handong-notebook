@@ -3596,19 +3596,14 @@ button:active{
 }
 
 
-/* 🔴 공휴일 라인 */
-.holiday-line{
+
+/* 🔴 공휴일 표시 (날짜 아래 작은 빨간 글씨) */
+.holiday-text{
+  font-size: 13px;
   color: #e53935;
-  font-size: 12px;
-  font-weight: 700;
-
-  margin-bottom: 8px;
-  padding-left: 2px;
-
-  letter-spacing: -0.2px;
+  font-weight: 600;
+  margin-top: 4px;
 }
-
-
 
 
 

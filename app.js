@@ -2932,6 +2932,19 @@ if (loading) loading.style.display = "none";
 // ===============================
 function openDayEvents(date){
 
+
+
+// 🔥 공휴일 찾기 (전체일정 = gisu 0)
+const holidays = (allEvents || []).filter(e=>{
+  const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+  return d === date && Number(e.extendedProps?.gisu || e.gisu || 0) === 0;
+});
+
+const holidayText = holidays.map(e=>e.title).join(", ");
+
+
+
+
   currentEventDate = date;
 
   const list = (allEvents || []).filter(e=>{
@@ -2958,7 +2971,10 @@ function openDayEvents(date){
           : `<div style="width:32px"></div>`
         }
 
-        <h3>${date}</h3>
+        <h3>
+  ${date}
+  ${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
+</h3>
 
         <button class="icon-btn" onclick="closeModal()">
           <svg viewBox="0 0 24 24" class="ico">
