@@ -2944,10 +2944,13 @@ const list = (allEvents || []).filter(e=>{
 
   if (e.extendedProps?.date){
     d = e.extendedProps.date;
+
   } else if (e.start){
-    d = (typeof e.start === "string")
-      ? e.start
-      : e.start.toISOString();
+    if (typeof e.start === "string"){
+      d = e.start;
+    } else {
+      d = new Date(e.start).toISOString();
+    }
   }
 
   return d.slice(0,10) === date;
