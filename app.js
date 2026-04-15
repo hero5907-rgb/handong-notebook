@@ -2969,9 +2969,9 @@ const holidays = (state.announcements || []).filter(a=>{
 <h3>
   ${date}
   ${
-    (state.announcements || [])
-      .filter(a => (a.date || "").slice(0,10) === date)
-      .map(a => `<div class="holiday-item">${a.title}</div>`)
+    (calendar?.getEvents() || [])
+      .filter(e => (e.startStr || "").slice(0,10) === date)
+      .map(e => `<div class="holiday-item">${e.title}</div>`)
       .join("")
   }
 </h3>
