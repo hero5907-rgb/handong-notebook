@@ -2970,7 +2970,14 @@ const holidays = (state.announcements || []).filter(a=>{
   ${date}
   ${
     (calendar?.getEvents() || [])
-      .filter(e => (e.startStr || "").slice(0,10) === date)
+      .filter(e => {
+        const d = (e.startStr || "").slice(0,10);
+
+        // 🔥 니가 만든 일정은 extendedProps.gisu 있음
+        const isMyEvent = e.extendedProps?.gisu !== undefined;
+
+        return d === date && !isMyEvent;
+      })
       .map(e => `<div class="holiday-item">${e.title}</div>`)
       .join("")
   }
