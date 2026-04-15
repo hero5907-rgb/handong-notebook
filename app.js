@@ -2973,12 +2973,22 @@ const holidays = (state.announcements || []).filter(a=>{
       .filter(e => {
         const d = (e.startStr || "").slice(0,10);
 
-        // 🔥 니가 만든 일정은 extendedProps.gisu 있음
+        // 🔥 니가 만든 일정 제외
         const isMyEvent = e.extendedProps?.gisu !== undefined;
 
         return d === date && !isMyEvent;
       })
-      .map(e => `<div class="holiday-item">${e.title}</div>`)
+      .map(e => {
+        let title = e.title || "";
+
+        // 🔥 여기만 추가 (핵심)
+        if (title.startsWith("쉬는 날 ")) {
+          const name = title.replace("쉬는 날 ", "");
+          title = `${name} 대체공휴일`;
+        }
+
+        return `<div class="holiday-item">${title}</div>`;
+      })
       .join("")
   }
 </h3>
