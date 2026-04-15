@@ -2928,11 +2928,6 @@ if (loading) loading.style.display = "none";
 
 
 
-function getEventDate(e){
-  if (e.extendedProps?.date) return e.extendedProps.date;
-  if (e.start) return (typeof e.start === "string") ? e.start : e.start.toISOString();
-  return "";
-}
 
 
 
@@ -2944,9 +2939,19 @@ function openDayEvents(date){
   currentEventDate = date;
 
 const list = (allEvents || []).filter(e=>{
-  return getEventDate(e).slice(0,10) === date;
-});
 
+  let d = "";
+
+  if (e.extendedProps?.date){
+    d = e.extendedProps.date;
+  } else if (e.start){
+    d = (typeof e.start === "string")
+      ? e.start
+      : e.start.toISOString();
+  }
+
+  return d.slice(0,10) === date;
+});
 
 
   openModal(`
