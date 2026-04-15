@@ -2874,13 +2874,20 @@ eventContent(arg) {
 },
 
     // 날짜 클릭 → 팝업
-    dateClick(info){
-      openDayEvents(info.dateStr);
-    },
+eventClick(info) {
 
-    eventClick(info) {
-      info.jsEvent.preventDefault();
-    },
+  info.jsEvent.preventDefault();
+
+  const d = info.event.start;
+
+  const y = d.getFullYear();
+  const m = ("0" + (d.getMonth()+1)).slice(-2);
+  const da = ("0" + d.getDate()).slice(-2);
+
+  const dateStr = y + "-" + m + "-" + da;
+
+  openDayEvents(dateStr);
+},
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
