@@ -2972,10 +2972,8 @@ const holidayText = list
           : `<div style="width:32px"></div>`
         }
 
-<h3>
-  ${date}
-  ${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
-</h3>
+<h3>${date}</h3>
+${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
 
         <button class="icon-btn" onclick="closeModal()">
           <svg viewBox="0 0 24 24" class="ico">
