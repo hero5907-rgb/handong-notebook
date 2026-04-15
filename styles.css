@@ -731,7 +731,10 @@ font-size: clamp(15px, 5vw, 24px);
   background: #fff;
   width: min(92vw, 420px);
 
-  max-height: 75vh;
+   max-height: 85vh;     /* 🔥 화면 안에서만 커짐 */
+
+   height: auto;         /* 🔥 내용 따라 */
+
   overflow: hidden !important;   /* 🔥 바깥 스크롤 제거 */
 
 
@@ -3598,57 +3601,6 @@ button:active{
 
 
 
-
-
-
-
-
-
-
-.modal{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-
-  display: flex;
-  align-items: flex-start;   /* 🔥 변경 */
-  justify-content: center;
-
-  padding-top: 40px;
-  padding-bottom: 40px;
-}
-
-.modal-card{
-  position: relative;
-  background: #fff;
-  width: min(92vw, 420px);
-
-  min-height: 420px;        /* 🔥 핵심 */
-  max-height: none;         /* 🔥 핵심 */
-
-  overflow: visible;
-
-  border-radius: 18px;
-  padding: 16px;
-
-  box-shadow: 0 20px 40px rgba(0,0,0,.2);
-}
-
-/* 🔥 모달 최종 해결 (맨 마지막에 넣어라) */
-.modal-card{
-  height: auto !important;
-  max-height: 85vh !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-
-  overflow: visible !important;
-}
-
-/* 🔥 버튼 항상 아래 */
-.modal-close{
-  margin-top: auto !important;
-}
 
 
 
