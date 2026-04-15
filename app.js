@@ -2938,22 +2938,14 @@ function openDayEvents(date){
 
   currentEventDate = date;
 
-const list = (allEvents || []).filter(e=>{
+const list = (calendar?.getEvents() || []).filter(e => {
 
-  let d = "";
+  const d = e.start
+    ? new Date(e.start.getTime() - e.start.getTimezoneOffset()*60000)
+        .toISOString().slice(0,10)
+    : "";
 
-  if (e.extendedProps?.date){
-    d = e.extendedProps.date;
-
-  } else if (e.start){
-    if (typeof e.start === "string"){
-      d = e.start;
-    } else {
-      d = new Date(e.start).toISOString();
-    }
-  }
-
-  return d.slice(0,10) === date;
+  return d === date;
 });
 
 
