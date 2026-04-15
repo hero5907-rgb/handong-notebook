@@ -2932,7 +2932,7 @@ if (loading) loading.style.display = "none";
 // ===============================
 function openDayEvents(date){
 
-currentEventDate = date;   // 🔥 이거 추가
+  currentEventDate = date;
 
   const list = (allEvents || []).filter(e=>{
     const d = (e.extendedProps?.date || e.start || "").slice(0,10);
@@ -2943,147 +2943,169 @@ currentEventDate = date;   // 🔥 이거 추가
     <div class="day-wrap">
 
       <!-- 🔵 상단 -->
-<div class="day-header">
-
-  ${
-    state.me?.isAdmin === true
-    ? `<button id="btnAddEventTop" class="icon-btn">
-        <svg viewBox="0 0 24 24" class="ico">
-          <path d="M12 5v14M5 12h14"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"/>
-        </svg>
-      </button>`
-    : `<div style="width:32px"></div>`
-  }
-
-  <h3>${date}</h3>
-
-  <button class="icon-btn" onclick="closeModal()">
-    <svg viewBox="0 0 24 24" class="ico">
-      <path d="M6 6l12 12M18 6l-12 12"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"/>
-    </svg>
-  </button>
-
-</div>
-
-      <!-- 🔵 리스트만 스크롤 -->
-      <div class="day-scroll">
+      <div class="day-header">
 
         ${
-          !list.length
-          ? `<p class="empty">일정이 없습니다.</p>`
-          : list.map(e=>`
-            <div class="event-item">
-
-              <div class="event-top">
-
-                <div class="event-title">
-                  <span style="
-                    width:8px;
-                    height:8px;
-                    border-radius:50%;
-                    display:inline-block;
-                    background:${e.extendedProps?.gisu === 0 ? '#e53935' : '#111'};
-                  "></span>
-                  ${e.title || ""}
-                </div>
-
-                ${
-                  (
-                    state.me?.isAdmin === true &&
-                    (
-                      state.me.adminLevel === 0 ||
-                      (
-                        state.me.adminLevel === 1 &&
-                        Number(e.extendedProps?.gisu) !== 0 &&
-                        Number(e.extendedProps?.gisu) === Number(state.me.gisu)
-                      )
-                    )
-                  ) ? `
-                  <div class="menu-wrap">
-                    <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
-                    <div class="menu-popup">
-                      <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
-                      <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
-                    </div>
-                  </div>
-                ` : ""
-                }
-
-              </div>
-
-              ${(()=>{
-                const d = (e.extendedProps?.date || e.start || "").slice(0,10);
-
-                const raw = String(e.extendedProps?.startTime || "");
-                const match = raw.match(/^(\d{2}):(\d{2})$/);
-
-                let timeText = "";
-
-                if (match){
-                  let h = parseInt(match[1],10);
-                  const m = match[2];
-
-                  if (h >= 12){
-                    timeText = "오후 " + (h - 12 || 12) + ":" + m;
-                  } else {
-                    timeText = "오전 " + h + ":" + m;
-                  }
-                }
-
-                return `
-                  <div class="event-meta">
-                    ${d} ${timeText}
-                    ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
-                  </div>
-                `;
-              })()}
-
-              ${e.extendedProps?.desc ? `
-                <div class="event-desc">
-                  ${e.extendedProps.desc}
-                </div>
-              ` : ""}
-
-            </div>
-          `).join("")
+          state.me?.isAdmin === true
+          ? `<button id="btnAddEventTop" class="icon-btn">
+              <svg viewBox="0 0 24 24" class="ico">
+                <path d="M12 5v14M5 12h14"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"/>
+              </svg>
+            </button>`
+          : `<div style="width:32px"></div>`
         }
+
+        <h3>${date}</h3>
+
+        <button class="icon-btn" onclick="closeModal()">
+          <svg viewBox="0 0 24 24" class="ico">
+            <path d="M6 6l12 12M18 6l-12 12"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"/>
+          </svg>
+        </button>
 
       </div>
 
-      <!-- 🔵 하단 -->
+      <!-- 🔵 리스트 -->
+      <div class="day-scroll">
 
+        ${(()=>{
+          const holidays = list.filter(e =>
+            e.source && e.source.googleCalendarId
+          );
+
+          const normalEvents = list.filter(e =>
+            !(e.source && e.source.googleCalendarId)
+          );
+
+          let html = "";
+
+          // 🔴 공휴일 먼저
+          if (holidays.length){
+            html += `
+                <div class="holiday-line">
+                ${holidays.map(h => h.title).join(", ")}
+              </div>
+            `;
+          }
+
+          // 📌 일반 일정
+          if (!normalEvents.length){
+            html += `<p class="empty">일정이 없습니다.</p>`;
+          } else {
+
+            html += normalEvents.map(e=>`
+
+              <div class="event-item">
+
+                <div class="event-top">
+
+                  <div class="event-title">
+                    <span style="
+                      width:8px;
+                      height:8px;
+                      border-radius:50%;
+                      display:inline-block;
+                      background:${e.extendedProps?.gisu === 0 ? '#e53935' : '#111'};
+                    "></span>
+                    ${e.title || ""}
+                  </div>
+
+                  ${
+                    (
+                      state.me?.isAdmin === true &&
+                      (
+                        state.me.adminLevel === 0 ||
+                        (
+                          state.me.adminLevel === 1 &&
+                          Number(e.extendedProps?.gisu) !== 0 &&
+                          Number(e.extendedProps?.gisu) === Number(state.me.gisu)
+                        )
+                      )
+                    ) ? `
+                    <div class="menu-wrap">
+                      <button class="menu-btn" onclick="toggleMenu(this)">⋯</button>
+                      <div class="menu-popup">
+                        <div class="menu-item" onclick="editEvent('${e.id}')">수정</div>
+                        <div class="menu-item danger" onclick="deleteEvent('${e.id}')">삭제</div>
+                      </div>
+                    </div>
+                  ` : ""
+                  }
+
+                </div>
+
+                ${(()=>{
+                  const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+
+                  const raw = String(e.extendedProps?.startTime || "");
+                  const match = raw.match(/^(\d{2}):(\d{2})$/);
+
+                  let timeText = "";
+
+                  if (match){
+                    let h = parseInt(match[1],10);
+                    const m = match[2];
+
+                    if (h >= 12){
+                      timeText = "오후 " + (h - 12 || 12) + ":" + m;
+                    } else {
+                      timeText = "오전 " + h + ":" + m;
+                    }
+                  }
+
+                  return `
+                    <div class="event-meta">
+                      ${d} ${timeText}
+                      ${e.extendedProps?.place ? " / " + e.extendedProps.place : ""}
+                    </div>
+                  `;
+                })()}
+
+                ${e.extendedProps?.desc ? `
+                  <div class="event-desc">
+                    ${e.extendedProps.desc}
+                  </div>
+                ` : ""}
+
+              </div>
+
+            `).join("");
+          }
+
+          return html;
+
+        })()}
+
+      </div>
 
     </div>
   `);
 
-  // 🔥 여기 넣는게 정답
+  // 🔥 메뉴 초기화
   setTimeout(()=>{
     document.querySelectorAll(".menu-popup").forEach(p=>{
       p.style.display = "none";
     });
   },0);
 
-  // 버튼 이벤트
-if (state.me?.isAdmin){
-  setTimeout(()=>{
-
-    const btn = el("btnAddEventTop");
-    if (btn){
-      btn.onclick = ()=>{
-        openEventSheet({ date });
-      };
-    }
-
-  },0);
+  // 🔥 상단 + 버튼
+  if (state.me?.isAdmin){
+    setTimeout(()=>{
+      const btn = el("btnAddEventTop");
+      if (btn){
+        btn.onclick = ()=>{
+          openEventSheet({ date });
+        };
+      }
+    },0);
+  }
 }
-}
-
 
 
 

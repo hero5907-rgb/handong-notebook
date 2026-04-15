@@ -3596,9 +3596,17 @@ button:active{
 }
 
 
+/* 🔴 공휴일 라인 */
+.holiday-line{
+  color: #e53935;
+  font-size: 12px;
+  font-weight: 700;
 
+  margin-bottom: 8px;
+  padding-left: 2px;
 
-
+  letter-spacing: -0.2px;
+}
 
 
 
