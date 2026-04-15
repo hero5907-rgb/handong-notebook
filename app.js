@@ -2927,6 +2927,15 @@ if (loading) loading.style.display = "none";
 
 
 
+
+function getEventDate(e){
+  if (e.extendedProps?.date) return e.extendedProps.date;
+  if (e.start) return (typeof e.start === "string") ? e.start : e.start.toISOString();
+  return "";
+}
+
+
+
  // ===============================
 // 📅 일정 팝업 (최종 구조)
 // ===============================
@@ -2934,10 +2943,11 @@ function openDayEvents(date){
 
   currentEventDate = date;
 
-  const list = (allEvents || []).filter(e=>{
-    const d = (e.extendedProps?.date || e.start || "").slice(0,10);
-    return d === date;
-  });
+const list = (allEvents || []).filter(e=>{
+  return getEventDate(e).slice(0,10) === date;
+});
+
+
 
   openModal(`
     <div class="day-wrap">
