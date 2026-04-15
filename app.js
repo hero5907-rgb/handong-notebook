@@ -2939,6 +2939,14 @@ function openDayEvents(date){
     return d === date;
   });
 
+
+// 🔥 공휴일(공지) 가져오기
+const holidays = (state.announcements || []).filter(a=>{
+  const d = (a.date || "").slice(0,10);
+  return d === date;
+});
+
+
   openModal(`
     <div class="day-wrap">
 
@@ -2958,7 +2966,18 @@ function openDayEvents(date){
           : `<div style="width:32px"></div>`
         }
 
-        <h3>${date}</h3>
+<h3>
+  ${date}
+  ${
+    (allEvents || [])
+      .filter(e => {
+        const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+        return d === date && Number(e.extendedProps?.gisu || 0) === 0;
+      })
+      .map(e => `<div class="holiday-item">${e.title}</div>`)
+      .join("")
+  }
+</h3>
 
         <button class="icon-btn" onclick="closeModal()">
           <svg viewBox="0 0 24 24" class="ico">
