@@ -3597,14 +3597,6 @@ button:active{
 
 
 
-/* 🔴 공휴일 표시 (날짜 아래 작은 빨간 글씨) */
-.holiday-text{
-  font-size: 13px;
-  color: #e53935;
-  font-weight: 600;
-  margin-top: 4px;
-}
-
 
 
 
