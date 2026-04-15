@@ -2934,14 +2934,8 @@ function openDayEvents(date){
 
 
 
-// 🔥 공휴일 찾기 (전체일정 = gisu 0)
-const holidays = (allEvents || []).filter(e=>{
-  const d = (e.extendedProps?.date || e.start || "").slice(0,10);
-  return d === date && Number(e.extendedProps?.gisu || e.gisu || 0) === 0;
-});
 
 const holidayText = holidays.map(e=>e.title).join(", ");
-
 
 
 
@@ -2951,6 +2945,13 @@ const holidayText = holidays.map(e=>e.title).join(", ");
     const d = (e.extendedProps?.date || e.start || "").slice(0,10);
     return d === date;
   });
+
+
+const holidayText = list
+  .filter(e => Number(e.extendedProps?.gisu || e.gisu || 0) === 0)
+  .map(e => e.title)
+  .join(", ");
+
 
   openModal(`
     <div class="day-wrap">
@@ -2971,7 +2972,7 @@ const holidayText = holidays.map(e=>e.title).join(", ");
           : `<div style="width:32px"></div>`
         }
 
-        <h3>
+<h3>
   ${date}
   ${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
 </h3>
