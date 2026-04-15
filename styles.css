@@ -3591,3 +3591,36 @@ button:active{
 
 
 }
+
+
+
+
+
+.modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: flex-start;   /* 🔥 변경 */
+  justify-content: center;
+
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.modal-card{
+  position: relative;
+  background: #fff;
+  width: min(92vw, 420px);
+
+  min-height: 420px;        /* 🔥 핵심 */
+  max-height: none;         /* 🔥 핵심 */
+
+  overflow: visible;
+
+  border-radius: 18px;
+  padding: 16px;
+
+  box-shadow: 0 20px 40px rgba(0,0,0,.2);
+}
