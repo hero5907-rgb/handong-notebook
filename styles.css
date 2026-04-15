@@ -3596,6 +3596,15 @@ button:active{
 
 
 
+
+
+
+
+
+
+
+
+
 .modal{
   position: fixed;
   inset: 0;
@@ -3624,3 +3633,29 @@ button:active{
 
   box-shadow: 0 20px 40px rgba(0,0,0,.2);
 }
+
+/* 🔥 모달 최종 해결 (맨 마지막에 넣어라) */
+.modal-card{
+  height: auto !important;
+  max-height: 85vh !important;
+
+  display: flex !important;
+  flex-direction: column !important;
+
+  overflow: visible !important;
+}
+
+/* 🔥 버튼 항상 아래 */
+.modal-close{
+  margin-top: auto !important;
+}
+
+
+
+
+
+
+
+
+
+
