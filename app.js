@@ -2932,13 +2932,6 @@ if (loading) loading.style.display = "none";
 // ===============================
 function openDayEvents(date){
 
-
-
-
-const holidayText = holidays.map(e=>e.title).join(", ");
-
-
-
   currentEventDate = date;
 
   const list = (allEvents || []).filter(e=>{
@@ -2946,12 +2939,11 @@ const holidayText = holidays.map(e=>e.title).join(", ");
     return d === date;
   });
 
-
-const holidayText = list
-  .filter(e => Number(e.extendedProps?.gisu || e.gisu || 0) === 0)
-  .map(e => e.title)
-  .join(", ");
-
+  // 🔴 공휴일 텍스트 (list에서 재사용)
+  const holidayText = list
+    .filter(e => Number(e.extendedProps?.gisu || e.gisu || 0) === 0)
+    .map(e => e.title)
+    .join(", ");
 
   openModal(`
     <div class="day-wrap">
@@ -2972,8 +2964,8 @@ const holidayText = list
           : `<div style="width:32px"></div>`
         }
 
-<h3>${date}</h3>
-${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
+        <h3>${date}</h3>
+        ${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
 
         <button class="icon-btn" onclick="closeModal()">
           <svg viewBox="0 0 24 24" class="ico">
@@ -3000,10 +2992,10 @@ ${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
 
           let html = "";
 
-          // 🔴 공휴일 먼저
+          // 🔴 공휴일 (라인 표시)
           if (holidays.length){
             html += `
-                <div class="holiday-line">
+              <div class="holiday-line">
                 ${holidays.map(h => h.title).join(", ")}
               </div>
             `;
@@ -3102,27 +3094,7 @@ ${holidayText ? `<div class="holiday-text">${holidayText}</div>` : ""}
     </div>
   `);
 
-  // 🔥 메뉴 초기화
-  setTimeout(()=>{
-    document.querySelectorAll(".menu-popup").forEach(p=>{
-      p.style.display = "none";
-    });
-  },0);
-
-  // 🔥 상단 + 버튼
-  if (state.me?.isAdmin){
-    setTimeout(()=>{
-      const btn = el("btnAddEventTop");
-      if (btn){
-        btn.onclick = ()=>{
-          openEventSheet({ date });
-        };
-      }
-    },0);
-  }
 }
-
-
 
 
 
