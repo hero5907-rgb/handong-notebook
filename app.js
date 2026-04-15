@@ -2874,20 +2874,13 @@ eventContent(arg) {
 },
 
     // 날짜 클릭 → 팝업
-eventClick(info) {
+    dateClick(info){
+      openDayEvents(info.dateStr);
+    },
 
-  info.jsEvent.preventDefault();
-
-  const d = info.event.start;
-
-  const y = d.getFullYear();
-  const m = ("0" + (d.getMonth()+1)).slice(-2);
-  const da = ("0" + d.getDate()).slice(-2);
-
-  const dateStr = y + "-" + m + "-" + da;
-
-  openDayEvents(dateStr);
-},
+    eventClick(info) {
+      info.jsEvent.preventDefault();
+    },
 
     // 🔥 달 이동할 때마다 해당 월 일정 다시 불러오기
 datesSet(info){
@@ -2934,10 +2927,6 @@ if (loading) loading.style.display = "none";
 
 
 
-
-
-
-
  // ===============================
 // 📅 일정 팝업 (최종 구조)
 // ===============================
@@ -2945,16 +2934,10 @@ function openDayEvents(date){
 
   currentEventDate = date;
 
-const list = (calendar?.getEvents() || []).filter(e => {
-
-  const d = e.start
-    ? new Date(e.start.getTime() - e.start.getTimezoneOffset()*60000)
-        .toISOString().slice(0,10)
-    : "";
-
-  return d === date;
-});
-
+  const list = (allEvents || []).filter(e=>{
+    const d = (e.extendedProps?.date || e.start || "").slice(0,10);
+    return d === date;
+  });
 
   openModal(`
     <div class="day-wrap">
