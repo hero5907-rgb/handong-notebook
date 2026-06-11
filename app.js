@@ -253,7 +253,7 @@ const screens = {
 lionism: el("screenLionism"),
   ceremony: el("screenCeremony"),
 mypage: el("screenMyPage"),
-
+ads: el("screenAds"),
 
 };
 
@@ -1429,8 +1429,8 @@ currentEventDate = null;   // 🔥 이거 추가
   loadCalendar();
 }
 
-else if (target === "song") {
-  window.open("./handong_song.pdf", "_blank");
+else if (target === "ads") {
+  pushNav("ads");
 }
 
 
