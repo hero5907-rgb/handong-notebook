@@ -255,6 +255,7 @@ lionism: el("screenLionism"),
 mypage: el("screenMyPage"),
 ads: el("screenAds"),
 adlist: el("screenAdList"),
+addetail: el("screenAdDetail"),
 
 };
 
@@ -4094,7 +4095,8 @@ function openAdCategory(category){
 
       box.innerHTML = list.map(ad=>`
 
-        <div class="row">
+        <div class="row"
+     onclick="openAdDetail('${ad.adId}')">
 
           <div class="row-main">
 
