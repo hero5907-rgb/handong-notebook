@@ -2305,7 +2305,7 @@ if (adBox) {
     adBox.innerHTML = myAds.map(ad => `
 
       <div
-        onclick="closeProfile();openAdDetail('${ad.adId}')"
+        onclick="openAdModal('${ad.adId}')"
         style="
           margin-top:12px;
           padding:12px;
@@ -4143,7 +4143,7 @@ function openAdCategory(category){
       box.innerHTML = list.map(ad=>`
 
         <div class="row"
-     onclick="openAdDetail('${ad.adId}')">
+     onclick="openAdModal('${ad.adId}')">
 
           <div class="row-main">
 
@@ -4173,9 +4173,9 @@ function openAdCategory(category){
 
 
 
-function openAdDetail(adId){
+function openAdModal(adId){
 
-  pushNav("addetail");
+  el("adModal").hidden = false;
 
 api(
   "increaseAdView",
@@ -4194,25 +4194,25 @@ api(
 
       if(!ad) return;
 
-      el("adDetailStoreName").textContent =
-        ad.storeName || "";
+el("adModalStoreName").textContent =
+  ad.storeName || "";
 
-      el("adDetailOwner").textContent =
-        `${ad.gisu}기 ${ad.memberName}`;
+el("adModalOwner").textContent =
+  `${ad.gisu}기 ${ad.memberName}`;
 
-      el("adDetailIntro").textContent =
-        ad.intro || "";
+el("adModalIntro").textContent =
+  ad.intro || "";
 
-      el("adDetailAddress").textContent =
-        ad.address || "";
+el("adModalAddress").textContent =
+  ad.address || "";
 
-      el("adDetailDesc").textContent =
-        ad.desc || "";
+el("adModalDesc").textContent =
+  ad.desc || "";
 
-      const tel = el("adDetailTel");
-      tel.href = `tel:${ad.tel || ""}`;
+const tel = el("adModalTel");
+tel.href = `tel:${ad.tel || ""}`;
 
-      const home = el("adDetailHome");
+const home = el("adModalHome");
 
       if(ad.homepage){
         home.href = ad.homepage;
@@ -4221,7 +4221,7 @@ api(
         home.style.display = "none";
       }
 
-      const img = el("adDetailMainPhoto");
+      const img = el("adModalMainPhoto");
 
       if(ad.mainPhoto){
 
@@ -4235,7 +4235,7 @@ api(
       }
 
 
-      const gallery = el("adGallery");
+      const gallery = el("adModalGallery");
 
       const photos = [
         ad.photo2,
@@ -4266,7 +4266,11 @@ api(
 }
 
 
+function closeAdModal(){
 
+  el("adModal").hidden = true;
+
+}
 
 
 

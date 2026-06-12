@@ -861,6 +861,79 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 <!-- 🔥 여기로 이동 (이 줄 통째로 복붙) -->
 <button id="btnScrollTop" class="scroll-top-btn" hidden>↑</button>
 
+
+
+
+
+
+<div id="adModal" class="modal" hidden>
+
+  <div class="modal-backdrop"
+       onclick="closeAdModal()">
+  </div>
+
+  <div class="modal-card"
+       style="max-width:700px;">
+
+    <img id="adModalMainPhoto"
+         style="width:100%;border-radius:12px;display:none;">
+
+    <h3 id="adModalStoreName"></h3>
+
+    <div id="adModalOwner"></div>
+
+    <div id="adModalIntro"
+         style="margin-top:10px;">
+    </div>
+
+    <div id="adModalAddress"
+         style="margin-top:10px;">
+    </div>
+
+    <div style="margin-top:15px;display:flex;gap:8px;">
+
+      <a id="adModalTel"
+         class="a-btn primary">
+         📞 전화걸기
+      </a>
+
+      <a id="adModalHome"
+         class="a-btn">
+         🌐 홈페이지
+      </a>
+
+    </div>
+
+    <hr style="margin:20px 0;">
+
+    <div id="adModalGallery"
+         style="
+           display:grid;
+           grid-template-columns:1fr 1fr;
+           gap:8px;">
+    </div>
+
+    <div id="adModalDesc"
+         style="
+           margin-top:15px;
+           white-space:pre-wrap;">
+    </div>
+
+    <button class="modal-close"
+            onclick="closeAdModal()">
+      닫기
+    </button>
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
 </body>
 </html>
 
