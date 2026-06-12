@@ -884,6 +884,8 @@ font-size: clamp(15px, 5vw, 24px);
 
 /* 🔥 프로필 상세 전체 정렬 강제 중앙 (핵심 해결) */
 #profileModal .modal-card{
+  max-height:94vh;
+  margin-bottom:20px;
   text-align: center;
 }
 
@@ -3618,7 +3620,8 @@ button:active{
 
 #adModal .modal-card{
 
-  max-height:92vh !important;
+  max-height:96vh !important;
+   margin-bottom:10px !important;
 
   overflow-y:auto !important;
   overflow-x:hidden !important;
