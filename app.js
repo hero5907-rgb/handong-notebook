@@ -4027,19 +4027,21 @@ document.addEventListener("click", function(e){
 
 function loadAdCategories(){
 
-  api("listAdCategories", {}, (list)=>{
+  api("listAdCategories", {}, (res)=>{
+
+    const list = res.categories || [];
 
     const box = el("adsCategoryList");
 
-    if(!list || !list.length){
+    if(!list.length){
+
       box.innerHTML = "등록된 광고 없음";
       return;
     }
 
     box.innerHTML = list.map(c=>`
 
-      <div class="row ad-category"
-           data-category="${c.name}">
+      <div class="row ad-category">
 
         <div class="row-main">
 
@@ -4060,6 +4062,5 @@ function loadAdCategories(){
   });
 
 }
-
 
 
