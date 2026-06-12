@@ -254,6 +254,7 @@ lionism: el("screenLionism"),
   ceremony: el("screenCeremony"),
 mypage: el("screenMyPage"),
 ads: el("screenAds"),
+adlist: el("screenAdList"),
 
 };
 
@@ -4041,7 +4042,8 @@ function loadAdCategories(){
 
     box.innerHTML = list.map(c=>`
 
-      <div class="row ad-category">
+      <div class="row ad-category"
+     onclick="openAdCategory('${c.name}')">
 
         <div class="row-main">
 
@@ -4062,5 +4064,66 @@ function loadAdCategories(){
   });
 
 }
+
+
+
+
+
+function openAdCategory(category){
+
+  pushNav("adlist");
+
+  el("adListTitle").textContent = category;
+
+  api(
+    "listAdsByCategory",
+    { category },
+    (res)=>{
+
+      const list = res.ads || [];
+
+      const box = el("adCompanyList");
+
+      if(!list.length){
+
+        box.innerHTML =
+          "등록된 업체 없음";
+
+        return;
+      }
+
+      box.innerHTML = list.map(ad=>`
+
+        <div class="row">
+
+          <div class="row-main">
+
+            <div class="row-title">
+              ${ad.storeName}
+            </div>
+
+            <div class="row-sub">
+              ${ad.gisu}기
+              ${ad.memberName}
+            </div>
+
+            <div class="row-sub">
+              ${ad.intro || ""}
+            </div>
+
+          </div>
+
+        </div>
+
+      `).join("");
+
+    }
+  );
+
+}
+
+
+
+
 
 
