@@ -4186,24 +4186,32 @@ function openAdCategory(category){
 
 function openAdModal(adId){
 
-
-
-history.pushState(
+  history.pushState(
     { modal:"ad" },
     "",
     "#ad"
   );
 
-  el("adModal").hidden = false;
-document.body.classList.add("modal-open");
+  // 이전 광고 내용 초기화
+  el("adModalStoreName").textContent = "";
+  el("adModalOwner").textContent = "";
+  el("adModalIntro").textContent = "";
+  el("adModalAddress").textContent = "";
+  el("adModalDesc").textContent = "";
 
-api(
-  "increaseAdView",
-  { adId },
-  ()=>{}
-);
+  el("adModalGallery").innerHTML = "";
 
+  const img = el("adModalMainPhoto");
+  img.src = "";
+  img.style.display = "none";
 
+  document.body.classList.add("modal-open");
+
+  api(
+    "increaseAdView",
+    { adId },
+    ()=>{}
+  );
 
   api(
     "getAdDetail",
@@ -4214,25 +4222,25 @@ api(
 
       if(!ad) return;
 
-el("adModalStoreName").textContent =
-  ad.storeName || "";
+      el("adModalStoreName").textContent =
+        ad.storeName || "";
 
-el("adModalOwner").textContent =
-  `${ad.gisu}기 ${ad.memberName}`;
+      el("adModalOwner").textContent =
+        `${ad.gisu}기 ${ad.memberName}`;
 
-el("adModalIntro").textContent =
-  ad.intro || "";
+      el("adModalIntro").textContent =
+        ad.intro || "";
 
-el("adModalAddress").textContent =
-  ad.address || "";
+      el("adModalAddress").textContent =
+        ad.address || "";
 
-el("adModalDesc").textContent =
-  ad.desc || "";
+      el("adModalDesc").textContent =
+        ad.desc || "";
 
-const tel = el("adModalTel");
-tel.href = `tel:${ad.tel || ""}`;
+      const tel = el("adModalTel");
+      tel.href = `tel:${ad.tel || ""}`;
 
-const home = el("adModalHome");
+      const home = el("adModalHome");
 
       if(ad.homepage){
         home.href = ad.homepage;
@@ -4241,19 +4249,10 @@ const home = el("adModalHome");
         home.style.display = "none";
       }
 
-      const img = el("adModalMainPhoto");
-
       if(ad.mainPhoto){
-
         img.src = ad.mainPhoto;
         img.style.display = "";
-
-      }else{
-
-        img.style.display = "none";
-
       }
-
 
       const gallery = el("adModalGallery");
 
@@ -4266,7 +4265,6 @@ const home = el("adModalHome");
 
       gallery.innerHTML =
         photos.map(url => `
-
           <img
             src="${url}"
             style="
@@ -4275,17 +4273,15 @@ const home = el("adModalHome");
               cursor:pointer;
             "
             onclick="window.open('${url}','_blank')">
-
         `).join("");
 
-
+      // 데이터 다 채운 뒤 모달 열기
+      el("adModal").hidden = false;
 
     }
   );
 
 }
-
-
 function closeAdModal(){
 
   el("adModal").hidden = true;
