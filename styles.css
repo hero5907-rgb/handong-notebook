@@ -3615,8 +3615,40 @@ button:active{
 
 /* 광고용 CSS */
 
+/* ===== 광고모달 전용 ===== */
+
 #adModal .modal-card{
-  width:min(94vw,700px);
-  max-height:85vh;
+
+  width:min(95vw,700px);
+
+  max-height:88vh;
+
   overflow-y:auto;
+
+  overflow-x:hidden;
+
+  margin-bottom:0;
+
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:thin;
+  scrollbar-color:rgba(0,0,0,.18) transparent;
+}
+
+/* iOS 느낌 스크롤 */
+#adModal .modal-card::-webkit-scrollbar{
+  width:6px;
+}
+
+#adModal .modal-card::-webkit-scrollbar-track{
+  background:transparent;
+}
+
+#adModal .modal-card::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.18);
+  border-radius:999px;
+}
+
+#adModal .modal-card::-webkit-scrollbar-thumb:hover{
+  background:rgba(0,0,0,.28);
 }

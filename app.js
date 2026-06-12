@@ -4287,17 +4287,13 @@ function closeAdModal(){
 
 window.addEventListener("popstate",()=>{
 
-  const ad = document.getElementById("adModal");
-
-  if(ad && !ad.hidden){
+  if(!document.getElementById("adModal").hidden){
     closeAdModal();
     return;
   }
 
-  const profile = document.getElementById("profileModal");
-
-  if(profile && !profile.hidden){
-    closeProfile();
+  if(!document.getElementById("profileModal").hidden){
+    closeProfileModal();
     return;
   }
 
