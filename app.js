@@ -4187,9 +4187,40 @@ api(
 
       }
 
+
+      const gallery = el("adGallery");
+
+      const photos = [
+        ad.photo2,
+        ad.photo3,
+        ad.photo4,
+        ad.photo5
+      ].filter(Boolean);
+
+      gallery.innerHTML =
+        photos.map(url => `
+
+          <img
+            src="${url}"
+            style="
+              width:100%;
+              border-radius:12px;
+              cursor:pointer;
+            "
+            onclick="window.open('${url}','_blank')">
+
+        `).join("");
+
+
+
     }
   );
 
 }
+
+
+
+
+
 
 
