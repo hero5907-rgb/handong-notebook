@@ -2284,6 +2284,49 @@ if (wEl) {
     `<div>${esc(line2 || "")}</div>`;
 }
 
+const adBox = el("memberAdBox");
+
+if (adBox) {
+
+  const myAds = (state.ads || []).filter(ad =>
+    String(ad.memberName || "") === String(m.name || "")
+  );
+
+  if (!myAds.length) {
+
+    adBox.innerHTML = "";
+
+  } else {
+
+    adBox.innerHTML = myAds.map(ad => `
+
+      <div
+        onclick="openAdDetail('${ad.adId}')"
+        style="
+          margin-top:12px;
+          padding:12px;
+          border-radius:12px;
+          background:#f5f9ff;
+          border:1px solid #dbeafe;
+          cursor:pointer;">
+
+        🏪 <b>${ad.storeName}</b><br>
+
+        <span style="
+          color:#2563eb;
+          font-size:13px;">
+          동문광고 보기
+        </span>
+
+      </div>
+
+    `).join("");
+
+  }
+
+}
+
+
   // ✅ 지도/로드뷰 버튼 연결 (주소가 있을 때만)
   const addr = String(m.address || "").trim();
     const btnMap = el("btnMap");
