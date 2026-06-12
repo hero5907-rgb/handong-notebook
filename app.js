@@ -4176,6 +4176,7 @@ function openAdCategory(category){
 function openAdModal(adId){
 
   el("adModal").hidden = false;
+document.body.classList.add("modal-open");
 
 api(
   "increaseAdView",
@@ -4270,8 +4271,9 @@ function closeAdModal(){
 
   el("adModal").hidden = true;
 
-}
+  document.body.classList.remove("modal-open");
 
+}
 
 
 
