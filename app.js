@@ -1186,10 +1186,14 @@ if (nameBox && state.me?.name) {
 
 
 
-    state.settings = json.settings;
-   state.members = onlyRealMembers(json.members || []).map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
+state.settings = json.settings;
 
-    state.announcements = json.announcements || [];
+state.members = onlyRealMembers(json.members || [])
+  .map((m) => ({ ...m, phone: normalizePhone(m.phone) }));
+
+state.announcements = json.announcements || [];
+
+state.ads = json.ads || [];
 
     // ✅ 관리자 버튼: 로그인 성공 시에만 표시/숨김 결정
     const tileAdmin = el("tileAdmin");
