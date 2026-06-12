@@ -2305,7 +2305,7 @@ if (adBox) {
     adBox.innerHTML = myAds.map(ad => `
 
       <div
-        onclick="openAdDetail('${ad.adId}')"
+        onclick="closeProfile();openAdDetail('${ad.adId}')"
         style="
           margin-top:12px;
           padding:12px;
