@@ -3614,20 +3614,14 @@ button:active{
 
 
 /* 광고용 CSS */
-
-/* ===== 광고모달 전용 ===== */
+/* ===== 광고 상세 iOS 스크롤 ===== */
 
 #adModal .modal-card{
 
-  width:min(95vw,700px);
+  max-height:92vh !important;
 
-  max-height:88vh;
-
-  overflow-y:auto;
-
-  overflow-x:hidden;
-
-  margin-bottom:0;
+  overflow-y:auto !important;
+  overflow-x:hidden !important;
 
   -webkit-overflow-scrolling:touch;
 
@@ -3635,9 +3629,8 @@ button:active{
   scrollbar-color:rgba(0,0,0,.18) transparent;
 }
 
-/* iOS 느낌 스크롤 */
 #adModal .modal-card::-webkit-scrollbar{
-  width:6px;
+  width:5px;
 }
 
 #adModal .modal-card::-webkit-scrollbar-track{
