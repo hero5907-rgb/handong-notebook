@@ -4130,6 +4130,14 @@ function openAdDetail(adId){
 
   pushNav("addetail");
 
+api(
+  "increaseAdView",
+  { adId },
+  ()=>{}
+);
+
+
+
   api(
     "getAdDetail",
     { adId },
