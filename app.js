@@ -4175,6 +4175,14 @@ function openAdCategory(category){
 
 function openAdModal(adId){
 
+
+
+history.pushState(
+    { modal:"ad" },
+    "",
+    "#ad"
+  );
+
   el("adModal").hidden = false;
 document.body.classList.add("modal-open");
 
@@ -4277,3 +4285,20 @@ function closeAdModal(){
 
 
 
+window.addEventListener("popstate",()=>{
+
+  const ad = document.getElementById("adModal");
+
+  if(ad && !ad.hidden){
+    closeAdModal();
+    return;
+  }
+
+  const profile = document.getElementById("profileModal");
+
+  if(profile && !profile.hidden){
+    closeProfile();
+    return;
+  }
+
+});

@@ -3613,5 +3613,10 @@ button:active{
 
 
 
+/* 광고용 CSS */
 
-
+#adModal .modal-card{
+  width:min(94vw,700px);
+  max-height:85vh;
+  overflow-y:auto;
+}
