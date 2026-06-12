@@ -1430,9 +1430,12 @@ currentEventDate = null;   // 🔥 이거 추가
 }
 
 else if (target === "ads") {
-  pushNav("ads");
-}
 
+  pushNav("ads");
+
+  loadAdCategories();
+
+}
 
 else if (target === "lionism") {
   window.open("https://www.handong.edu/kor/", "_blank");
@@ -4022,7 +4025,41 @@ document.addEventListener("click", function(e){
 });
 
 
+function loadAdCategories(){
 
+  api("listAdCategories", {}, (list)=>{
+
+    const box = el("adsCategoryList");
+
+    if(!list || !list.length){
+      box.innerHTML = "등록된 광고 없음";
+      return;
+    }
+
+    box.innerHTML = list.map(c=>`
+
+      <div class="row ad-category"
+           data-category="${c.name}">
+
+        <div class="row-main">
+
+          <div class="row-title">
+            ${c.name}
+          </div>
+
+          <div class="row-sub">
+            ${c.count}개 업체
+          </div>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+  });
+
+}
 
 
 
