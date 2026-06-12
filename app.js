@@ -1917,6 +1917,17 @@ if (document.getElementById("modal")?.hidden === false) {
 
 
   // 1️⃣ 모달 열려 있으면 → 모달 닫기
+
+// 광고모달 우선
+if (el("adModal")?.hidden === false) {
+  closeAdModal();
+
+  history.pushState({ modal:"profile" }, "", location.href);
+
+  return;
+}
+
+
   if (el("profileModal")?.hidden === false) {
     closeProfile();
 
@@ -4285,16 +4296,3 @@ function closeAdModal(){
 
 
 
-window.addEventListener("popstate",()=>{
-
-  if(!document.getElementById("adModal").hidden){
-    closeAdModal();
-    return;
-  }
-
-  if(!document.getElementById("profileModal").hidden){
-    closeProfileModal();
-    return;
-  }
-
-});
