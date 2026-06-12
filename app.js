@@ -4126,6 +4126,62 @@ function openAdCategory(category){
 
 
 
+function openAdDetail(adId){
 
+  pushNav("addetail");
+
+  api(
+    "getAdDetail",
+    { adId },
+    (res)=>{
+
+      const ad = res.ad;
+
+      if(!ad) return;
+
+      el("adDetailStoreName").textContent =
+        ad.storeName || "";
+
+      el("adDetailOwner").textContent =
+        `${ad.gisu}기 ${ad.memberName}`;
+
+      el("adDetailIntro").textContent =
+        ad.intro || "";
+
+      el("adDetailAddress").textContent =
+        ad.address || "";
+
+      el("adDetailDesc").textContent =
+        ad.desc || "";
+
+      const tel = el("adDetailTel");
+      tel.href = `tel:${ad.tel || ""}`;
+
+      const home = el("adDetailHome");
+
+      if(ad.homepage){
+        home.href = ad.homepage;
+        home.style.display = "";
+      }else{
+        home.style.display = "none";
+      }
+
+      const img = el("adDetailMainPhoto");
+
+      if(ad.mainPhoto){
+
+        img.src = ad.mainPhoto;
+        img.style.display = "";
+
+      }else{
+
+        img.style.display = "none";
+
+      }
+
+    }
+  );
+
+}
 
 
