@@ -794,15 +794,16 @@ function renderBylawsView() {
   const body = el("textBody");
   if (!body) return;
 
-  const text = String(state.settings?.bylaws || "").trim(); // F2 텍스트
-
-  // URL 키가 혹시 다르게 들어와도 대응
-  const url = String(
-    state.settings?.bylawsUrl ||
-    state.settings?.bylawsURL ||
-    state.settings?.bylaws_url ||
-    ""
+  const text =
+  String(
+    state.settings?.mainBylaws || ""
   ).trim();
+
+const url = String(
+  state.settings?.mainBylawsUrl || ""
+).trim();
+
+
   const safeText = esc(text || "내용 준비중");
   // ✅ 헤더 오른쪽 "원본PDF" 버튼 제어
   const pdfBtn = el("btnBylawsPdf");
@@ -825,21 +826,46 @@ function renderBylawsView() {
 
 function renderClassBylaws(){
 
-  const body = el("textBody");
+  const body =
+    el("textBody");
+
+  const text =
+    String(
+      state.settings?.classBylaws || ""
+    ).trim();
 
   body.innerHTML = `
     <div style="
       white-space:pre-wrap;
       line-height:1.8;
     ">
-      55기 회칙 내용
+      ${esc(text || "내용 준비중")}
     </div>
   `;
 
-  const pdfBtn = el("btnBylawsPdf");
+  const pdfBtn =
+    el("btnBylawsPdf");
+
   if(pdfBtn){
-    pdfBtn.hidden = true;
+
+    const url =
+      String(
+        state.settings?.classBylawsUrl || ""
+      ).trim();
+
+    if(url){
+
+      pdfBtn.href = url;
+      pdfBtn.hidden = false;
+
+    }else{
+
+      pdfBtn.hidden = true;
+
+    }
+
   }
+
 }
 
 
