@@ -3852,6 +3852,7 @@ button:active{
 
 #bylawsTabs{
   display:flex;
+  justify-content:center;   /* 추가 */
   gap:8px;
   margin:14px 0 18px;
 }
@@ -3877,8 +3878,11 @@ button:active{
 }
 
 #textTitle{
-  margin:0;
-  font-size:22px;
-  font-weight:900;
-  letter-spacing:-0.4px;
+  margin:0 0 12px;
+  text-align:center;
+
+  font-size:18px;
+  font-weight:800;
+
+  letter-spacing:-0.3px;
 }

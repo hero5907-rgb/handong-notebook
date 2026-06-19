@@ -4335,7 +4335,7 @@ function openMainBylaws(){
     "#0b4ea2";
 
   el("textTitle").textContent =
-    "총동문회 회칙";
+    "회칙";
 
   renderBylawsView();
 
@@ -4365,7 +4365,7 @@ function openClassBylaws(){
     "#0b4ea2";
 
   el("textTitle").textContent =
-    `${state.me?.gisu || ""}기 회칙`;
+      "회칙";
 
   renderClassBylaws();
 
