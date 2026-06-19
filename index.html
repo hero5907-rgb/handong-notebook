@@ -204,7 +204,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
         <div class="tile-title">한동회 모임목적</div>
         <div class="tile-desc">목적</div>
       </button>
-      <button class="tile" onclick="openBylawsMenu()">
+      <button class="tile" onclick="toggleBylawsAccordion()">
         <div class="tile-title">
   회칙
 </div>
@@ -399,6 +399,22 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
       onclick="closeBylawsMenu()">
       닫기
     </button>
+
+
+<div id="bylawsAccordion" class="bylaws-accordion" hidden>
+
+  <button class="bylaws-item"
+          onclick="openMainBylaws()">
+    📘 총동문회 회칙
+  </button>
+
+  <button class="bylaws-item"
+          onclick="openClassBylaws()">
+    📗 <span class="gisuPrefix"></span>회칙
+  </button>
+
+</div>
+
 
   </div>
 

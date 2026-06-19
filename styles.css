@@ -3798,3 +3798,47 @@ button:active{
   font-weight:700;
   color:#007aff;
 }
+
+
+
+.bylaws-accordion{
+  grid-column:1 / -1;
+
+  display:flex;
+  gap:10px;
+
+  margin-top:-4px;
+  margin-bottom:4px;
+}
+
+.bylaws-item{
+  flex:1;
+
+  border:none;
+
+  border-radius:18px;
+
+  padding:18px;
+
+  background:rgba(255,255,255,.9);
+
+  box-shadow:
+    0 8px 20px rgba(15,23,42,.08);
+
+  font-size:15px;
+  font-weight:800;
+
+  color:#0b4ea2;
+
+  cursor:pointer;
+
+  transition:.15s;
+}
+
+.bylaws-item:hover{
+  transform:translateY(-2px);
+}
+
+.bylaws-item:active{
+  transform:scale(.98);
+}

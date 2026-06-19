@@ -4347,4 +4347,11 @@ function openClassBylaws(){
 
 
 
+function toggleBylawsAccordion(){
 
+  const box = el("bylawsAccordion");
+
+  if(!box) return;
+
+  box.hidden = !box.hidden;
+}
