@@ -3842,3 +3842,43 @@ button:active{
 .bylaws-item:active{
   transform:scale(.98);
 }
+
+
+
+
+/* ===============================
+   📘 회칙 탭 (최종)
+   =============================== */
+
+#bylawsTabs{
+  display:flex;
+  gap:8px;
+  margin:14px 0 18px;
+}
+
+#bylawsTabs button{
+  border:none;
+  border-radius:999px;
+
+  padding:8px 16px;
+
+  font-size:13px;
+  font-weight:800;
+
+  cursor:pointer;
+
+  transition:.15s;
+}
+
+#tabMainBylaws,
+#tabClassBylaws{
+  background:#eef2ff;
+  color:#0b4ea2;
+}
+
+#textTitle{
+  margin:0;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-0.4px;
+}

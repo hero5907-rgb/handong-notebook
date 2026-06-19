@@ -374,61 +374,69 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 
-  <!-- 텍스트 -->
-  <section id="screenText" class="screen" hidden>
+ <!-- 텍스트 -->
+<section id="screenText" class="screen" hidden>
 
+  <div class="card">
 
-    <div class="card">
-<div class="card-header">
+    <div class="card-header">
 
-<div id="bylawsTabs" hidden style="
-  display:flex;
-  gap:8px;
-  margin:12px 0 16px;
-">
+      <div class="card-title" id="textTitle">
+        회칙
+      </div>
 
-  <button id="tabMainBylaws"
-    style="
-      flex:1;
-      border:none;
-      border-radius:12px;
-      padding:12px;
-      font-weight:700;
-      background:#0b4ea2;
-      color:#fff;
-    "
-    onclick="openMainBylaws()">
-    총동문회 회칙
-  </button>
+      <!-- 회칙 PDF -->
+      <a id="btnBylawsPdf"
+         class="pdf-btn"
+         href="#"
+         target="_blank"
+         rel="noopener"
+         hidden>
+         원본PDF
+      </a>
 
-  <button id="tabClassBylaws"
-    style="
-      flex:1;
-      border:none;
-      border-radius:12px;
-      padding:12px;
-      font-weight:700;
-      background:#eef2ff;
-      color:#0b4ea2;
-    "
-    onclick="openClassBylaws()">
-    <span class="gisuPrefix"></span>회칙
-  </button>
-
-</div>
-
-  <div class="card-title" id="textTitle">제목</div>
-
-  <!-- ✅ 회칙 화면에서만 보일 버튼 -->
-  <a id="btnBylawsPdf" class="pdf-btn" href="#" target="_blank" rel="noopener" hidden>원본PDF</a>
-</div>
-
-
-      <div id="textBody" class="prose"></div>
     </div>
-  </section>
 
+    <!-- 회칙 탭 -->
+    <div id="bylawsTabs" hidden style="
+      display:flex;
+      gap:8px;
+      margin:14px 0 18px;
+    ">
 
+      <button id="tabMainBylaws"
+        style="
+          border:none;
+          border-radius:999px;
+          padding:10px 18px;
+          font-weight:700;
+          background:#0b4ea2;
+          color:#fff;
+        "
+        onclick="openMainBylaws()">
+        총동문회
+      </button>
+
+      <button id="tabClassBylaws"
+        style="
+          border:none;
+          border-radius:999px;
+          padding:10px 18px;
+          font-weight:700;
+          background:#eef2ff;
+          color:#0b4ea2;
+        "
+        onclick="openClassBylaws()">
+        <span class="gisuPrefix"></span>
+      </button>
+
+    </div>
+
+    <div id="textBody" class="prose"></div>
+
+  </div>
+
+</section>
 
 <!-- 🔵 마이페이지 -->
 <section id="screenMyPage" class="screen" hidden>
