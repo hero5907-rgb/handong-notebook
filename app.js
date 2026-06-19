@@ -822,6 +822,27 @@ function renderBylawsView() {
 
 }
 
+
+function renderClassBylaws(){
+
+  const body = el("textBody");
+
+  body.innerHTML = `
+    <div style="
+      white-space:pre-wrap;
+      line-height:1.8;
+    ">
+      55기 회칙 내용
+    </div>
+  `;
+
+  const pdfBtn = el("btnBylawsPdf");
+  if(pdfBtn){
+    pdfBtn.hidden = true;
+  }
+}
+
+
 // ✅ 회원여부 필터: isMember === false 인 사람은 회원명부/인원수에서 제외
 function onlyRealMembers(arr){
   const list = Array.isArray(arr) ? arr : [];
@@ -4289,6 +4310,41 @@ function closeAdModal(){
   document.body.classList.remove("modal-open");
 
 }
+
+
+
+function openBylawsMenu(){
+  el("bylawsMenuModal").hidden = false;
+}
+
+function closeBylawsMenu(){
+  el("bylawsMenuModal").hidden = true;
+}
+
+function openMainBylaws(){
+
+  closeBylawsMenu();
+
+  el("textTitle").textContent =
+    "총동문회 회칙";
+
+  renderBylawsView();
+
+  pushNav("text");
+}
+
+function openClassBylaws(){
+
+  closeBylawsMenu();
+
+  el("textTitle").textContent =
+    `${state.me?.gisu || ""}기 회칙`;
+
+  renderClassBylaws();
+
+  pushNav("text");
+}
+
 
 
 

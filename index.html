@@ -204,7 +204,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
         <div class="tile-title">한동회 모임목적</div>
         <div class="tile-desc">목적</div>
       </button>
-      <button class="tile" data-nav="bylaws">
+      <button class="tile" onclick="openBylawsMenu()">
         <div class="tile-title">
   <span class="gisuPrefix"></span>회칙
 </div>
@@ -372,7 +372,39 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 </section>
 
 
+<div id="bylawsMenuModal" class="modal" hidden>
 
+  <div class="modal-backdrop"
+       onclick="closeBylawsMenu()"></div>
+
+  <div class="modal-card">
+
+    <h3 style="
+      text-align:center;
+      margin-bottom:16px;
+    ">
+      회칙 선택
+    </h3>
+
+    <button class="btn primary"
+      onclick="openMainBylaws()">
+      총동문회 회칙
+    </button>
+
+    <button class="btn"
+      style="margin-top:10px"
+      onclick="openClassBylaws()">
+      55기 회칙
+    </button>
+
+    <button class="modal-close"
+      onclick="closeBylawsMenu()">
+      닫기
+    </button>
+
+  </div>
+
+</div>
 
   <!-- 텍스트 -->
   <section id="screenText" class="screen" hidden>
