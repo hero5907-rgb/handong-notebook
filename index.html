@@ -204,18 +204,33 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
         <div class="tile-title">한동회 모임목적</div>
         <div class="tile-desc">목적</div>
       </button>
-      <button class="tile" onclick="toggleBylawsAccordion()">
-        <div class="tile-title">
-  회칙
+     <button class="tile" onclick="toggleBylawsAccordion()">
+  <div class="tile-title">
+    회칙
+  </div>
+
+  <div class="tile-desc">
+    총동문회 회칙 / <span class="gisuPrefix"></span>회칙
+  </div>
+</button>
+
+<div id="bylawsAccordion"
+     class="bylaws-accordion"
+     hidden>
+
+  <button class="bylaws-item"
+          onclick="openMainBylaws()">
+    총동문회 회칙
+  </button>
+
+  <button class="bylaws-item"
+          onclick="openClassBylaws()">
+    <span class="gisuPrefix"></span>회칙
+  </button>
+
 </div>
-        <div class="tile-desc">총동문회 회칙 / <span class="gisuPrefix"></span>회칙</div>
-      </button>
 
-
-
-
-  <button class="tile" data-nav="calendar">
-
+<button class="tile" data-nav="calendar">
   <div class="tile-title">
   <span class="gisuPrefix"></span>일정표
 </div>
@@ -372,53 +387,6 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 </section>
 
 
-<div id="bylawsMenuModal"
-     class="modal bylaws-sheet"
-     hidden>
-
-  <div class="modal-backdrop"
-       onclick="closeBylawsMenu()"></div>
-
-  <div class="modal-card">
-
-    <div class="bylaws-title">
-      회칙
-    </div>
-
-    <button class="bylaws-action"
-      onclick="openMainBylaws()">
-      총동문회 회칙
-    </button>
-
-    <button class="bylaws-action"
-      onclick="openClassBylaws()">
-      55기 회칙
-    </button>
-
-    <button class="bylaws-cancel"
-      onclick="closeBylawsMenu()">
-      닫기
-    </button>
-
-
-<div id="bylawsAccordion" class="bylaws-accordion" hidden>
-
-  <button class="bylaws-item"
-          onclick="openMainBylaws()">
-    📘 총동문회 회칙
-  </button>
-
-  <button class="bylaws-item"
-          onclick="openClassBylaws()">
-    📗 <span class="gisuPrefix"></span>회칙
-  </button>
-
-</div>
-
-
-  </div>
-
-</div>
 
   <!-- 텍스트 -->
   <section id="screenText" class="screen" hidden>
