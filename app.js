@@ -4313,80 +4313,76 @@ function closeAdModal(){
 
 
 
-function openBylawsMenu(){
-  el("bylawsMenuModal").hidden = false;
-}
 
-function closeBylawsMenu(){
-  el("bylawsMenuModal").hidden = true;
-}
+
+
+
 
 function openMainBylaws(){
 
-  closeBylawsMenu();
+  el("bylawsTabs").hidden = false;
+
+  el("tabMainBylaws").style.background =
+    "#0b4ea2";
+
+  el("tabMainBylaws").style.color =
+    "#fff";
+
+  el("tabClassBylaws").style.background =
+    "#eef2ff";
+
+  el("tabClassBylaws").style.color =
+    "#0b4ea2";
 
   el("textTitle").textContent =
     "총동문회 회칙";
 
   renderBylawsView();
 
-  pushNav("text");
+  if(state.navStack.at(-1)!=="text"){
+    pushNav("text");
+  }
 }
+
+
+
+
 
 function openClassBylaws(){
 
-  closeBylawsMenu();
+  el("bylawsTabs").hidden = false;
+
+  el("tabClassBylaws").style.background =
+    "#0b4ea2";
+
+  el("tabClassBylaws").style.color =
+    "#fff";
+
+  el("tabMainBylaws").style.background =
+    "#eef2ff";
+
+  el("tabMainBylaws").style.color =
+    "#0b4ea2";
 
   el("textTitle").textContent =
     `${state.me?.gisu || ""}기 회칙`;
 
   renderClassBylaws();
 
-  pushNav("text");
+  if(state.navStack.at(-1)!=="text"){
+    pushNav("text");
+  }
 }
 
 
 
-function toggleBylawsAccordion(){
 
-  const box = el("bylawsAccordion");
-
-  if(!box) return;
-
-  box.hidden = !box.hidden;
-}
 
 
 
 function openBylawsSelect(){
 
-  const html = `
+  el("bylawsTabs").hidden = false;
 
-    <div style="
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-    ">
-
-      <button class="btn primary"
-        onclick="
-          closeModal();
-          openMainBylaws();
-        ">
-        총동문회 회칙
-      </button>
-
-      <button class="btn"
-        onclick="
-          closeModal();
-          openClassBylaws();
-        ">
-        ${state.me?.gisu || ""}기 회칙
-      </button>
-
-    </div>
-
-  `;
-
-  openModal(html);
+  openMainBylaws();
 }

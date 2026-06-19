@@ -380,6 +380,43 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
     <div class="card">
 <div class="card-header">
+
+<div id="bylawsTabs" hidden style="
+  display:flex;
+  gap:8px;
+  margin:12px 0 16px;
+">
+
+  <button id="tabMainBylaws"
+    style="
+      flex:1;
+      border:none;
+      border-radius:12px;
+      padding:12px;
+      font-weight:700;
+      background:#0b4ea2;
+      color:#fff;
+    "
+    onclick="openMainBylaws()">
+    총동문회 회칙
+  </button>
+
+  <button id="tabClassBylaws"
+    style="
+      flex:1;
+      border:none;
+      border-radius:12px;
+      padding:12px;
+      font-weight:700;
+      background:#eef2ff;
+      color:#0b4ea2;
+    "
+    onclick="openClassBylaws()">
+    <span class="gisuPrefix"></span>회칙
+  </button>
+
+</div>
+
   <div class="card-title" id="textTitle">제목</div>
 
   <!-- ✅ 회칙 화면에서만 보일 버튼 -->
