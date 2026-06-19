@@ -3706,3 +3706,95 @@ button:active{
 
   text-transform:uppercase;
 }
+
+
+
+
+
+
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin-top:10px;
+}
+
+.photo-slot{
+  height:100px;
+  border:2px dashed #d7dce5;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  background:#fafbfd;
+  font-size:28px;
+  color:#9aa6b2;
+}
+
+.photo-slot:hover{
+  background:#f1f5f9;
+}
+
+
+
+.upload-spinner{
+  width:24px;
+  height:24px;
+  border:3px solid #d9e2f0;
+  border-top-color:#0d5cab;
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+
+@keyframes spin{
+  to{
+    transform:rotate(360deg);
+  }
+}
+
+.bylaws-sheet .modal-card{
+  width:min(92vw,380px);
+  padding:12px;
+  border-radius:28px;
+  background:#f2f2f7;
+}
+
+.bylaws-title{
+  text-align:center;
+  font-size:15px;
+  font-weight:600;
+  color:#8e8e93;
+  padding:10px 0 14px;
+}
+
+.bylaws-action{
+  width:100%;
+  border:none;
+  background:#fff;
+  padding:18px;
+  font-size:18px;
+  font-weight:600;
+  color:#007aff;
+}
+
+.bylaws-action:first-of-type{
+  border-radius:16px 16px 0 0;
+}
+
+.bylaws-action:last-of-type{
+  border-radius:0 0 16px 16px;
+  border-top:1px solid #e5e5ea;
+}
+
+.bylaws-cancel{
+  width:100%;
+  border:none;
+  background:#fff;
+  padding:18px;
+  margin-top:10px;
+  border-radius:16px;
+  font-size:18px;
+  font-weight:700;
+  color:#007aff;
+}
