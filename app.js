@@ -4355,3 +4355,38 @@ function toggleBylawsAccordion(){
 
   box.hidden = !box.hidden;
 }
+
+
+
+function openBylawsSelect(){
+
+  const html = `
+
+    <div style="
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    ">
+
+      <button class="btn primary"
+        onclick="
+          closeModal();
+          openMainBylaws();
+        ">
+        총동문회 회칙
+      </button>
+
+      <button class="btn"
+        onclick="
+          closeModal();
+          openClassBylaws();
+        ">
+        ${state.me?.gisu || ""}기 회칙
+      </button>
+
+    </div>
+
+  `;
+
+  openModal(html);
+}
