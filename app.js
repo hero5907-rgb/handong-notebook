@@ -4134,44 +4134,65 @@ document.addEventListener("click", function(e){
 
 function loadAdCategories(){
 
-  api("listAdCategories", {}, (res)=>{
+  const ads = state.ads || [];
 
-    const list = res.categories || [];
+  const map = {};
 
-    const box = el("adsCategoryList");
+  ads.forEach(ad => {
 
-    if(!list.length){
+    const name =
+      String(ad.category || "").trim();
 
-      box.innerHTML = "등록된 광고 없음";
-      return;
+    if(!name) return;
+
+    if(!map[name]){
+      map[name] = 0;
     }
 
-    box.innerHTML = list.map(c=>`
+    map[name]++;
 
-      <div class="row ad-category"
-     onclick="openAdCategory('${c.name}')">
+  });
 
-        <div class="row-main">
+  const list =
+    Object.keys(map)
+      .sort()
+      .map(name => ({
+        name,
+        count: map[name]
+      }));
 
-          <div class="row-title">
-            ${c.name}
-          </div>
+  const box = el("adsCategoryList");
 
-          <div class="row-sub">
-            ${c.count}개 업체
-          </div>
+  if(!list.length){
 
+    box.innerHTML =
+      "등록된 광고 없음";
+
+    return;
+  }
+
+  box.innerHTML = list.map(c=>`
+
+    <div class="row ad-category"
+      onclick="openAdCategory('${c.name}')">
+
+      <div class="row-main">
+
+        <div class="row-title">
+          ${c.name}
+        </div>
+
+        <div class="row-sub">
+          ${c.count}개 업체
         </div>
 
       </div>
 
-    `).join("");
+    </div>
 
-  });
+  `).join("");
 
 }
-
-
 
 
 
