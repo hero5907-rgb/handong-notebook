@@ -152,7 +152,7 @@ let modalCtx = { list: [], index: -1 };
 let featuredAds = [];
 let featuredAdIndex = 0;
 let featuredAdTimer = null;
-
+let featuredAdRemain = 30;
 
 let gisuSortDesc = true; // true = 최신기수 위, false = 오래된기수 위
 
@@ -4480,10 +4480,8 @@ if(ad.mainPhoto){
     openAdModal(ad.adId);
   };
 
-  el("featuredAdDots").textContent =
-    featuredAds
-      .map((_,i)=>i===featuredAdIndex ? "●" : "○")
-      .join(" ");
+el("featuredAdDots").textContent =
+  `Next.. ⟳${featuredAdRemain}s`;
 }
 
 function nextFeaturedAd(){
@@ -4496,8 +4494,12 @@ function nextFeaturedAd(){
     featuredAdIndex = 0;
   }
 
+  featuredAdRemain = 30;
+
   renderFeaturedAd();
 }
+
+
 
 function startFeaturedAds(){
 
@@ -4515,11 +4517,26 @@ function startFeaturedAds(){
 
   featuredAdIndex = 0;
 
+  featuredAdRemain = 30;
+
   renderFeaturedAd();
 
   featuredAdTimer =
-    setInterval(
-      nextFeaturedAd,
-      30000
-    );
+    setInterval(()=>{
+
+      featuredAdRemain--;
+
+      el("featuredAdDots").textContent =
+        `⟳ ${featuredAdRemain}s`;
+
+if(featuredAdRemain <= 0){
+
+  featuredAdRemain = 30;
+
+  nextFeaturedAd();
+
+}
+
+    },1000);
+
 }
