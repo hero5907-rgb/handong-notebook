@@ -4569,7 +4569,7 @@ if(featuredAdRemain <= 0){
 }
 
 
-let currentAdIndex = -1;
+
 
 function prevAd(){
 
