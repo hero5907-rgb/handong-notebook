@@ -149,6 +149,11 @@ function stopCeremony(){
 let modalCtx = { list: [], index: -1 };
 
 
+let featuredAds = [];
+let featuredAdIndex = 0;
+let featuredAdTimer = null;
+
+
 let gisuSortDesc = true; // true = 최신기수 위, false = 오래된기수 위
 
 let swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
@@ -4134,6 +4139,8 @@ document.addEventListener("click", function(e){
 
 function loadAdCategories(){
 
+startFeaturedAds();
+
   const ads = state.ads || [];
 
   const map = {};
@@ -4333,14 +4340,20 @@ function openAdModal(adId){
   el("adModal").hidden = false;
 
 }
+
+
+
+
+
 function closeAdModal(){
 
   el("adModal").hidden = true;
 
   document.body.classList.remove("modal-open");
 
-}
+  startFeaturedAds();
 
+}
 
 
 
@@ -4415,4 +4428,77 @@ function openBylawsSelect(){
   el("bylawsTabs").hidden = false;
 
   openMainBylaws();
+}
+
+
+
+
+
+function renderFeaturedAd(){
+
+  if(!featuredAds.length) return;
+
+  const ad = featuredAds[featuredAdIndex];
+
+  const card = el("featuredAdCard");
+
+  if(!card) return;
+
+  card.hidden = false;
+
+  el("featuredAdName").textContent =
+    ad.storeName || "";
+
+  el("featuredAdOwner").textContent =
+    `${ad.gisu}기 ${ad.memberName}`;
+
+  el("featuredAdIntro").textContent =
+    ad.intro || "";
+
+  card.onclick = ()=>{
+    openAdModal(ad.adId);
+  };
+
+  el("featuredAdDots").textContent =
+    featuredAds
+      .map((_,i)=>i===featuredAdIndex ? "●" : "○")
+      .join(" ");
+}
+
+function nextFeaturedAd(){
+
+  if(featuredAds.length <= 1) return;
+
+  featuredAdIndex++;
+
+  if(featuredAdIndex >= featuredAds.length){
+    featuredAdIndex = 0;
+  }
+
+  renderFeaturedAd();
+}
+
+function startFeaturedAds(){
+
+  clearInterval(featuredAdTimer);
+
+  featuredAds = [...(state.ads || [])];
+
+  if(!featuredAds.length){
+    return;
+  }
+
+  featuredAds.sort(
+    ()=>Math.random()-0.5
+  );
+
+  featuredAdIndex = 0;
+
+  renderFeaturedAd();
+
+  featuredAdTimer =
+    setInterval(
+      nextFeaturedAd,
+      30000
+    );
 }
