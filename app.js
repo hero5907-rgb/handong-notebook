@@ -4307,12 +4307,27 @@ function openAdModal(adId){
 
   const img = el("adModalMainPhoto");
 
-  if(ad.mainPhoto){
-    img.src = ad.mainPhoto;
-    img.style.display = "";
-  }else{
-    img.style.display = "none";
-  }
+if(ad.mainPhoto){
+
+  img.src = ad.mainPhoto;
+  img.style.display = "";
+
+  img.onclick = ()=>{
+    window.open(
+      ad.mainPhoto,
+      "_blank"
+    );
+  };
+
+  img.style.cursor =
+    "pointer";
+
+}else{
+
+  img.style.display =
+    "none";
+
+}
 
   const gallery = el("adModalGallery");
 
