@@ -153,6 +153,9 @@ let featuredAds = [];
 let featuredAdIndex = 0;
 let featuredAdTimer = null;
 let featuredAdRemain = 30;
+let currentAdIndex = -1;
+
+
 
 let gisuSortDesc = true; // true = 최신기수 위, false = 오래된기수 위
 
@@ -4274,6 +4277,14 @@ function openAdModal(adId){
         String(x.adId) === String(adId)
       );
 
+
+currentAdIndex =
+  (state.ads || [])
+    .findIndex(x =>
+      String(x.adId) === String(adId)
+    );
+
+
   console.timeEnd("광고상세");
 
   if(!ad) return;
@@ -4554,5 +4565,45 @@ if(featuredAdRemain <= 0){
 }
 
     },1000);
+
+}
+
+
+let currentAdIndex = -1;
+
+function prevAd(){
+
+  if(!state.ads?.length) return;
+
+  currentAdIndex--;
+
+  if(currentAdIndex < 0){
+    currentAdIndex =
+      state.ads.length - 1;
+  }
+
+  closeAdModal();
+
+  openAdModal(
+    state.ads[currentAdIndex].adId
+  );
+
+}
+
+function nextAdModal(){
+
+  if(!state.ads?.length) return;
+
+  currentAdIndex++;
+
+  if(currentAdIndex >= state.ads.length){
+    currentAdIndex = 0;
+  }
+
+  closeAdModal();
+
+  openAdModal(
+    state.ads[currentAdIndex].adId
+  );
 
 }
