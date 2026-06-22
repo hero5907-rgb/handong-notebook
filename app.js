@@ -4259,13 +4259,13 @@ function openAdModal(adId){
   img.style.display = "none";
 
   document.body.classList.add("modal-open");
-
+/*
   api(
     "increaseAdView",
     { adId },
     ()=>{}
   );
-
+*/
   api(
     "getAdDetail",
     { adId },
