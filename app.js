@@ -4183,57 +4183,52 @@ function openAdCategory(category){
 
   console.time("광고목록");
 
-  api(
-    "listAdsByCategory",
-    { category },
-    (res)=>{
+  const list =
+    (state.ads || [])
+      .filter(ad =>
+        ad.category === category
+      );
 
-      console.timeEnd("광고목록");
-      console.log("광고목록 응답", res);
+  console.timeEnd("광고목록");
+  console.log("광고목록(로컬)", list);
 
-      const list = res.ads || [];
+  const box = el("adCompanyList");
 
-      const box = el("adCompanyList");
+  if(!list.length){
 
-      if(!list.length){
+    box.innerHTML =
+      "등록된 업체 없음";
 
-        box.innerHTML =
-          "등록된 업체 없음";
+    return;
+  }
 
-        return;
-      }
+  box.innerHTML = list.map(ad=>`
 
-      box.innerHTML = list.map(ad=>`
+    <div class="row"
+      onclick="openAdModal('${ad.adId}')">
 
-        <div class="row"
-          onclick="openAdModal('${ad.adId}')">
+      <div class="row-main">
 
-          <div class="row-main">
-
-            <div class="row-title">
-              ${ad.storeName}
-            </div>
-
-            <div class="row-sub">
-              ${ad.gisu}기
-              ${ad.memberName}
-            </div>
-
-            <div class="row-sub">
-              ${ad.intro || ""}
-            </div>
-
-          </div>
-
+        <div class="row-title">
+          ${ad.storeName}
         </div>
 
-      `).join("");
+        <div class="row-sub">
+          ${ad.gisu}기
+          ${ad.memberName}
+        </div>
 
-    }
-  );
+        <div class="row-sub">
+          ${ad.intro || ""}
+        </div>
+
+      </div>
+
+    </div>
+
+  `).join("");
 
 }
-
 
 function openAdModal(adId){
 
@@ -4245,96 +4240,76 @@ function openAdModal(adId){
 
   console.time("광고상세");
 
-  // 이전 광고 내용 초기화
-  el("adModalStoreName").textContent = "";
-  el("adModalOwner").textContent = "";
-  el("adModalIntro").textContent = "";
-  el("adModalAddress").textContent = "";
-  el("adModalDesc").textContent = "";
+  const ad =
+    (state.ads || [])
+      .find(x =>
+        String(x.adId) === String(adId)
+      );
 
-  el("adModalGallery").innerHTML = "";
+  console.timeEnd("광고상세");
+
+  if(!ad) return;
+
+  el("adModalStoreName").textContent =
+    ad.storeName || "";
+
+  el("adModalOwner").textContent =
+    `${ad.gisu}기 ${ad.memberName}`;
+
+  el("adModalIntro").textContent =
+    ad.intro || "";
+
+  el("adModalAddress").textContent =
+    ad.address || "";
+
+  el("adModalDesc").textContent =
+    ad.desc || "";
+
+  const tel = el("adModalTel");
+  tel.href = `tel:${ad.tel || ""}`;
+
+  const home = el("adModalHome");
+
+  if(ad.homepage){
+    home.href = ad.homepage;
+    home.style.display = "";
+  }else{
+    home.style.display = "none";
+  }
 
   const img = el("adModalMainPhoto");
-  img.src = "";
-  img.style.display = "none";
+
+  if(ad.mainPhoto){
+    img.src = ad.mainPhoto;
+    img.style.display = "";
+  }else{
+    img.style.display = "none";
+  }
+
+  const gallery = el("adModalGallery");
+
+  const photos = [
+    ad.photo2,
+    ad.photo3,
+    ad.photo4,
+    ad.photo5
+  ].filter(Boolean);
+
+  gallery.innerHTML =
+    photos.map(url => `
+      <img
+        src="${url}"
+        style="
+          width:100%;
+          border-radius:12px;
+          cursor:pointer;
+        "
+        onclick="window.open('${url}','_blank')">
+    `).join("");
 
   document.body.classList.add("modal-open");
-/*
-  api(
-    "increaseAdView",
-    { adId },
-    ()=>{}
-  );
-*/
-  api(
-    "getAdDetail",
-    { adId },
-    (res)=>{
 
-      console.timeEnd("광고상세");
-      console.log("광고상세 응답", res);
-
-      const ad = res.ad;
-
-      if(!ad) return;
-
-      el("adModalStoreName").textContent =
-        ad.storeName || "";
-
-      el("adModalOwner").textContent =
-        `${ad.gisu}기 ${ad.memberName}`;
-
-      el("adModalIntro").textContent =
-        ad.intro || "";
-
-      el("adModalAddress").textContent =
-        ad.address || "";
-
-      el("adModalDesc").textContent =
-        ad.desc || "";
-
-      const tel = el("adModalTel");
-      tel.href = `tel:${ad.tel || ""}`;
-
-      const home = el("adModalHome");
-
-      if(ad.homepage){
-        home.href = ad.homepage;
-        home.style.display = "";
-      }else{
-        home.style.display = "none";
-      }
-
-      if(ad.mainPhoto){
-        img.src = ad.mainPhoto;
-        img.style.display = "";
-      }
-
-      const gallery = el("adModalGallery");
-
-      const photos = [
-        ad.photo2,
-        ad.photo3,
-        ad.photo4,
-        ad.photo5
-      ].filter(Boolean);
-
-      gallery.innerHTML =
-        photos.map(url => `
-          <img
-            src="${url}"
-            style="
-              width:100%;
-              border-radius:12px;
-              cursor:pointer;
-            "
-            onclick="window.open('${url}','_blank')">
-        `).join("");
-
-      el("adModal").hidden = false;
-
-    }
-  );
+  el("adModal").hidden = false;
 
 }
 function closeAdModal(){
