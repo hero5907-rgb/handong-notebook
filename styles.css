@@ -3886,3 +3886,121 @@ button:active{
 
   letter-spacing:-0.3px;
 }
+
+
+
+
+/* =========================
+   추천 동문업체 카드
+========================= */
+
+#featuredAdCard{
+
+  margin-bottom:16px !important;
+
+  padding:14px !important;
+
+  border:1px solid #dbe3ef !important;
+
+  border-radius:18px !important;
+
+  background:#fff !important;
+
+  cursor:pointer;
+
+  transition:all .2s ease;
+
+  box-shadow:
+    0 1px 2px rgba(0,0,0,.03);
+
+}
+
+#featuredAdCard:active{
+
+  transform:scale(.99);
+
+}
+
+#featuredAdPhoto{
+
+  width:100%;
+
+  height:180px;
+
+  object-fit:cover;
+
+  border:1px solid #e5e7eb;
+
+  border-radius:14px;
+
+  display:block;
+
+  margin-bottom:14px;
+
+  background:#f8fafc;
+
+}
+
+#featuredAdName{
+
+  font-size:24px !important;
+
+  font-weight:800 !important;
+
+  line-height:1.2;
+
+  margin-bottom:4px !important;
+
+  color:#0f172a;
+
+}
+
+#featuredAdOwner{
+
+  font-size:14px !important;
+
+  color:#64748b !important;
+
+  margin-bottom:10px !important;
+
+}
+
+#featuredAdIntro{
+
+  font-size:15px !important;
+
+  color:#334155 !important;
+
+  line-height:1.5;
+
+  min-height:24px;
+
+}
+
+#featuredAdDots{
+
+  text-align:center;
+
+  margin-top:14px !important;
+
+  font-size:11px;
+
+  letter-spacing:3px;
+
+  color:#94a3b8 !important;
+
+}
+
+/* 카테고리 제목 */
+
+.ad-category-title{
+
+  margin:10px 0 8px;
+
+  font-size:15px;
+
+  font-weight:800;
+
+  color:#475569;
+
+}

@@ -4446,6 +4446,27 @@ function renderFeaturedAd(){
 
   card.hidden = false;
 
+
+const photo =
+  el("featuredAdPhoto");
+
+if(ad.mainPhoto){
+
+  photo.src =
+    ad.mainPhoto;
+
+  photo.hidden =
+    false;
+
+}else{
+
+  photo.hidden =
+    true;
+
+}
+
+
+
   el("featuredAdName").textContent =
     ad.storeName || "";
 
