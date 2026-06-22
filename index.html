@@ -1001,41 +1001,43 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 
-<div style="
-  position:absolute;
-  left:10px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#fff;
-  font-size:60px;
-  font-weight:300;
-  text-shadow:
-    0 0 3px rgba(0,0,0,.9),
-    0 0 8px rgba(0,0,0,.8),
-    0 2px 12px rgba(0,0,0,.8);
-  pointer-events:none;
-  line-height:1;
-  z-index:9999;
-">
+<div
+  onclick="prevAd()"
+  style="
+    position:absolute;
+    left:10px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#fff;
+    font-size:60px;
+    font-weight:300;
+    text-shadow:
+      0 0 3px rgba(0,0,0,.9),
+      0 0 8px rgba(0,0,0,.8),
+      0 2px 12px rgba(0,0,0,.8);
+    cursor:pointer;
+    z-index:9999;
+  ">
   ‹
 </div>
 
-<div style="
-  position:absolute;
-  right:10px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#fff;
-  font-size:60px;
-  font-weight:300;
-  text-shadow:
-    0 0 3px rgba(0,0,0,.9),
-    0 0 8px rgba(0,0,0,.8),
-    0 2px 12px rgba(0,0,0,.8);
-  pointer-events:none;
-  line-height:1;
-  z-index:9999;
-">
+<div
+  onclick="nextAdModal()"
+  style="
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#fff;
+    font-size:60px;
+    font-weight:300;
+    text-shadow:
+      0 0 3px rgba(0,0,0,.9),
+      0 0 8px rgba(0,0,0,.8),
+      0 2px 12px rgba(0,0,0,.8);
+    cursor:pointer;
+    z-index:9999;
+  ">
   ›
 </div>
 
@@ -1050,31 +1052,7 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
          display:none;
        ">
 
-  <div
-    onclick="prevAd()"
-    style="
-      position:absolute;
-      left:0;
-      top:0;
-      width:25%;
-      height:100%;
-      cursor:pointer;
-      z-index:5;
-    ">
-  </div>
 
-  <div
-    onclick="nextAdModal()"
-    style="
-      position:absolute;
-      right:0;
-      top:0;
-      width:25%;
-      height:100%;
-      cursor:pointer;
-      z-index:5;
-    ">
-  </div>
 
 
 
