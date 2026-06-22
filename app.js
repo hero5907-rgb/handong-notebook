@@ -4527,7 +4527,8 @@ function startFeaturedAds(){
       featuredAdRemain--;
 
       el("featuredAdDots").textContent =
-        `⟳ ${featuredAdRemain}s`;
+  `Next.. ⟳${featuredAdRemain}s`;
+
 
 if(featuredAdRemain <= 0){
 
