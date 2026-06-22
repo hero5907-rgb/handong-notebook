@@ -4181,10 +4181,15 @@ function openAdCategory(category){
 
   el("adListTitle").textContent = category;
 
+  console.time("광고목록");
+
   api(
     "listAdsByCategory",
     { category },
     (res)=>{
+
+      console.timeEnd("광고목록");
+      console.log("광고목록 응답", res);
 
       const list = res.ads || [];
 
@@ -4201,7 +4206,7 @@ function openAdCategory(category){
       box.innerHTML = list.map(ad=>`
 
         <div class="row"
-     onclick="openAdModal('${ad.adId}')">
+          onclick="openAdModal('${ad.adId}')">
 
           <div class="row-main">
 
@@ -4230,7 +4235,6 @@ function openAdCategory(category){
 }
 
 
-
 function openAdModal(adId){
 
   history.pushState(
@@ -4238,6 +4242,8 @@ function openAdModal(adId){
     "",
     "#ad"
   );
+
+  console.time("광고상세");
 
   // 이전 광고 내용 초기화
   el("adModalStoreName").textContent = "";
@@ -4264,6 +4270,9 @@ function openAdModal(adId){
     "getAdDetail",
     { adId },
     (res)=>{
+
+      console.timeEnd("광고상세");
+      console.log("광고상세 응답", res);
 
       const ad = res.ad;
 
@@ -4322,7 +4331,6 @@ function openAdModal(adId){
             onclick="window.open('${url}','_blank')">
         `).join("");
 
-      // 데이터 다 채운 뒤 모달 열기
       el("adModal").hidden = false;
 
     }
