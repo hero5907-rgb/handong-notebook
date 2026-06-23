@@ -4138,10 +4138,9 @@ document.addEventListener("click", function(e){
 
 });
 
-
 function loadAdCategories(){
 
-startFeaturedAds();
+  startFeaturedAds();
 
   const ads = state.ads || [];
 
@@ -4180,36 +4179,20 @@ startFeaturedAds();
     return;
   }
 
-box.className = "ad-grid";
+  box.className = "ad-grid";
 
-box.innerHTML = list.map(c=>`
+  box.innerHTML = list.map(c=>`
 
-  <div
-    class="ad-tile2"
-    onclick="openAdCategory('${c.name}')">
+    <div
+      class="ad-tile2"
+      onclick="openAdCategory('${c.name}')">
 
-    <div class="ad-tile-name">
-      ${c.name}
-    </div>
+      <div class="ad-tile-name">
+        ${c.name}
+      </div>
 
-    <div class="ad-tile-count">
-      ${c.count}개 업체
-    </div>
-
-  </div>
-
-`).join("");
-
-      <div class="row-main">
-
-        <div class="row-title">
-          ${c.name}
-        </div>
-
-        <div class="row-sub">
-          ${c.count}개 업체
-        </div>
-
+      <div class="ad-tile-count">
+        ${c.count}개 업체
       </div>
 
     </div>
@@ -4217,8 +4200,6 @@ box.innerHTML = list.map(c=>`
   `).join("");
 
 }
-
-
 
 function openAdCategory(category){
 
