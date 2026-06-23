@@ -1976,12 +1976,8 @@ if (document.getElementById("modal")?.hidden === false) {
 // 광고모달 우선
 if (el("adModal")?.hidden === false) {
   closeAdModal();
-
-  history.pushState({ modal:"profile" }, "", location.href);
-
   return;
 }
-
 
   if (el("profileModal")?.hidden === false) {
     closeProfile();
