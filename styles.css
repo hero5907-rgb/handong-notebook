@@ -4052,3 +4052,21 @@ button:active{
 #adModal .modal-card{
   touch-action: pan-y;
 }
+
+
+
+
+#adModalStoreName{
+  font-size:36px !important;
+  font-weight:900;
+  line-height:1.1;
+  margin:14px 0 8px;
+}
+
+#adModal .modal-close{
+  position:sticky;
+  bottom:10px;
+  z-index:999;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+}
+
