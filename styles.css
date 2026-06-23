@@ -4046,3 +4046,9 @@ button:active{
   }
 
 }
+
+
+
+#adModal .modal-card{
+  touch-action: pan-y;
+}

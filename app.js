@@ -4363,7 +4363,59 @@ if(ad.mainPhoto){
 }
 
 
+let adSwipeStartX = 0;
+let adSwipeStartY = 0;
 
+(function bindAdSwipe(){
+
+  const modal =
+    document.querySelector("#adModal .modal-card");
+
+  if(!modal) return;
+
+  modal.addEventListener("touchstart",(e)=>{
+
+    if(e.touches.length !== 1) return;
+
+    adSwipeStartX =
+      e.touches[0].clientX;
+
+    adSwipeStartY =
+      e.touches[0].clientY;
+
+  },{passive:true});
+
+  modal.addEventListener("touchend",(e)=>{
+
+    const endX =
+      e.changedTouches[0].clientX;
+
+    const endY =
+      e.changedTouches[0].clientY;
+
+    const dx =
+      endX - adSwipeStartX;
+
+    const dy =
+      endY - adSwipeStartY;
+
+    // 좌우 스와이프만
+    if(
+      Math.abs(dx) > 60 &&
+      Math.abs(dx) > Math.abs(dy) * 1.5
+    ){
+
+      if(dx < 0){
+        nextAdModal(); // 다음 광고
+      }else{
+        prevAd(); // 이전 광고
+      }
+
+    }
+
+  });
+
+})();
 
 
 function closeAdModal(){
