@@ -524,6 +524,14 @@ function pushNav(name) {
 
 
 function popNav() {
+
+
+  console.log(
+    "POPNAV",
+    JSON.stringify(state.navStack)
+  );
+
+
   if (state.navStack.length > 1) state.navStack.pop();
   showScreen(state.navStack.at(-1));
   window.scrollTo(0, 0);
@@ -1997,13 +2005,8 @@ if (el("adModal")?.hidden === false) {
     return;
   }
 
-// 2️⃣ 메인보다 깊은 화면이면 → 메인으로
 if (state.navStack.length > 1) {
   popNav();
-
-  // 🔒 앱 안에 다시 고정 (이 1줄이 핵심)
-  history.pushState({ app: true }, "", location.href);
-
   return;
 }
 
@@ -4369,14 +4372,17 @@ if(ad.mainPhoto){
 
 function closeAdModal(){
 
+  console.log(
+    "광고닫기",
+    JSON.stringify(state.navStack)
+  );
+
   el("adModal").hidden = true;
 
   document.body.classList.remove("modal-open");
 
   startFeaturedAds();
-
 }
-
 
 
 
