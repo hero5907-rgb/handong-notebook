@@ -4180,10 +4180,25 @@ startFeaturedAds();
     return;
   }
 
-  box.innerHTML = list.map(c=>`
+box.className = "ad-grid";
 
-    <div class="row ad-category"
-      onclick="openAdCategory('${c.name}')">
+box.innerHTML = list.map(c=>`
+
+  <div
+    class="ad-tile2"
+    onclick="openAdCategory('${c.name}')">
+
+    <div class="ad-tile-name">
+      ${c.name}
+    </div>
+
+    <div class="ad-tile-count">
+      ${c.count}개 업체
+    </div>
+
+  </div>
+
+`).join("");
 
       <div class="row-main">
 
