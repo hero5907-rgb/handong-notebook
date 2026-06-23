@@ -4359,19 +4359,23 @@ if(ad.mainPhoto){
   document.body.classList.add("modal-open");
 
   el("adModal").hidden = false;
-
+bindAdSwipe();
 }
 
-
+let adSwipeBound = false;
 let adSwipeStartX = 0;
 let adSwipeStartY = 0;
 
-(function bindAdSwipe(){
+function bindAdSwipe(){
+
+  if(adSwipeBound) return;
 
   const modal =
-    document.querySelector("#adModal .modal-card");
+    el("adModal");
 
   if(!modal) return;
+
+  adSwipeBound = true;
 
   modal.addEventListener("touchstart",(e)=>{
 
@@ -4387,36 +4391,30 @@ let adSwipeStartY = 0;
 
   modal.addEventListener("touchend",(e)=>{
 
-    const endX =
-      e.changedTouches[0].clientX;
-
-    const endY =
-      e.changedTouches[0].clientY;
-
     const dx =
-      endX - adSwipeStartX;
+      e.changedTouches[0].clientX -
+      adSwipeStartX;
 
     const dy =
-      endY - adSwipeStartY;
+      e.changedTouches[0].clientY -
+      adSwipeStartY;
 
-    // 좌우 스와이프만
     if(
       Math.abs(dx) > 60 &&
       Math.abs(dx) > Math.abs(dy) * 1.5
     ){
 
       if(dx < 0){
-        nextAdModal(); // 다음 광고
+        nextAdModal();
       }else{
-        prevAd(); // 이전 광고
+        prevAd();
       }
 
     }
 
   });
 
-})();
-
+}
 
 function closeAdModal(){
 
