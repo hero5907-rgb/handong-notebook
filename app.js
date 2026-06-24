@@ -644,6 +644,9 @@ function apiJsonp(paramsObj) {
     params.set("_", String(Date.now()));
 
     const url = API_URL + "?" + params.toString();
+
+
+    console.log("요청", url);
     console.log("JSONP URL", url);
 
     let done = false;
@@ -655,6 +658,9 @@ function apiJsonp(paramsObj) {
     }
 
     window[cbName] = (data) => {
+
+console.log("응답", url);
+
       if (done) return;
       done = true;
       cleanup();
@@ -1144,6 +1150,10 @@ function renderLatest() {
 
 async function handleLogin() {
 
+console.time("전체로그인");
+console.log("로그인 시작");
+
+
 // 🔥 중복 로그인 차단 (핵심)
 if (window.__loginLock) return;
 window.__loginLock = true;
@@ -1190,14 +1200,16 @@ try {
   }
 
 
-
+console.time("data+popup");
+console.log("API 호출 시작");
   // 🔥 data + popupEvents 동시에 호출
 const [json, popupRes] = await Promise.all([
   apiJsonp({ action: "data", phone, code }),
   apiJsonp({ action: "popupEvents", phone, code })
 ]);
 
-
+console.timeEnd("data+popup");
+console.log("API 응답 완료");
 
 
     if (!json || json.ok !== true) {
@@ -1304,6 +1316,10 @@ else localStorage.removeItem(LS_KEY);
 
 // 🔵 로그인 성공 → 홈 화면으로 이동
 state.navStack = ["home"];
+
+console.timeEnd("전체로그인");
+console.log("홈 진입");
+
 showScreen("home");
 
 
