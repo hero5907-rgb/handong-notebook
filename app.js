@@ -152,7 +152,7 @@ let modalCtx = { list: [], index: -1 };
 let featuredAds = [];
 let featuredAdIndex = 0;
 let featuredAdTimer = null;
-let featuredAdRemain = 10;
+let featuredAdRemain = 30;
 let currentAdIndex = -1;
 
 
@@ -644,6 +644,7 @@ function apiJsonp(paramsObj) {
     params.set("_", String(Date.now()));
 
     const url = API_URL + "?" + params.toString();
+    console.log("JSONP URL", url);
 
     let done = false;
     const script = document.createElement("script");
@@ -4568,7 +4569,7 @@ function nextFeaturedAd(){
     featuredAdIndex = 0;
   }
 
-  featuredAdRemain = 10;
+  featuredAdRemain = 30;
 
   renderFeaturedAd();
 }
@@ -4591,7 +4592,7 @@ function startFeaturedAds(){
 
   featuredAdIndex = 0;
 
-  featuredAdRemain = 10;
+  featuredAdRemain = 30;
 
   renderFeaturedAd();
 
@@ -4606,7 +4607,7 @@ function startFeaturedAds(){
 
 if(featuredAdRemain <= 0){
 
-  featuredAdRemain = 10;
+  featuredAdRemain = 30;
 
   nextFeaturedAd();
 
