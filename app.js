@@ -644,6 +644,7 @@ function apiJsonp(paramsObj) {
     params.set("_", String(Date.now()));
 
     const url = API_URL + "?" + params.toString();
+    console.log("JSONP URL", url);
 
     let done = false;
     const script = document.createElement("script");
