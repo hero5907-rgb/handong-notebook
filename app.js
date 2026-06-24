@@ -4305,8 +4305,30 @@ currentAdIndex =
   el("adModalIntro").textContent =
     ad.intro || "";
 
-  el("adModalAddress").textContent =
-    ad.address || "";
+el("adModalAddress").innerHTML = `
+  <span
+    onclick="window.open(
+      'https://map.naver.com/v5/search/${encodeURIComponent(ad.address || "")}',
+      '_blank'
+    )"
+    style="
+      display:inline-block;
+      padding:2px 8px;
+      margin-right:6px;
+      border:1px solid #cbd5e1;
+      border-radius:999px;
+      background:#f8fafc;
+      color:#2563eb;
+      font-size:12px;
+      cursor:pointer;
+      font-weight:600;
+    "
+  >
+    📍 지도
+  </span>
+
+  ${ad.address || ""}
+`;
 
   el("adModalDesc").textContent =
     ad.desc || "";
