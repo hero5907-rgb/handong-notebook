@@ -1185,16 +1185,22 @@ if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
 try {
 
   if (!API_URL) {
+
+  console.time("LOGIN_TOTAL");
     throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
   }
 
 
 
   // 🔥 data + popupEvents 동시에 호출
+console.time("DATA");
+
 const [json, popupRes] = await Promise.all([
   apiJsonp({ action: "data", phone, code }),
   apiJsonp({ action: "popupEvents", phone, code })
 ]);
+
+console.timeEnd("DATA");
 
 
 
@@ -1304,7 +1310,7 @@ else localStorage.removeItem(LS_KEY);
 // 🔵 로그인 성공 → 홈 화면으로 이동
 state.navStack = ["home"];
 showScreen("home");
-
+console.timeEnd("LOGIN_TOTAL");
 
 
 
