@@ -4152,20 +4152,23 @@ function loadAdCategories(){
 
   const map = {};
 
-  ads.forEach(ad => {
+ads.forEach(ad => {
 
-    const name =
-      String(ad.category || "").trim();
+  String(ad.category || "")
+    .split(",")
+    .map(v => v.trim())
+    .filter(Boolean)
+    .forEach(name => {
 
-    if(!name) return;
+      if(!map[name]){
+        map[name] = 0;
+      }
 
-    if(!map[name]){
-      map[name] = 0;
-    }
+      map[name]++;
 
-    map[name]++;
+    });
 
-  });
+});
 
   const list =
     Object.keys(map)
@@ -4215,11 +4218,14 @@ function openAdCategory(category){
 
   console.time("광고목록");
 
-  const list =
-    (state.ads || [])
-      .filter(ad =>
-        ad.category === category
-      );
+const list =
+  (state.ads || [])
+    .filter(ad =>
+      String(ad.category || "")
+        .split(",")
+        .map(v => v.trim())
+        .includes(category)
+    );
 
   console.timeEnd("광고목록");
   console.log("광고목록(로컬)", list);
