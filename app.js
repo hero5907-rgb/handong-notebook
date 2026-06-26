@@ -902,6 +902,23 @@ function formatPhone(p){
 }
 
 
+// 🔵 기수 정렬용 (11-12, 29-30-31 모두 지원)
+function gisuOrder(v){
+
+  v = String(v || "").trim();
+
+  // 숫자만 모두 추출
+  const nums = v.match(/\d+/g);
+
+  if(nums && nums.length){
+    const sum = nums.reduce((a,b)=>a + Number(b),0);
+    return sum / nums.length;
+  }
+
+  return 0;
+}
+
+
 function renderMembers(list) {
 
 // 🔵 필터 버튼 텍스트 동기화
@@ -959,8 +976,8 @@ if (btnMembersRefresh) {
 // 🔥 기수 정렬 적용 (집행부 아닐때만)
 if (!execMode) {
   list.sort((a, b) => {
-    const ga = Number(a.gisu || 0);
-    const gb = Number(b.gisu || 0);
+const ga = gisuOrder(a.gisu);
+const gb = gisuOrder(b.gisu);
     return gisuSortDesc ? gb - ga : ga - gb;
   });
 }
@@ -986,7 +1003,9 @@ if (execMode) {
     return aMin - bMin;
   });
 } else {
-  sortedGisu = Object.keys(groups).sort((a, b) => b - a);
+  sortedGisu = Object.keys(groups).sort(
+  (a,b)=>gisuOrder(b)-gisuOrder(a)
+);
 }
 
 for (const gisu of sortedGisu) {
