@@ -3813,10 +3813,7 @@ set.add(m.gisu || "");
 
   // 🔵 정렬: 최신 위 / 0기 맨 아래
   arr.sort((a,b)=>gisuOrder(b)-gisuOrder(a));
-    if (a === 0) return 1;
-    if (b === 0) return -1;
-    return b - a;
-  });
+
 
   listEl.innerHTML = "";
 
