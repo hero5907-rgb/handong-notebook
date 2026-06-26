@@ -902,6 +902,19 @@ function formatPhone(p){
 }
 
 
+
+function gisuOrder(v){
+
+  v = String(v || "").trim();
+
+  const nums = v.match(/\d+/g);
+
+  if(!nums) return 0;
+
+  return nums.reduce((a,b)=>a+Number(b),0) / nums.length;
+}
+
+
 function renderMembers(list) {
 
 // 🔵 필터 버튼 텍스트 동기화
@@ -959,9 +972,10 @@ if (btnMembersRefresh) {
 // 🔥 기수 정렬 적용 (집행부 아닐때만)
 if (!execMode) {
   list.sort((a, b) => {
-    const ga = Number(a.gisu || 0);
-    const gb = Number(b.gisu || 0);
-    return gisuSortDesc ? gb - ga : ga - gb;
+const ga = gisuOrder(a.gisu);
+const gb = gisuOrder(b.gisu);
+
+return gisuSortDesc ? gb - ga : ga - gb;
   });
 }
 
@@ -986,7 +1000,9 @@ if (execMode) {
     return aMin - bMin;
   });
 } else {
-  sortedGisu = Object.keys(groups).sort((a, b) => b - a);
+  sortedGisu = Object.keys(groups).sort(
+  (a,b)=>gisuOrder(b)-gisuOrder(a)
+);
 }
 
 for (const gisu of sortedGisu) {
