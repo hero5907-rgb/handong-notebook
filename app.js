@@ -902,23 +902,6 @@ function formatPhone(p){
 }
 
 
-// 🔵 기수 정렬용 (11-12, 29-30-31 모두 지원)
-function gisuOrder(v){
-
-  v = String(v || "").trim();
-
-  // 숫자만 모두 추출
-  const nums = v.match(/\d+/g);
-
-  if(nums && nums.length){
-    const sum = nums.reduce((a,b)=>a + Number(b),0);
-    return sum / nums.length;
-  }
-
-  return 0;
-}
-
-
 function renderMembers(list) {
 
 // 🔵 필터 버튼 텍스트 동기화
@@ -934,7 +917,7 @@ if (btnClass) {
   const btnMembersRefresh = el("btnMembersRefresh");
 if (btnMembersRefresh) {
 
-  const myGisu = state.me?.gisu || "";
+  const myGisu = Number(state.me?.gisu || 0);
 
   // 🔥 상태 기준으로 정확히 판단
   if (!execMode && currentClassFilter === myGisu) {
@@ -956,9 +939,8 @@ if (btnMembersRefresh) {
 
   // 🔵 기수 필터
   if (currentClassFilter !== null) {
-  list = list.filter(m =>
-  gisuOrder(m.gisu) === gisuOrder(currentClassFilter)
-);  }
+    list = list.filter(m => Number(m.gisu || 0) === currentClassFilter);
+  }
 
   const pill = el("memberCountPill");
 
@@ -977,8 +959,8 @@ if (btnMembersRefresh) {
 // 🔥 기수 정렬 적용 (집행부 아닐때만)
 if (!execMode) {
   list.sort((a, b) => {
-const ga = gisuOrder(a.gisu);
-const gb = gisuOrder(b.gisu);
+    const ga = Number(a.gisu || 0);
+    const gb = Number(b.gisu || 0);
     return gisuSortDesc ? gb - ga : ga - gb;
   });
 }
@@ -1004,9 +986,7 @@ if (execMode) {
     return aMin - bMin;
   });
 } else {
-  sortedGisu = Object.keys(groups).sort(
-  (a,b)=>gisuOrder(b)-gisuOrder(a)
-);
+  sortedGisu = Object.keys(groups).sort((a, b) => b - a);
 }
 
 for (const gisu of sortedGisu) {
@@ -1247,7 +1227,9 @@ state.me = {
 execMode = false;   // 🔥 리스트무조건기수순
 
 // 🔵 로그인 사용자 기수 기본 필터값 설정
-currentClassFilter = state.me?.gisu || null;
+currentClassFilter = state.me?.gisu
+  ? Number(state.me.gisu)
+  : null;
 
 
 setAdminButton(state.me?.isAdmin === true);
@@ -1304,7 +1286,7 @@ document.querySelectorAll(".gisuPrefix").forEach(el=>{
 
     // 정렬
 state.members.sort((a, b) =>
-  (gisuOrder(a.gisu) - gisuOrder(b.gisu)) ||   // 1️⃣ 기수
+  (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
   (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) || // 2️⃣ 정렬순서
   (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
 );
@@ -1313,7 +1295,9 @@ renderLatest();
 renderAnnouncements();
 
 // 🔥 먼저 기수값 보장
-currentClassFilter = state.me?.gisu || null;
+currentClassFilter = state.me?.gisu
+  ? Number(state.me.gisu)
+  : null;
 
 buildClassWheel();
 
@@ -1335,12 +1319,12 @@ console.timeEnd("LOGIN_TOTAL");
 // 🔥 바로 팝업 실행 (지연 없음)
 if (popupRes && popupRes.ok === true){
 
-const myGisu = state.me?.gisu || "";
+  const myGisu = Number(state.me?.gisu || 0);
 
-const list = (popupRes.events || []).filter(e=>{
-  return gisuOrder(e.gisu) === 0 ||
-         gisuOrder(e.gisu) === gisuOrder(myGisu);
-});
+  const list = (popupRes.events || []).filter(e=>{
+    const g = Number(String(e.gisu || "0").trim());
+    return g === 0 || g === myGisu;
+  });
 
   if (list.length){
 
@@ -1462,12 +1446,12 @@ if (target === "members") {
   execMode = false;   // 🔥 추가
 
   if (currentClassFilter === null && state.me?.gisu) {
-    currentClassFilter = state.me.gisu;
+    currentClassFilter = Number(state.me.gisu);
   }
 
   // 🔵 로그인 사용자 기수 기본 적용 (혹시 초기화됐을 경우 대비)
   if (currentClassFilter === null && state.me?.gisu) {
-    currentClassFilter = state.me.gisu;
+    currentClassFilter = Number(state.me.gisu);
   }
 
   // 🔵 버튼 텍스트 갱신
@@ -1705,7 +1689,9 @@ if (btnMembersRefresh) {
 
     execMode = false; // 🔥 총동문 집행부 모드 해제
 
-currentClassFilter = state.me?.gisu || null;
+    currentClassFilter = state.me?.gisu
+      ? Number(state.me.gisu)
+      : null;
 
     renderMembers(state.members); // 🔥 다시 그리기
   };
@@ -2713,7 +2699,7 @@ if (btnDelete){
   el("evDesc").value = data.desc || "";
   el("evIsPopup").checked = String(data.popup).toLowerCase() === "true";
   // 🔥 전체/기수 선택값 세팅
-const isAll = gisuOrder(data.gisu) === 0;
+const isAll = Number(data.gisu || 0) === 0;
 
 const rAll = document.querySelector('input[name="evScope"][value="all"]');
 const rMy  = document.querySelector('input[name="evScope"][value="my"]');
@@ -2889,12 +2875,12 @@ if (!need.length) {
 }, resolve);
   }).then(res => {
 
-    const myGisu = state.me?.gisu || "";
+    const myGisu = Number(state.me?.gisu || 0);
 
 const list = (res?.events || [])
   .filter(e => {
-return gisuOrder(e.gisu) === 0 ||
-       gisuOrder(e.gisu) === gisuOrder(myGisu);
+    const g = Number(String(e.gisu || "0").trim());
+    return g === 0 || g === myGisu;   // 🔥 핵심
   })
   .map(e => ({
 
@@ -3192,9 +3178,9 @@ const holidays = (state.announcements || []).filter(a=>{
                       (
                         state.me.adminLevel === 0 ||
                         (
-                         state.me.adminLevel === 1 &&
-                         gisuOrder(e.extendedProps?.gisu) !== 0 &&
-                         gisuOrder(e.extendedProps?.gisu) === gisuOrder(state.me.gisu)
+                          state.me.adminLevel === 1 &&
+                          Number(e.extendedProps?.gisu) !== 0 &&
+                          Number(e.extendedProps?.gisu) === Number(state.me.gisu)
                         )
                       )
                     ) ? `
@@ -3302,7 +3288,9 @@ function reloadMembers() {
       .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
 
 // 🔵 로그인한 사용자 기수로 기본 필터 설정
-currentClassFilter = state.me?.gisu || null;
+currentClassFilter = state.me?.gisu
+  ? Number(state.me.gisu)
+  : null;
 
 // 🔵 기수 버튼 텍스트도 변경
 const btnClass = el("btnClassFilter");
@@ -3316,7 +3304,7 @@ if (btnClass) {
 
     // ✅ 정렬 (로그인 때와 동일)
 state.members.sort((a, b) =>
-  (gisuOrder(a.gisu) - gisuOrder(b.gisu)) ||  // 1️⃣ 기수
+  (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
   (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) || // 2️⃣ 정렬순서
   (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
 );
@@ -3589,8 +3577,8 @@ function buildClassWheel(){
 
   let base = [...new Set(
     state.members
-.map(m => gisuOrder(m.gisu))
-.filter(g => g > 0)
+      .map(m => Number(m.gisu))
+      .filter(g => !isNaN(g))
   )];
 
   base.sort((a,b)=> a-b);
@@ -3763,7 +3751,7 @@ window.__snapClassWheelToAll = function(){
   const items = scroller.querySelectorAll(".wheel-item");
 
   const blockSize = 2 + new Set(
-    state.members.map(m=>gisuOrder(m.gisu)).filter(g=>!isNaN(g))
+    state.members.map(m=>Number(m.gisu)).filter(g=>!isNaN(g))
   ).size;
 
   const centerBlock = Math.floor(40/2);
@@ -3806,14 +3794,18 @@ function buildClassList() {
   // 🔵 기수 수집
   const set = new Set();
   members.forEach(m => {
-set.add(m.gisu || "");
+    const g = Number(m.gisu || 0);
+    set.add(g);
   });
 
   let arr = Array.from(set);
 
   // 🔵 정렬: 최신 위 / 0기 맨 아래
-  arr.sort((a,b)=>gisuOrder(b)-gisuOrder(a));
-
+  arr.sort((a,b)=>{
+    if (a === 0) return 1;
+    if (b === 0) return -1;
+    return b - a;
+  });
 
   listEl.innerHTML = "";
 
