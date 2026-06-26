@@ -934,7 +934,7 @@ if (btnClass) {
   const btnMembersRefresh = el("btnMembersRefresh");
 if (btnMembersRefresh) {
 
-  const myGisu = Number(state.me?.gisu || 0);
+  const myGisu = state.me?.gisu || "";
 
   // 🔥 상태 기준으로 정확히 판단
   if (!execMode && currentClassFilter === myGisu) {
@@ -956,8 +956,9 @@ if (btnMembersRefresh) {
 
   // 🔵 기수 필터
   if (currentClassFilter !== null) {
-    list = list.filter(m => Number(m.gisu || 0) === currentClassFilter);
-  }
+  list = list.filter(m =>
+  gisuOrder(m.gisu) === gisuOrder(currentClassFilter)
+);  }
 
   const pill = el("memberCountPill");
 
@@ -1246,9 +1247,7 @@ state.me = {
 execMode = false;   // 🔥 리스트무조건기수순
 
 // 🔵 로그인 사용자 기수 기본 필터값 설정
-currentClassFilter = state.me?.gisu
-  ? Number(state.me.gisu)
-  : null;
+currentClassFilter = state.me?.gisu || null;
 
 
 setAdminButton(state.me?.isAdmin === true);
@@ -1305,7 +1304,7 @@ document.querySelectorAll(".gisuPrefix").forEach(el=>{
 
     // 정렬
 state.members.sort((a, b) =>
-  (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
+  (gisuOrder(a.gisu) - gisuOrder(b.gisu)) ||   // 1️⃣ 기수
   (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) || // 2️⃣ 정렬순서
   (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
 );
@@ -1314,9 +1313,7 @@ renderLatest();
 renderAnnouncements();
 
 // 🔥 먼저 기수값 보장
-currentClassFilter = state.me?.gisu
-  ? Number(state.me.gisu)
-  : null;
+currentClassFilter = state.me?.gisu || null;
 
 buildClassWheel();
 
@@ -1338,12 +1335,12 @@ console.timeEnd("LOGIN_TOTAL");
 // 🔥 바로 팝업 실행 (지연 없음)
 if (popupRes && popupRes.ok === true){
 
-  const myGisu = Number(state.me?.gisu || 0);
+const myGisu = state.me?.gisu || "";
 
-  const list = (popupRes.events || []).filter(e=>{
-    const g = Number(String(e.gisu || "0").trim());
-    return g === 0 || g === myGisu;
-  });
+const list = (popupRes.events || []).filter(e=>{
+  return gisuOrder(e.gisu) === 0 ||
+         gisuOrder(e.gisu) === gisuOrder(myGisu);
+});
 
   if (list.length){
 
@@ -1465,12 +1462,12 @@ if (target === "members") {
   execMode = false;   // 🔥 추가
 
   if (currentClassFilter === null && state.me?.gisu) {
-    currentClassFilter = Number(state.me.gisu);
+    currentClassFilter = state.me.gisu;
   }
 
   // 🔵 로그인 사용자 기수 기본 적용 (혹시 초기화됐을 경우 대비)
   if (currentClassFilter === null && state.me?.gisu) {
-    currentClassFilter = Number(state.me.gisu);
+    currentClassFilter = state.me.gisu;
   }
 
   // 🔵 버튼 텍스트 갱신
@@ -1708,9 +1705,7 @@ if (btnMembersRefresh) {
 
     execMode = false; // 🔥 총동문 집행부 모드 해제
 
-    currentClassFilter = state.me?.gisu
-      ? Number(state.me.gisu)
-      : null;
+currentClassFilter = state.me?.gisu || null;
 
     renderMembers(state.members); // 🔥 다시 그리기
   };
@@ -2718,7 +2713,7 @@ if (btnDelete){
   el("evDesc").value = data.desc || "";
   el("evIsPopup").checked = String(data.popup).toLowerCase() === "true";
   // 🔥 전체/기수 선택값 세팅
-const isAll = Number(data.gisu || 0) === 0;
+const isAll = gisuOrder(data.gisu) === 0;
 
 const rAll = document.querySelector('input[name="evScope"][value="all"]');
 const rMy  = document.querySelector('input[name="evScope"][value="my"]');
@@ -2894,12 +2889,12 @@ if (!need.length) {
 }, resolve);
   }).then(res => {
 
-    const myGisu = Number(state.me?.gisu || 0);
+    const myGisu = state.me?.gisu || "";
 
 const list = (res?.events || [])
   .filter(e => {
-    const g = Number(String(e.gisu || "0").trim());
-    return g === 0 || g === myGisu;   // 🔥 핵심
+return gisuOrder(e.gisu) === 0 ||
+       gisuOrder(e.gisu) === gisuOrder(myGisu);
   })
   .map(e => ({
 
@@ -3197,9 +3192,9 @@ const holidays = (state.announcements || []).filter(a=>{
                       (
                         state.me.adminLevel === 0 ||
                         (
-                          state.me.adminLevel === 1 &&
-                          Number(e.extendedProps?.gisu) !== 0 &&
-                          Number(e.extendedProps?.gisu) === Number(state.me.gisu)
+                         state.me.adminLevel === 1 &&
+                         gisuOrder(e.extendedProps?.gisu) !== 0 &&
+                         gisuOrder(e.extendedProps?.gisu) === gisuOrder(state.me.gisu)
                         )
                       )
                     ) ? `
@@ -3307,9 +3302,7 @@ function reloadMembers() {
       .map(m => ({ ...m, phone: normalizePhone(m.phone) }));
 
 // 🔵 로그인한 사용자 기수로 기본 필터 설정
-currentClassFilter = state.me?.gisu
-  ? Number(state.me.gisu)
-  : null;
+currentClassFilter = state.me?.gisu || null;
 
 // 🔵 기수 버튼 텍스트도 변경
 const btnClass = el("btnClassFilter");
@@ -3323,7 +3316,7 @@ if (btnClass) {
 
     // ✅ 정렬 (로그인 때와 동일)
 state.members.sort((a, b) =>
-  (Number(a.gisu ?? 0) - Number(b.gisu ?? 0)) ||   // 1️⃣ 기수
+  (gisuOrder(a.gisu) - gisuOrder(b.gisu)) ||  // 1️⃣ 기수
   (Number(a.sortOrder ?? 9999) - Number(b.sortOrder ?? 9999)) || // 2️⃣ 정렬순서
   (a.name || "").localeCompare(b.name || "", "ko") // 3️⃣ 이름
 );
@@ -3596,8 +3589,8 @@ function buildClassWheel(){
 
   let base = [...new Set(
     state.members
-      .map(m => Number(m.gisu))
-      .filter(g => !isNaN(g))
+.map(m => gisuOrder(m.gisu))
+.filter(g => g > 0)
   )];
 
   base.sort((a,b)=> a-b);
@@ -3770,7 +3763,7 @@ window.__snapClassWheelToAll = function(){
   const items = scroller.querySelectorAll(".wheel-item");
 
   const blockSize = 2 + new Set(
-    state.members.map(m=>Number(m.gisu)).filter(g=>!isNaN(g))
+    state.members.map(m=>gisuOrder(m.gisu)).filter(g=>!isNaN(g))
   ).size;
 
   const centerBlock = Math.floor(40/2);
@@ -3813,14 +3806,13 @@ function buildClassList() {
   // 🔵 기수 수집
   const set = new Set();
   members.forEach(m => {
-    const g = Number(m.gisu || 0);
-    set.add(g);
+set.add(m.gisu || "");
   });
 
   let arr = Array.from(set);
 
   // 🔵 정렬: 최신 위 / 0기 맨 아래
-  arr.sort((a,b)=>{
+  arr.sort((a,b)=>gisuOrder(b)-gisuOrder(a));
     if (a === 0) return 1;
     if (b === 0) return -1;
     return b - a;
