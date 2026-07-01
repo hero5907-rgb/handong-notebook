@@ -314,7 +314,7 @@ const myNameEl = el("myName");
 
 if (myNameEl) {
   myNameEl.innerHTML = `
-    ${m.gisu ? `<span class="gisu-medal">${m.gisu}기</span>` : ""}
+    ${m.gisu ? `<span class="gisu-medal">${formatGisu(m.gisu)}기</span>` : ""}
     <span class="name-text">${m.name || ""}</span>
   `;
 }
@@ -2312,7 +2312,7 @@ if (v.includes("총동문")) {
 
 if (nameEl) {
   nameEl.innerHTML = `
-    ${m.gisu ? `<span class="gisu-medal">${m.gisu}기</span>` : ""}
+    ${m.gisu ? `<span class="gisu-medal">${formatGisu(m.gisu)}기</span>` : ""}
     <span class="name-text">${m.name || ""}</span>
   `;
 }
@@ -3600,11 +3600,11 @@ function buildClassWheel(){
 
   if(base.length === 0) return;
 
-  const wheelItems = [
-    "총동문 집행부",
-    "기수전체",
-    ...base.map(g => `${g}기`)
-  ];
+const wheelItems = [
+  "총동문 집행부",
+  "기수전체",
+  ...base.map(g => `${formatGisu(g)}기`)
+];
 
   const items = Array.from({length:MAX_REPEAT}, ()=>wheelItems).flat();
 
@@ -3632,7 +3632,7 @@ function buildClassWheel(){
       }
       else{
         execMode = false;
-        const gisu = Number(label.replace("기",""));
+        const gisu = gisuOrder(label.replace("기",""));
         currentClassFilter = gisu;
         if(btnClass) btnClass.textContent = `${gisu}기 ▼`;
       }
