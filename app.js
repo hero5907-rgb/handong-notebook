@@ -924,7 +924,7 @@ const btnClass = el("btnClassFilter");
 if (btnClass) {
   if (execMode) btnClass.textContent = "총.집행부 ▼";
   else if (currentClassFilter === null) btnClass.textContent = "기수전체 ▼";
-  else btnClass.textContent = `${currentClassFilter}기 ▼`;
+else btnClass.textContent = `${formatGisu(currentClassFilter)}기 ▼`;
 }
 
 
@@ -3741,11 +3741,16 @@ const wheelItems = [
         currentClassFilter = null;
         if(btnClass) btnClass.textContent = "기수전체 ▼";
       }
-      else{
-        execMode = false;
-        currentClassFilter = Number(label.replace("기",""));
-        if(btnClass) btnClass.textContent = label + " ▼";
-      }
+else{
+  execMode = false;
+
+  currentClassFilter =
+    parseFloat(label.replace("기",""));
+
+  if(btnClass)
+    btnClass.textContent =
+      `${formatGisu(currentClassFilter)}기 ▼`;
+}
 
       renderMembers(state.members);
 
