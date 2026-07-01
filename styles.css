@@ -2465,12 +2465,12 @@ button:active{
    =============================== */
 
 .gisu-group{
-  border:1px solid var(--line);
+  border:2px solid #b7c8ea;
   border-radius:18px;
   padding:10px;
   margin-bottom:14px;
   background:#fff;
-  box-shadow:0 4px 10px rgba(12,20,38,.04);
+  box-shadow:0 8px 20px rgba(11,78,162,.08);
 }
 
 .gisu-title{
@@ -2481,9 +2481,10 @@ button:active{
 
   margin:6px 0 12px;
 
-  font-size:14px;        /* 🔥 살짝 키움 */
-  font-weight:800;       /* 🔥 조금 더 굵게 */
-  color:#0b4ea2;         /* 🔥 파란색 강조 */
+font-size:17px;
+font-weight:900;
+color:#083a78;
+letter-spacing:.4px;
 
   letter-spacing:0.3px;
 }
@@ -2492,8 +2493,8 @@ button:active{
 .gisu-title::after{
   content:"";
   flex:1;
-  height:1.5px;          /* 🔥 살짝 두껍게 */
-  background:#c7d7f5;    /* 🔥 연한 파랑 */
+height:2px;
+background:#7ea4e8;
 }
 
 /* 마지막 카드 여백 제거 */
