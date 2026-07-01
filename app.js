@@ -902,6 +902,21 @@ function formatPhone(p){
 }
 
 
+
+function formatGisu(g){
+
+  const n = Number(g);
+
+  if (Number.isNaN(n)) return String(g || "");
+
+  if (Number.isInteger(n)) {
+    return String(n);
+  }
+
+  return n.toFixed(2);
+}
+
+
 function renderMembers(list) {
 
 // 🔵 필터 버튼 텍스트 동기화
@@ -997,7 +1012,7 @@ for (const gisu of sortedGisu) {
   // 🔵 기수 제목
   const title = document.createElement("div");
   title.className = "gisu-title";
-  title.textContent = gisu + "기";
+  title.textContent = formatGisu(gisu) + "기";
   groupBox.appendChild(title);
 
   groups[gisu].forEach((m, i) => {
@@ -1019,7 +1034,7 @@ for (const gisu of sortedGisu) {
       <div class="row-main">
         <div class="row-title">
           ${esc(m.name)} 
-          ${m.gisu ? `<span class="badge">${m.gisu}기</span>` : ""}
+          ${m.gisu ? `<span class="badge">${formatGisu(m.gisu)}기</span>` : ""}
         </div>
 
         <div class="profile-badges">
