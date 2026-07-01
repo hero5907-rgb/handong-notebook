@@ -3630,12 +3630,18 @@ const wheelItems = [
         currentClassFilter = null;
         if(btnClass) btnClass.textContent = "기수전체 ▼";
       }
-      else{
-        execMode = false;
-        const gisu = gisuOrder(label.replace("기",""));
-        currentClassFilter = gisu;
-        if(btnClass) btnClass.textContent = `${gisu}기 ▼`;
-      }
+else{
+  execMode = false;
+
+  const gisu =
+    parseFloat(label.replace("기",""));
+
+  currentClassFilter = gisu;
+
+  if(btnClass)
+    btnClass.textContent =
+      `${formatGisu(gisu)}기 ▼`;
+}
 
       closeClassSlide();
       renderMembers(state.members);
