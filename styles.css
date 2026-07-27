@@ -4110,3 +4110,65 @@ background:#7ea4e8;
   }
 }
 
+
+
+
+/* =================================
+   홈 회원명부 업종·회원 검색창
+   ================================= */
+
+.members-home-tile {
+  cursor: pointer;
+}
+
+.home-member-search {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.home-member-search input {
+  flex: 1;
+  min-width: 0;
+  height: 36px;
+
+  padding: 0 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+
+  background: #f8fafc;
+  color: #0f172a;
+
+  font-family: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.home-member-search input:focus {
+  border-color: #0b4ea2;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(11, 78, 162, 0.12);
+}
+
+.home-member-search input::placeholder {
+  color: #94a3b8;
+}
+
+.home-member-search button {
+  flex-shrink: 0;
+  height: 36px;
+
+  padding: 0 10px;
+  border: none;
+  border-radius: 10px;
+
+  background: #0b4ea2;
+  color: #ffffff;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 900;
+  cursor: pointer;
+}

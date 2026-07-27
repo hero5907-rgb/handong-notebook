@@ -1606,7 +1606,82 @@ function bindSearch() {
   });
 }
 
+function bindHomeMemberSearch() {
+  const input = el("homeMemberSearch");
+  const button = el("btnHomeMemberSearch");
 
+  if (!input || !button) return;
+
+  function runHomeMemberSearch() {
+    const q = input.value.trim().toLowerCase();
+
+    if (!q) {
+      toast("검색어를 입력해주세요.");
+      input.focus();
+      return;
+    }
+
+    // 동문회 집행부 모드 해제
+    execMode = false;
+
+    // 로그인 회원의 기수가 아니라 기수전체로 변경
+    currentClassFilter = null;
+
+    // 회원명부 화면의 기수 버튼 표시
+    const btnClass = el("btnClassFilter");
+    if (btnClass) {
+      btnClass.textContent = "기수전체 ▼";
+    }
+
+    // 회원명부 검색창에도 같은 검색어 표시
+    const memberSearch = el("memberSearch");
+    if (memberSearch) {
+      memberSearch.value = input.value.trim();
+    }
+
+    // 전체 회원에서 검색
+    const filtered = state.members.filter((m) => {
+      const hay = [
+        m.name,
+        m.position,
+        m.workplace,
+        m.group,
+        m.phone,
+        m.industry
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
+      return hay.includes(q);
+    });
+
+    // 회원명부 화면으로 이동하고 결과 표시
+    pushNav("members");
+    renderMembers(filtered);
+  }
+
+  // 검색창을 눌렀을 때 타일 이동 방지
+  input.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  // Enter 키로 검색
+  input.addEventListener("keydown", (e) => {
+    e.stopPropagation();
+
+    if (e.key === "Enter") {
+      e.preventDefault();
+      runHomeMemberSearch();
+    }
+  });
+
+  // 검색 버튼으로 검색
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    runHomeMemberSearch();
+  });
+}
 
 
 // ⬇️⬇️⬇️ 여기부터 붙여넣기 ⬇️⬇️⬇️
@@ -1620,9 +1695,10 @@ setAdminButton(false);
 
 
   // 기본 세팅
-  setBrand(null);
-  bindNav();
-  bindSearch();
+setBrand(null);
+bindNav();
+bindSearch();
+bindHomeMemberSearch();
 
 const installBar = el("installBar");
 const btnInstallBar = el("btnInstallBar");
