@@ -1027,15 +1027,37 @@ for (const gisu of sortedGisu) {
     cls += " is-class-president";   // 기수회장
   }
 
-  row.className = cls;
+row.className = cls;
 
-    row.innerHTML = `
+// 회원 휴대폰과 광고 회원전화를 비교해서 광고 찾기
+const memberAd = (state.ads || []).find((ad) => {
+  const memberPhone = normalizePhone(m.phone);
+  const adPhone = normalizePhone(ad.memberPhone);
+
+  return (
+    memberPhone &&
+    adPhone &&
+    memberPhone === adPhone
+  );
+});
+
+row.innerHTML = `
       ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
       <div class="row-main">
-        <div class="row-title">
-          ${esc(m.name)} 
-          ${m.gisu ? `<span class="badge">${formatGisu(m.gisu)}기</span>` : ""}
-        </div>
+<div class="row-title">
+  ${esc(m.name)}
+  ${m.gisu ? `<span class="badge">${formatGisu(m.gisu)}기</span>` : ""}
+
+  ${memberAd ? `
+    <button
+      type="button"
+      class="member-ad-btn"
+      data-ad-id="${esc(memberAd.adId)}"
+    >
+      광고보기
+    </button>
+  ` : ""}
+</div>
 
         <div class="profile-badges">
           ${(() => {
@@ -1079,10 +1101,23 @@ for (const gisu of sortedGisu) {
       </div>
     `;
 
-    row.addEventListener("click", () => openProfileAt(groups[gisu], i));
-    row.querySelector(".actions")?.addEventListener("click", (e) => e.stopPropagation());
+row.addEventListener("click", () => openProfileAt(groups[gisu], i));
 
-    groupBox.appendChild(row);
+row.querySelector(".actions")?.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+row.querySelector(".member-ad-btn")?.addEventListener("click", (e) => {
+  e.stopPropagation();
+
+  const adId = e.currentTarget.dataset.adId;
+
+  if (adId) {
+    openAdModal(adId);
+  }
+});
+
+groupBox.appendChild(row);
   });
 
   wrap.appendChild(groupBox);
@@ -1552,18 +1587,24 @@ function bindSearch() {
     }
 
     const filtered = state.members.filter((m) => {
-      const memberPhone = normalizePhone(m.phone);
+      const hay = [
+        m.name,
+        m.position,
+        m.workplace,
+        m.group,
+        m.phone,
+        m.industry
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
 
-      // 이 회원이 등록한 광고 찾기
-const memberAds = (state.ads || []).filter((ad) => {
-  const adPhone = normalizePhone(ad.memberPhone);
+      return hay.includes(q);
+    });
 
-  return (
-    memberPhone &&
-    adPhone &&
-    memberPhone === adPhone
-  );
-});
+    renderMembers(filtered);
+  });
+}
 
       // 광고 업종을 검색 문자열에 추가
       const adCategories = memberAds

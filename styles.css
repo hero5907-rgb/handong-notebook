@@ -4071,3 +4071,42 @@ background:#7ea4e8;
   box-shadow:0 10px 30px rgba(0,0,0,.18);
 }
 
+
+
+/* =================================
+   회원명부 광고보기 버튼
+   ================================= */
+
+.member-ad-btn {
+  margin-left: auto;
+  flex-shrink: 0;
+
+  padding: 5px 9px;
+  border: 1px solid #e4ae19;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #fff7d6, #ffd966);
+  color: #7a5200;
+
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1.2;
+
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(180, 125, 0, 0.18);
+}
+
+/* 마우스를 올렸을 때 */
+.member-ad-btn:hover {
+  background: linear-gradient(135deg, #ffedaa, #f5c842);
+}
+
+/* 작은 휴대폰 화면 */
+@media (max-width: 380px) {
+  .member-ad-btn {
+    padding: 4px 7px;
+    font-size: 10px;
+  }
+}
+
