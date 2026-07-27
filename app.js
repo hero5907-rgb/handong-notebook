@@ -1545,11 +1545,46 @@ function bindSearch() {
 
   input.addEventListener("input", () => {
     const q = input.value.trim().toLowerCase();
-    if (!q) { renderMembers(state.members); return; }
+
+    if (!q) {
+      renderMembers(state.members);
+      return;
+    }
+
     const filtered = state.members.filter((m) => {
-      const hay = [m.name, m.position, m.workplace, m.group, m.phone].filter(Boolean).join(" ").toLowerCase();
+      const memberPhone = normalizePhone(m.phone);
+
+      // 이 회원이 등록한 광고 찾기
+      const memberAds = (state.ads || []).filter((ad) => {
+        const adPhone = normalizePhone(ad.memberPhone);
+
+        // 전화번호 우선, 예전 데이터는 이름으로 보조 연결
+        return (
+          (memberPhone && adPhone && memberPhone === adPhone) ||
+          String(ad.memberName || "").trim() === String(m.name || "").trim()
+        );
+      });
+
+      // 광고 업종을 검색 문자열에 추가
+      const adCategories = memberAds
+        .map((ad) => ad.category || "")
+        .join(" ");
+
+      const hay = [
+        m.name,
+        m.position,
+        m.workplace,
+        m.group,
+        m.phone,
+        adCategories
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
+
       return hay.includes(q);
     });
+
     renderMembers(filtered);
   });
 }
