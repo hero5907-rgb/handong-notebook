@@ -944,7 +944,7 @@ if (btnMembersRefresh) {
 
   // 🔵 총동문 집행부 모드
   if (execMode) {
-    list = list.filter(m => m.group === "총동문회");
+    list = list.filter(m => m.group === "동문회");
 
     // H컬럼 정렬순서
     list.sort((a,b)=>{
