@@ -1606,29 +1606,6 @@ function bindSearch() {
   });
 }
 
-      // 광고 업종을 검색 문자열에 추가
-      const adCategories = memberAds
-        .map((ad) => ad.category || "")
-        .join(" ");
-
-      const hay = [
-        m.name,
-        m.position,
-        m.workplace,
-        m.group,
-        m.phone,
-        adCategories
-      ]
-        .filter(Boolean)
-        .join(" ")
-        .toLowerCase();
-
-      return hay.includes(q);
-    });
-
-    renderMembers(filtered);
-  });
-}
 
 
 
