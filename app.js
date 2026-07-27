@@ -1555,15 +1555,15 @@ function bindSearch() {
       const memberPhone = normalizePhone(m.phone);
 
       // 이 회원이 등록한 광고 찾기
-      const memberAds = (state.ads || []).filter((ad) => {
-        const adPhone = normalizePhone(ad.memberPhone);
+const memberAds = (state.ads || []).filter((ad) => {
+  const adPhone = normalizePhone(ad.memberPhone);
 
-        // 전화번호 우선, 예전 데이터는 이름으로 보조 연결
-        return (
-          (memberPhone && adPhone && memberPhone === adPhone) ||
-          String(ad.memberName || "").trim() === String(m.name || "").trim()
-        );
-      });
+  return (
+    memberPhone &&
+    adPhone &&
+    memberPhone === adPhone
+  );
+});
 
       // 광고 업종을 검색 문자열에 추가
       const adCategories = memberAds
@@ -2413,9 +2413,16 @@ const adBox = el("memberAdBox");
 
 if (adBox) {
 
-  const myAds = (state.ads || []).filter(ad =>
-    String(ad.memberName || "") === String(m.name || "")
-  );
+  const myAds = (state.ads || []).filter((ad) => {
+    const adPhone = normalizePhone(ad.memberPhone);
+    const memberPhone = normalizePhone(m.phone);
+
+    return (
+      adPhone &&
+      memberPhone &&
+      adPhone === memberPhone
+    );
+  });
 
   if (!myAds.length) {
 
