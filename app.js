@@ -922,7 +922,7 @@ function renderMembers(list) {
 // 🔵 필터 버튼 텍스트 동기화
 const btnClass = el("btnClassFilter");
 if (btnClass) {
-  if (execMode) btnClass.textContent = "총.집행부 ▼";
+  if (execMode) btnClass.textContent = "동문.집행부 ▼";
   else if (currentClassFilter === null) btnClass.textContent = "기수전체 ▼";
 else btnClass.textContent = `${formatGisu(currentClassFilter)}기 ▼`;
 }
@@ -1050,7 +1050,7 @@ for (const gisu of sortedGisu) {
 
               arr.forEach(v => {
                 html += `
-                  <span class="badge ${v.includes("총동문") ? 'badge-exec' : ''}">
+                  <span class="badge ${v.includes("동문회") ? 'badge-exec' : ''}">
                     ${esc(v)}
                   </span>
                 `;
@@ -3601,7 +3601,7 @@ function buildClassWheel(){
   if(base.length === 0) return;
 
 const wheelItems = [
-  "총동문 집행부",
+  "동문회 집행부",
   "기수전체",
   ...base.map(g => `${formatGisu(g)}기`)
 ];
@@ -3620,10 +3620,10 @@ const wheelItems = [
       const label = elItem.dataset.label;
       const btnClass = document.getElementById("btnClassFilter");
 
-      if(label === "총동문 집행부"){
+      if(label === "동문회 집행부"){
         execMode = true;
         currentClassFilter = null;
-        if(btnClass) btnClass.textContent = "총.집행부 ▼";
+        if(btnClass) btnClass.textContent = "동문.집행부 ▼";
       }
       else if(label === "기수전체"){
         execMode = false;
@@ -3737,10 +3737,10 @@ else{
       const label = items[idx];
       const btnClass = document.getElementById("btnClassFilter");
 
-      if(label === "총동문 집행부"){
+      if(label === "동문회 집행부"){
         execMode = true;
         currentClassFilter = null;
-        if(btnClass) btnClass.textContent = "총.집행부 ▼";
+        if(btnClass) btnClass.textContent = "동문.집행부 ▼";
       }
       else if(label === "기수전체"){
         execMode = false;
