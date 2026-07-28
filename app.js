@@ -704,12 +704,16 @@ function setBrand(settings) {
   const district = (settings?.district || cfg.district || "한 동 회");
   const clubName = (settings?.clubName || cfg.clubName || "한동대학교 최고경영자과정");
 
-  if (el("districtText2")) el("districtText2").textContent = district;
+// 홈 파란 영역은 클럽설정 시트 H열 내용을 그대로 표시
+if (el("genClubText")) {
+  el("genClubText").textContent = String(settings?.term || "").trim();
+}
 
-  if (el("genClubText")) {
-    const term = formatTerm(settings?.term, settings?.generation || CFG.generation);
-    el("genClubText").textContent = term ? `${term} ${clubName}` : clubName;
-  }
+// 기존 A열 지구 문구는 이 위치에서 표시하지 않음
+if (el("districtText2")) {
+  el("districtText2").textContent = "";
+  el("districtText2").hidden = true;
+}
 
   if (el("districtText")) el("districtText").textContent = district;
   if (el("clubNameText")) el("clubNameText").textContent = clubName;

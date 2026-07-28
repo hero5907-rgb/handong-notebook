@@ -4205,3 +4205,9 @@ background:#7ea4e8;
   padding-right: 9px;
 }
 
+/* 클럽설정 H열의 줄바꿈을 그대로 표시 */
+.brand-hero-main {
+  white-space: pre-line;
+  text-align: center;
+  line-height: 1.45;
+}
