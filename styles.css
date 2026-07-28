@@ -2550,11 +2550,12 @@ background:#7ea4e8;
 }
 
 /* 슬로건 (위 큰 글씨) */
-.brand-hero-title{
-  font-weight:900;
-  font-size:clamp(16px,5vw,24px);
-  line-height:1.2;
-  letter-spacing:-0.3px;
+.brand-hero-title {
+  font-weight: 900;
+  font-size: clamp(15px, 4.3vw, 21px);
+  line-height: 1.25;
+  letter-spacing: -0.3px;
+  word-break: keep-all;
 }
 
 /* 중간 구분선 */
@@ -4172,3 +4173,35 @@ background:#7ea4e8;
   font-weight: 900;
   cursor: pointer;
 }
+
+
+/* =================================
+   홈 타일 좌우 너비 동일하게 고정
+   ================================= */
+
+#screenHome .grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+#screenHome .tile {
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 회원 검색 영역이 타일 너비를 밀어내지 않게 처리 */
+.home-member-search {
+  min-width: 0;
+}
+
+.home-member-search input {
+  width: 0;
+  min-width: 0;
+}
+
+.home-member-search button {
+  flex: 0 0 auto;
+  padding-left: 9px;
+  padding-right: 9px;
+}
+
