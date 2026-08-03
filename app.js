@@ -1610,6 +1610,8 @@ function bindSearch() {
   });
 }
 
+function bindHomeMemberSearch() {
+
 const input = el("homeMemberSearch");
 const button = el("btnHomeMemberSearch");
 const searchBox = input?.closest(".home-industry-search-box");
