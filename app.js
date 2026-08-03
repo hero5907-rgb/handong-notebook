@@ -1610,11 +1610,15 @@ function bindSearch() {
   });
 }
 
-function bindHomeMemberSearch() {
-  const input = el("homeMemberSearch");
-  const button = el("btnHomeMemberSearch");
+const input = el("homeMemberSearch");
+const button = el("btnHomeMemberSearch");
+const searchBox = input?.closest(".home-industry-search-box");
 
-  if (!input || !button) return;
+if (!input || !button) return;
+
+searchBox?.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
 
   function runHomeMemberSearch() {
     const q = input.value.trim().toLowerCase();

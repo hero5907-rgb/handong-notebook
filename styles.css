@@ -4211,3 +4211,48 @@ background:#7ea4e8;
   text-align: center;
   line-height: 1.45;
 }
+
+
+
+
+/* =================================
+   홈 타일 동문업종검색 구분 영역
+   ================================= */
+
+.home-industry-search-box {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+
+  margin: 11px 0 0;
+  padding: 6px 7px 7px;
+
+  border: 1px solid #b7c8df;
+  border-radius: 12px;
+  background: #f8fbff;
+}
+
+.home-industry-search-box legend {
+  padding: 0 6px;
+  color: #0b4ea2;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.home-industry-search-box .home-member-search {
+  margin-top: 0;
+  gap: 5px;
+}
+
+.home-industry-search-box .home-member-search input {
+  height: 32px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+
+.home-industry-search-box .home-member-search button {
+  height: 32px;
+  padding: 0 8px;
+  font-size: 11px;
+}
