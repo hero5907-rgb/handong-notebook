@@ -362,7 +362,7 @@ if (myIndustryEl) {
       .filter(Boolean)
       .join(" · ");
 
-    myIndustryEl.textContent = `업종  ${myIndustryText}`;
+    myIndustryEl.textContent = myIndustryText;
     myIndustryEl.hidden = false;
   } else {
     myIndustryEl.textContent = "";
@@ -2548,7 +2548,7 @@ if (industryEl) {
       .filter(Boolean)
       .join(" · ");
 
-    industryEl.textContent = `업종  ${industryText}`;
+    industryEl.textContent = industryText;
     industryEl.hidden = false;
   } else {
     industryEl.textContent = "";
