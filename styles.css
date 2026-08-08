@@ -4398,3 +4398,20 @@ background:#7ea4e8;
   line-height: 40px;
   cursor: pointer;
 }
+
+
+/* 기수 단체사진 확대창: 손가락 확대 및 이동 */
+.gisu-photo-zoom {
+  overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: contain;
+}
+
+.gisu-photo-zoom-image {
+  touch-action: none;
+  transform-origin: center center;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  will-change: transform;
+}

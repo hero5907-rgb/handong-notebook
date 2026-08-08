@@ -946,8 +946,214 @@ function formatGisu(g){
 
 
 // =====================================
-// 기수 단체사진 확대 보기
+// 기수 단체사진 확대 보기 + 두 손가락 확대
 // =====================================
+
+// 확대 상태
+let gisuPhotoScale = 1;
+let gisuPhotoX = 0;
+let gisuPhotoY = 0;
+
+const gisuPhotoPointers = new Map();
+
+let gisuPhotoPinchDistance = 0;
+let gisuPhotoPinchScale = 1;
+let gisuPhotoDragStart = null;
+
+
+// 숫자를 최솟값과 최댓값 사이로 제한
+function limitGisuPhotoValue(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+
+// 사진에 확대·이동 상태 적용
+function applyGisuPhotoTransform() {
+  const image = document.querySelector(
+    ".gisu-photo-zoom-image"
+  );
+
+  if (!image) return;
+
+  image.style.transform =
+    `translate(${gisuPhotoX}px, ${gisuPhotoY}px) ` +
+    `scale(${gisuPhotoScale})`;
+}
+
+
+// 확대 상태 초기화
+function resetGisuPhotoZoom() {
+  gisuPhotoScale = 1;
+  gisuPhotoX = 0;
+  gisuPhotoY = 0;
+
+  gisuPhotoPointers.clear();
+  gisuPhotoPinchDistance = 0;
+  gisuPhotoPinchScale = 1;
+  gisuPhotoDragStart = null;
+
+  applyGisuPhotoTransform();
+}
+
+
+// 두 점 사이 거리 계산
+function getGisuPhotoPointerDistance() {
+  const points = Array.from(
+    gisuPhotoPointers.values()
+  );
+
+  if (points.length < 2) return 0;
+
+  return Math.hypot(
+    points[1].x - points[0].x,
+    points[1].y - points[0].y
+  );
+}
+
+
+// 사진에 손가락 확대 기능 연결
+function bindGisuPhotoGestures(image) {
+  if (!image || image.dataset.gestureBound === "true") {
+    return;
+  }
+
+  image.dataset.gestureBound = "true";
+
+  image.addEventListener("pointerdown", (e) => {
+    e.preventDefault();
+
+    try {
+      image.setPointerCapture(e.pointerId);
+    } catch (_) {}
+
+    gisuPhotoPointers.set(e.pointerId, {
+      x: e.clientX,
+      y: e.clientY
+    });
+
+    if (gisuPhotoPointers.size === 2) {
+      gisuPhotoPinchDistance =
+        getGisuPhotoPointerDistance();
+
+      gisuPhotoPinchScale = gisuPhotoScale;
+      gisuPhotoDragStart = null;
+    } else if (gisuPhotoPointers.size === 1) {
+      gisuPhotoDragStart = {
+        pointerX: e.clientX,
+        pointerY: e.clientY,
+        imageX: gisuPhotoX,
+        imageY: gisuPhotoY
+      };
+    }
+  });
+
+
+  image.addEventListener("pointermove", (e) => {
+    if (!gisuPhotoPointers.has(e.pointerId)) {
+      return;
+    }
+
+    e.preventDefault();
+
+    gisuPhotoPointers.set(e.pointerId, {
+      x: e.clientX,
+      y: e.clientY
+    });
+
+    // 손가락 두 개: 확대 및 축소
+    if (gisuPhotoPointers.size === 2) {
+      const currentDistance =
+        getGisuPhotoPointerDistance();
+
+      if (
+        gisuPhotoPinchDistance > 0 &&
+        currentDistance > 0
+      ) {
+        gisuPhotoScale = limitGisuPhotoValue(
+          gisuPhotoPinchScale *
+            (currentDistance / gisuPhotoPinchDistance),
+          1,
+          5
+        );
+
+        // 원래 크기로 돌아오면 위치도 가운데로
+        if (gisuPhotoScale <= 1.01) {
+          gisuPhotoScale = 1;
+          gisuPhotoX = 0;
+          gisuPhotoY = 0;
+        }
+
+        applyGisuPhotoTransform();
+      }
+
+      return;
+    }
+
+    // 손가락 한 개: 확대된 사진 이동
+    if (
+      gisuPhotoPointers.size === 1 &&
+      gisuPhotoScale > 1 &&
+      gisuPhotoDragStart
+    ) {
+      gisuPhotoX =
+        gisuPhotoDragStart.imageX +
+        (e.clientX - gisuPhotoDragStart.pointerX);
+
+      gisuPhotoY =
+        gisuPhotoDragStart.imageY +
+        (e.clientY - gisuPhotoDragStart.pointerY);
+
+      applyGisuPhotoTransform();
+    }
+  });
+
+
+  function endGisuPhotoPointer(e) {
+    gisuPhotoPointers.delete(e.pointerId);
+
+    if (gisuPhotoPointers.size === 1) {
+      const remaining =
+        Array.from(gisuPhotoPointers.values())[0];
+
+      gisuPhotoDragStart = {
+        pointerX: remaining.x,
+        pointerY: remaining.y,
+        imageX: gisuPhotoX,
+        imageY: gisuPhotoY
+      };
+    } else {
+      gisuPhotoDragStart = null;
+    }
+
+    if (gisuPhotoScale <= 1.01) {
+      resetGisuPhotoZoom();
+    }
+  }
+
+  image.addEventListener(
+    "pointerup",
+    endGisuPhotoPointer
+  );
+
+  image.addEventListener(
+    "pointercancel",
+    endGisuPhotoPointer
+  );
+
+  image.addEventListener(
+    "lostpointercapture",
+    endGisuPhotoPointer
+  );
+
+  // 사진을 두 번 누르면 초기 크기로 복원
+  image.addEventListener("dblclick", (e) => {
+    e.preventDefault();
+    resetGisuPhotoZoom();
+  });
+}
+
+
+// 확대창 열기
 function openGisuPhotoZoom(photoUrl, gisu) {
   if (!photoUrl) return;
 
@@ -972,10 +1178,17 @@ function openGisuPhotoZoom(photoUrl, gisu) {
       <img
         class="gisu-photo-zoom-image"
         alt="기수 단체사진 확대"
+        draggable="false"
       />
     `;
 
     document.body.appendChild(zoom);
+
+    const createdImage = zoom.querySelector(
+      ".gisu-photo-zoom-image"
+    );
+
+    bindGisuPhotoGestures(createdImage);
 
     // 닫기 버튼
     zoom
@@ -994,6 +1207,8 @@ function openGisuPhotoZoom(photoUrl, gisu) {
     ".gisu-photo-zoom-image"
   );
 
+  resetGisuPhotoZoom();
+
   if (image) {
     image.src = photoUrl;
     image.alt = `${formatGisu(gisu)}기 단체사진 확대`;
@@ -1004,11 +1219,13 @@ function openGisuPhotoZoom(photoUrl, gisu) {
 }
 
 
+// 확대창 닫기
 function closeGisuPhotoZoom() {
   const zoom = el("gisuPhotoZoom");
 
   if (!zoom) return;
 
+  resetGisuPhotoZoom();
   zoom.hidden = true;
 
   const image = zoom.querySelector(
@@ -1021,7 +1238,6 @@ function closeGisuPhotoZoom() {
 
   document.body.classList.remove("modal-open");
 }
-
 
 function renderMembers(list) {
 
