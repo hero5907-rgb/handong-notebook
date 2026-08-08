@@ -1118,7 +1118,7 @@ row.innerHTML = `
           })()}
         </div>
 
-        <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone)].filter(Boolean).join(" / "))}</div>
+        <div class="row-sub">${esc([m.workplace, m.title, formatPhone(m.phone), m.industry].filter(Boolean).join(" / "))}</div>
 
         <div class="actions">
           <a class="a-btn primary" href="tel:${esc(m.phone)}">📞 통화</a>
