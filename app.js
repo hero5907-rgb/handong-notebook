@@ -945,6 +945,84 @@ function formatGisu(g){
 }
 
 
+// =====================================
+// 기수 단체사진 확대 보기
+// =====================================
+function openGisuPhotoZoom(photoUrl, gisu) {
+  if (!photoUrl) return;
+
+  let zoom = el("gisuPhotoZoom");
+
+  // 확대 화면이 없으면 처음 한 번만 생성
+  if (!zoom) {
+    zoom = document.createElement("div");
+    zoom.id = "gisuPhotoZoom";
+    zoom.className = "gisu-photo-zoom";
+    zoom.hidden = true;
+
+    zoom.innerHTML = `
+      <button
+        type="button"
+        class="gisu-photo-zoom-close"
+        aria-label="사진 닫기"
+      >
+        ×
+      </button>
+
+      <img
+        class="gisu-photo-zoom-image"
+        alt="기수 단체사진 확대"
+      />
+    `;
+
+    document.body.appendChild(zoom);
+
+    // 닫기 버튼
+    zoom
+      .querySelector(".gisu-photo-zoom-close")
+      ?.addEventListener("click", closeGisuPhotoZoom);
+
+    // 검은 배경을 누르면 닫기
+    zoom.addEventListener("click", (e) => {
+      if (e.target === zoom) {
+        closeGisuPhotoZoom();
+      }
+    });
+  }
+
+  const image = zoom.querySelector(
+    ".gisu-photo-zoom-image"
+  );
+
+  if (image) {
+    image.src = photoUrl;
+    image.alt = `${formatGisu(gisu)}기 단체사진 확대`;
+  }
+
+  zoom.hidden = false;
+  document.body.classList.add("modal-open");
+}
+
+
+function closeGisuPhotoZoom() {
+  const zoom = el("gisuPhotoZoom");
+
+  if (!zoom) return;
+
+  zoom.hidden = true;
+
+  const image = zoom.querySelector(
+    ".gisu-photo-zoom-image"
+  );
+
+  if (image) {
+    image.src = "";
+  }
+
+  document.body.classList.remove("modal-open");
+}
+
+
 function renderMembers(list) {
 
 // 🔵 필터 버튼 텍스트 동기화
@@ -1080,6 +1158,23 @@ if (classInfo && (classInfo.slogan || classInfo.photoUrl)) {
   `;
 
   groupBox.appendChild(classIntro);
+
+
+const groupPhoto = classIntro.querySelector(
+  ".gisu-group-photo"
+);
+
+if (groupPhoto) {
+  groupPhoto.addEventListener("click", (e) => {
+    e.stopPropagation();
+
+    openGisuPhotoZoom(
+      classInfo.photoUrl,
+      gisu
+    );
+  });
+}
+
 }
 
 
