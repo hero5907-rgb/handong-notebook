@@ -154,7 +154,7 @@ let featuredAdIndex = 0;
 let featuredAdTimer = null;
 let featuredAdRemain = 10;
 let currentAdIndex = -1;
-
+let currentAdBrowseList = [];
 
 
 let gisuSortDesc = true; // true = 최신기수 위, false = 오래된기수 위
@@ -4808,6 +4808,9 @@ const list =
         .includes(category)
     );
 
+
+currentAdBrowseList = list;
+
   console.timeEnd("광고목록");
   console.log("광고목록(로컬)", list);
 
@@ -4824,7 +4827,7 @@ const list =
   box.innerHTML = list.map(ad=>`
 
     <div class="row"
-      onclick="openAdModal('${ad.adId}')">
+      onclick="openAdModal('${ad.adId}', true)">
 
       <div class="row-main">
 
@@ -4849,7 +4852,23 @@ const list =
 
 }
 
-function openAdModal(adId){
+function openAdModal(adId, useCurrentList = false){
+
+
+
+  // 카테고리 목록에서 들어온 것이 아니면 전체 광고 사용
+  if (
+    !useCurrentList ||
+    !Array.isArray(currentAdBrowseList) ||
+    !currentAdBrowseList.length
+  ) {
+    currentAdBrowseList =
+      Array.isArray(state.ads)
+        ? state.ads
+        : [];
+  }
+
+
 
   history.pushState(
     { modal:"ad" },
@@ -4867,10 +4886,9 @@ function openAdModal(adId){
 
 
 currentAdIndex =
-  (state.ads || [])
-    .findIndex(x =>
-      String(x.adId) === String(adId)
-    );
+  currentAdBrowseList.findIndex(x =>
+    String(x.adId) === String(adId)
+  );
 
 
   console.timeEnd("광고상세");
@@ -5233,44 +5251,46 @@ if(featuredAdRemain <= 0){
 
 
 
-
 function prevAd(){
 
-  if(!state.ads?.length) return;
+  if (!currentAdBrowseList.length) return;
 
   currentAdIndex--;
 
-  if(currentAdIndex < 0){
+  if (currentAdIndex < 0) {
     currentAdIndex =
-      state.ads.length - 1;
+      currentAdBrowseList.length - 1;
   }
 
   closeAdModal();
 
   openAdModal(
-    state.ads[currentAdIndex].adId
+    currentAdBrowseList[currentAdIndex].adId,
+    true
   );
-
 }
+
 
 function nextAdModal(){
 
-  if(!state.ads?.length) return;
+  if (!currentAdBrowseList.length) return;
 
   currentAdIndex++;
 
-  if(currentAdIndex >= state.ads.length){
+  if (
+    currentAdIndex >=
+    currentAdBrowseList.length
+  ) {
     currentAdIndex = 0;
   }
 
   closeAdModal();
 
   openAdModal(
-    state.ads[currentAdIndex].adId
+    currentAdBrowseList[currentAdIndex].adId,
+    true
   );
-
 }
-
 
 
 // =====================================
