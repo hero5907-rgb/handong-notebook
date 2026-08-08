@@ -276,6 +276,8 @@ let state = {
   settings: null,
   members: [],
   announcements: [],
+  ads: [],
+  classInfo: [],
   navStack: ["login"],
 };
 
@@ -1041,6 +1043,46 @@ for (const gisu of sortedGisu) {
   title.textContent = formatGisu(gisu) + "기";
   groupBox.appendChild(title);
 
+
+
+// 해당 기수의 슬로건과 단체사진 찾기
+const classInfo = (state.classInfo || []).find(
+  item => Number(item.gisu) === Number(gisu)
+);
+
+if (classInfo && (classInfo.slogan || classInfo.photoUrl)) {
+  const classIntro = document.createElement("div");
+  classIntro.className = "gisu-intro";
+
+  classIntro.innerHTML = `
+    ${
+      classInfo.slogan
+        ? `
+          <div class="gisu-slogan">
+            ${esc(classInfo.slogan)}
+          </div>
+        `
+        : ""
+    }
+
+    ${
+      classInfo.photoUrl
+        ? `
+          <img
+            class="gisu-group-photo"
+            src="${esc(classInfo.photoUrl)}"
+            alt="${esc(formatGisu(gisu))}기 단체사진"
+            loading="lazy"
+          />
+        `
+        : ""
+    }
+  `;
+
+  groupBox.appendChild(classIntro);
+}
+
+
   groups[gisu].forEach((m, i) => {
 
   const row = document.createElement("div");
@@ -1339,6 +1381,8 @@ state.members = onlyRealMembers(json.members || [])
 state.announcements = json.announcements || [];
 
 state.ads = json.ads || [];
+
+state.classInfo = json.classInfo || [];
 
     // ✅ 관리자 버튼: 로그인 성공 시에만 표시/숨김 결정
     const tileAdmin = el("tileAdmin");

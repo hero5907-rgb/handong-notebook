@@ -4277,3 +4277,63 @@ background:#7ea4e8;
   text-align: center;
   white-space: normal;
 }
+
+
+
+/* =================================
+   기수별 슬로건 및 단체사진
+   ================================= */
+
+.gisu-intro {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 2px 0 14px;
+  padding: 4px 8px 0;
+  text-align: center;
+}
+
+/* 기수별 슬로건 */
+.gisu-slogan {
+  margin: 0 auto 10px;
+
+  color: #0b4ea2;
+  font-size: 17px;
+  font-weight: 950;
+  line-height: 1.4;
+  letter-spacing: -0.2px;
+
+  text-align: center;
+  white-space: pre-line;
+  word-break: keep-all;
+}
+
+/* 기수별 단체사진 */
+.gisu-group-photo {
+  display: block;
+
+  width: min(100%, 280px);
+  height: 110px;
+  margin: 0 auto;
+
+  object-fit: cover;
+  object-position: center;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 14px;
+  background: #f1f5f9;
+
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.12);
+}
+
+/* 작은 휴대폰 */
+@media (max-width: 380px) {
+  .gisu-slogan {
+    font-size: 15px;
+  }
+
+  .gisu-group-photo {
+    width: min(100%, 250px);
+    height: 95px;
+  }
+}
+
