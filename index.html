@@ -250,10 +250,11 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 
-       <!-- 🔵 라이오니즘 -->
-<button class="tile" data-nav="lionism">
-  <div class="tile-title">한동대학교...</div>
-  <div class="tile-desc">대학홈페이지</div>
+       
+<!-- 동문회 소모임 -->
+<button class="tile" data-nav="smallGroups">
+  <div class="tile-title">동문회 소모임</div>
+  <div class="tile-desc">소모임 소개</div>
 </button>
 
 
@@ -542,13 +543,57 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 </section>
 
 
-<!-- 🔵 라이오니즘 화면 -->
-<section id="screenLionism" class="screen" hidden>
+<!-- =====================================
+     동문회 소모임 목록 화면
+===================================== -->
+<section
+  id="screenSmallGroups"
+  class="screen small-groups-screen"
+  hidden
+>
+  <div class="small-groups-heading">
+    <div class="small-groups-heading-icon">
+      ♡
+    </div>
+
+    <div>
+      <h2>동문회 소모임</h2>
+      <p>
+        관심사가 같은 동문들과 함께하세요.
+      </p>
+    </div>
+  </div>
+
+  <div
+    id="smallGroupList"
+    class="small-group-list"
+  >
+    <!-- app.js에서 소모임 카드가 표시됩니다 -->
+  </div>
+
+  <div
+    id="smallGroupListEmpty"
+    class="small-group-empty"
+    hidden
+  >
+    등록된 소모임이 없습니다.
+  </div>
+</section>
 
 
-  <div class="card">
-    <div class="card-title">라이오니즘</div>
-    <div class="prose">라이오니즘 내용 준비중...</div>
+<!-- =====================================
+     소모임 상세 화면
+===================================== -->
+<section
+  id="screenSmallGroupDetail"
+  class="screen small-group-detail-screen"
+  hidden
+>
+  <div
+    id="smallGroupDetailContent"
+    class="small-group-detail-content"
+  >
+    <!-- app.js에서 상세내용이 표시됩니다 -->
   </div>
 </section>
 

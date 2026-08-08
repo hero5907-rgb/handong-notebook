@@ -4415,3 +4415,465 @@ background:#7ea4e8;
   -webkit-user-drag: none;
   will-change: transform;
 }
+
+
+/* =====================================
+   동문회 소모임 - iOS 스타일
+===================================== */
+
+/* 목록 상단 소개 */
+.small-groups-heading {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 12px 14px 16px;
+  padding: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 22px;
+  color: #fff;
+  background:
+    linear-gradient(
+      145deg,
+      #1764bc 0%,
+      #0b4e9c 55%,
+      #073b7b 100%
+    );
+  box-shadow:
+    0 12px 28px rgba(11, 78, 156, 0.22);
+}
+
+.small-groups-heading-icon {
+  display: grid;
+  flex: 0 0 50px;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 27px;
+  font-weight: 800;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.small-groups-heading h2 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+  letter-spacing: -0.5px;
+}
+
+.small-groups-heading p {
+  margin: 5px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+
+/* 소모임 목록 */
+.small-group-list {
+  display: grid;
+  gap: 10px;
+  padding: 0 14px 20px;
+}
+
+.small-group-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 82px;
+  gap: 13px;
+  padding: 12px 13px;
+  border: 1px solid rgba(212, 221, 233, 0.85);
+  border-radius: 19px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow:
+    0 6px 18px rgba(42, 60, 82, 0.08);
+  color: #111827;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.small-group-row:active {
+  transform: scale(0.985);
+  background: #f4f8fd;
+}
+
+.small-group-row-logo {
+  display: grid;
+  flex: 0 0 58px;
+  width: 58px;
+  height: 58px;
+  overflow: hidden;
+  place-items: center;
+  border: 1px solid #d8e4f3;
+  border-radius: 17px;
+  background:
+    linear-gradient(
+      145deg,
+      #eaf3ff,
+      #d8e9ff
+    );
+  color: #0b57ad;
+  font-size: 23px;
+  font-weight: 900;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.small-group-row-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.small-group-row-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.small-group-row-name {
+  overflow: hidden;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 850;
+  line-height: 1.3;
+  letter-spacing: -0.35px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.small-group-row-summary {
+  display: -webkit-box;
+  overflow: hidden;
+  margin-top: 5px;
+  color: #758399;
+  font-size: 12px;
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.small-group-row-arrow {
+  flex: 0 0 auto;
+  padding-left: 3px;
+  color: #a7b3c3;
+  font-family: Arial, sans-serif;
+  font-size: 32px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.small-group-empty {
+  margin: 16px 14px;
+  padding: 30px 18px;
+  border: 1px solid #e1e7ef;
+  border-radius: 19px;
+  background: #fff;
+  color: #7c899b;
+  text-align: center;
+}
+
+
+/* =====================================
+   소모임 상세화면
+===================================== */
+.small-group-detail-content {
+  padding: 12px 14px 28px;
+}
+
+.small-group-detail-hero {
+  padding: 24px 18px 22px;
+  border: 1px solid #d7e5f6;
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 50% 0,
+      #ffffff 0,
+      #f3f8ff 48%,
+      #e8f2ff 100%
+    );
+  box-shadow:
+    0 10px 28px rgba(31, 72, 118, 0.12);
+  text-align: center;
+}
+
+.small-group-detail-logo {
+  display: grid;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 13px;
+  overflow: hidden;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 25px;
+  background:
+    linear-gradient(
+      145deg,
+      #dcecff,
+      #bcd9ff
+    );
+  color: #0b57ad;
+  font-size: 34px;
+  font-weight: 900;
+  box-shadow:
+    0 8px 22px rgba(23, 81, 146, 0.18);
+}
+
+.small-group-detail-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.small-group-detail-hero h2 {
+  margin: 0;
+  color: #0d1b2e;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: -0.6px;
+}
+
+.small-group-detail-hero p {
+  margin: 8px auto 0;
+  max-width: 330px;
+  color: #67768a;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+
+/* 상세 섹션 */
+.small-group-detail-section {
+  margin-top: 20px;
+}
+
+.small-group-section-title {
+  margin: 0 4px 9px;
+  color: #192537;
+  font-size: 15px;
+  font-weight: 850;
+  letter-spacing: -0.3px;
+}
+
+
+/* 활동사진 가로 슬라이드 */
+.small-group-photo-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 1px 2px 10px;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.small-group-photo-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.small-group-gallery-button {
+  flex: 0 0 82%;
+  max-width: 330px;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+  border-radius: 19px;
+  background: #e8edf4;
+  box-shadow:
+    0 7px 18px rgba(39, 55, 76, 0.13);
+  scroll-snap-align: start;
+}
+
+.small-group-gallery-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* 소개 카드 */
+.small-group-description-card {
+  padding: 17px;
+  border: 1px solid #e0e7f0;
+  border-radius: 19px;
+  background: #fff;
+  box-shadow:
+    0 5px 16px rgba(42, 60, 82, 0.06);
+  color: #435169;
+  font-size: 14px;
+  line-height: 1.75;
+  word-break: keep-all;
+}
+
+
+/* 모임 안내 카드 */
+.small-group-info-card {
+  overflow: hidden;
+  border: 1px solid #e0e7f0;
+  border-radius: 19px;
+  background: #fff;
+  box-shadow:
+    0 5px 16px rgba(42, 60, 82, 0.06);
+}
+
+.small-group-info-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px 16px;
+}
+
+.small-group-info-icon {
+  display: grid;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border-radius: 12px;
+  background: #edf5ff;
+  font-size: 18px;
+}
+
+.small-group-info-row strong {
+  color: #1a2738;
+  font-size: 14px;
+}
+
+.small-group-info-row p {
+  margin: 4px 0 0;
+  color: #6d7b8f;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.small-group-info-divider {
+  height: 1px;
+  margin-left: 66px;
+  background: #e8edf3;
+}
+
+
+/* 운영진 */
+.small-group-contact-list {
+  display: grid;
+  gap: 9px;
+}
+
+.small-group-contact-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 70px;
+  padding: 11px 12px;
+  border: 1px solid #e0e7f0;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow:
+    0 5px 16px rgba(42, 60, 82, 0.06);
+}
+
+.small-group-contact-person {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  gap: 11px;
+}
+
+.small-group-contact-avatar {
+  display: grid;
+  flex: 0 0 45px;
+  width: 45px;
+  height: 45px;
+  place-items: center;
+  border-radius: 50%;
+  background:
+    linear-gradient(
+      145deg,
+      #e5f1ff,
+      #c9e1ff
+    );
+  color: #0b57ad;
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.small-group-contact-person strong {
+  color: #172234;
+  font-size: 15px;
+}
+
+.small-group-contact-person p {
+  margin: 3px 0 0;
+  color: #7a8798;
+  font-size: 12px;
+}
+
+.small-group-contact-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 7px;
+}
+
+.small-group-contact-actions a {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  place-items: center;
+  border: 1px solid #c8d9ee;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #0758ae;
+  font-size: 16px;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.small-group-contact-actions a:active {
+  transform: scale(0.93);
+  background: #dcecff;
+}
+
+.small-group-detail-bottom-space {
+  height: 12px;
+}
+
+
+/* 작은 휴대폰 화면 */
+@media (max-width: 390px) {
+  .small-groups-heading {
+    margin-right: 10px;
+    margin-left: 10px;
+    padding: 15px;
+  }
+
+  .small-group-list {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .small-group-detail-content {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+
+  .small-group-row {
+    min-height: 76px;
+  }
+
+  .small-group-row-logo {
+    flex-basis: 52px;
+    width: 52px;
+    height: 52px;
+  }
+}
+

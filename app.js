@@ -261,6 +261,8 @@ const screens = {
 lionism: el("screenLionism"),
   ceremony: el("screenCeremony"),
 mypage: el("screenMyPage"),
+smallGroups: el("screenSmallGroups"),
+smallGroupDetail: el("screenSmallGroupDetail"),
 ads: el("screenAds"),
 adlist: el("screenAdList"),
 addetail: el("screenAdDetail"),
@@ -276,9 +278,10 @@ let state = {
   settings: null,
   members: [],
   announcements: [],
-  ads: [],
-  classInfo: [],
-  navStack: ["login"],
+ads: [],
+classInfo: [],
+smallGroups: [],
+navStack: ["login"],
 };
 
 
@@ -1211,7 +1214,9 @@ function openGisuPhotoZoom(photoUrl, gisu) {
 
   if (image) {
     image.src = photoUrl;
-    image.alt = `${formatGisu(gisu)}기 단체사진 확대`;
+    image.alt = gisu
+  ? `${formatGisu(gisu)}기 단체사진 확대`
+  : "소모임 활동사진 확대";
   }
 
   zoom.hidden = false;
@@ -1695,6 +1700,10 @@ state.ads = json.ads || [];
 
 state.classInfo = json.classInfo || [];
 
+state.smallGroups = Array.isArray(json.smallGroups)
+  ? json.smallGroups
+  : [];
+
     // ✅ 관리자 버튼: 로그인 성공 시에만 표시/숨김 결정
     const tileAdmin = el("tileAdmin");
     if (tileAdmin) {
@@ -1943,8 +1952,9 @@ else if (target === "ads") {
 
 }
 
-else if (target === "lionism") {
-  window.open("https://www.handong.edu/kor/", "_blank");
+else if (target === "smallGroups") {
+  pushNav("smallGroups");
+  renderSmallGroupList();
 }
 
 else if (target === "ceremony") {
@@ -5259,4 +5269,416 @@ function nextAdModal(){
     state.ads[currentAdIndex].adId
   );
 
+}
+
+
+
+// =====================================
+// 동문회 소모임 목록 표시
+// =====================================
+function renderSmallGroupList() {
+  const list = el("smallGroupList");
+  const empty = el("smallGroupListEmpty");
+
+  if (!list || !empty) return;
+
+  list.innerHTML = "";
+
+  const items = Array.isArray(state.smallGroups)
+    ? state.smallGroups
+    : [];
+
+  if (!items.length) {
+    empty.hidden = false;
+    return;
+  }
+
+  empty.hidden = true;
+
+  items.forEach((item) => {
+    const button =
+      document.createElement("button");
+
+    button.type = "button";
+    button.className = "small-group-row";
+
+    const firstLetter = String(
+      item.name || "소"
+    ).trim().slice(0, 1);
+
+    button.innerHTML = `
+      <div class="small-group-row-logo">
+        ${
+          item.logoUrl
+            ? `
+              <img
+                src="${esc(item.logoUrl)}"
+                alt="${esc(item.name)} 로고"
+              />
+            `
+            : `
+              <span>
+                ${esc(firstLetter)}
+              </span>
+            `
+        }
+      </div>
+
+      <div class="small-group-row-text">
+        <div class="small-group-row-name">
+          ${esc(item.name || "이름 없는 소모임")}
+        </div>
+
+        <div class="small-group-row-summary">
+          ${esc(
+            item.summary ||
+            "소모임 소개를 확인해 보세요."
+          )}
+        </div>
+      </div>
+
+      <div
+        class="small-group-row-arrow"
+        aria-hidden="true"
+      >
+        ›
+      </div>
+    `;
+
+    // 로고를 불러오지 못하면 첫 글자로 대체
+    const logoImage =
+      button.querySelector(
+        ".small-group-row-logo img"
+      );
+
+    logoImage?.addEventListener(
+      "error",
+      () => {
+        const logoBox =
+          button.querySelector(
+            ".small-group-row-logo"
+          );
+
+        if (logoBox) {
+          logoBox.innerHTML = `
+            <span>${esc(firstLetter)}</span>
+          `;
+        }
+      },
+      { once: true }
+    );
+
+    button.addEventListener("click", () => {
+      openSmallGroupDetail(item.id);
+    });
+
+    list.appendChild(button);
+  });
+}
+
+
+
+// =====================================
+// 동문회 소모임 상세화면
+// =====================================
+function openSmallGroupDetail(groupId) {
+  const item = (state.smallGroups || []).find(
+    group => String(group.id) === String(groupId)
+  );
+
+  const content =
+    el("smallGroupDetailContent");
+
+  if (!item || !content) return;
+
+  const photos = [
+    item.photo1,
+    item.photo2,
+    item.photo3
+  ].filter(Boolean);
+
+  const logoFallback = String(
+    item.name || "소"
+  ).trim().slice(0, 1);
+
+  const descriptionHtml = esc(
+    item.description ||
+    "등록된 소모임 소개가 없습니다."
+  ).replace(/\r?\n/g, "<br>");
+
+  const joinInfoHtml = esc(
+    item.joinInfo || "총무에게 문의해 주세요."
+  ).replace(/\r?\n/g, "<br>");
+
+  const presidentPhone =
+    normalizePhone(item.presidentPhone || "");
+
+  const secretaryPhone =
+    normalizePhone(item.secretaryPhone || "");
+
+  content.innerHTML = `
+    <!-- 상단 소모임 소개 -->
+    <div class="small-group-detail-hero">
+      <div class="small-group-detail-logo">
+        ${
+          item.logoUrl
+            ? `
+              <img
+                src="${esc(item.logoUrl)}"
+                alt="${esc(item.name)} 로고"
+              />
+            `
+            : `
+              <span>${esc(logoFallback)}</span>
+            `
+        }
+      </div>
+
+      <h2>${esc(item.name || "")}</h2>
+
+      <p>
+        ${esc(
+          item.summary ||
+          "동문들과 함께하는 소모임입니다."
+        )}
+      </p>
+    </div>
+
+
+    <!-- 활동사진 -->
+    ${
+      photos.length
+        ? `
+          <div class="small-group-detail-section">
+            <div class="small-group-section-title">
+              활동사진
+            </div>
+
+            <div class="small-group-photo-scroll">
+              ${photos.map((photoUrl, index) => `
+                <button
+                  type="button"
+                  class="small-group-gallery-button"
+                  data-photo-url="${esc(photoUrl)}"
+                  aria-label="활동사진 ${index + 1} 크게 보기"
+                >
+                  <img
+                    src="${esc(photoUrl)}"
+                    alt="${esc(item.name)} 활동사진 ${index + 1}"
+                  />
+                </button>
+              `).join("")}
+            </div>
+          </div>
+        `
+        : ""
+    }
+
+
+    <!-- 소모임 소개 -->
+    <div class="small-group-detail-section">
+      <div class="small-group-section-title">
+        소모임 소개
+      </div>
+
+      <div class="small-group-description-card">
+        ${descriptionHtml}
+      </div>
+    </div>
+
+
+    <!-- 모임 안내 -->
+    <div class="small-group-detail-section">
+      <div class="small-group-section-title">
+        모임 안내
+      </div>
+
+      <div class="small-group-info-card">
+        <div class="small-group-info-row">
+          <div class="small-group-info-icon">
+            📅
+          </div>
+
+          <div>
+            <strong>정기모임</strong>
+            <p>
+              ${esc(
+                item.meetingInfo ||
+                "일정은 추후 안내합니다."
+              )}
+            </p>
+          </div>
+        </div>
+
+        <div class="small-group-info-divider"></div>
+
+        <div class="small-group-info-row">
+          <div class="small-group-info-icon">
+            ✨
+          </div>
+
+          <div>
+            <strong>가입안내</strong>
+            <p>${joinInfoHtml}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- 운영진 연락처 -->
+    <div class="small-group-detail-section">
+      <div class="small-group-section-title">
+        운영진
+      </div>
+
+      <div class="small-group-contact-list">
+
+        ${
+          item.presidentName
+            ? `
+              <div class="small-group-contact-card">
+                <div class="small-group-contact-person">
+                  <div class="small-group-contact-avatar">
+                    회장
+                  </div>
+
+                  <div>
+                    <strong>
+                      ${esc(item.presidentName)}
+                    </strong>
+
+                    <p>
+                      ${esc(
+                        formatPhone(
+                          presidentPhone
+                        )
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                ${
+                  presidentPhone
+                    ? `
+                      <div class="small-group-contact-actions">
+                        <a
+                          href="tel:${presidentPhone}"
+                          aria-label="${esc(item.presidentName)} 회장에게 전화"
+                        >
+                          📞
+                        </a>
+
+                        <a
+                          href="sms:${presidentPhone}"
+                          aria-label="${esc(item.presidentName)} 회장에게 문자"
+                        >
+                          💬
+                        </a>
+                      </div>
+                    `
+                    : ""
+                }
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          item.secretaryName
+            ? `
+              <div class="small-group-contact-card">
+                <div class="small-group-contact-person">
+                  <div class="small-group-contact-avatar">
+                    총무
+                  </div>
+
+                  <div>
+                    <strong>
+                      ${esc(item.secretaryName)}
+                    </strong>
+
+                    <p>
+                      ${esc(
+                        formatPhone(
+                          secretaryPhone
+                        )
+                      )}
+                    </p>
+                  </div>
+                </div>
+
+                ${
+                  secretaryPhone
+                    ? `
+                      <div class="small-group-contact-actions">
+                        <a
+                          href="tel:${secretaryPhone}"
+                          aria-label="${esc(item.secretaryName)} 총무에게 전화"
+                        >
+                          📞
+                        </a>
+
+                        <a
+                          href="sms:${secretaryPhone}"
+                          aria-label="${esc(item.secretaryName)} 총무에게 문자"
+                        >
+                          💬
+                        </a>
+                      </div>
+                    `
+                    : ""
+                }
+              </div>
+            `
+            : ""
+        }
+
+      </div>
+    </div>
+
+
+    <div class="small-group-detail-bottom-space"></div>
+  `;
+
+  // 로고 오류 시 소모임 첫 글자로 대체
+  const logoImage = content.querySelector(
+    ".small-group-detail-logo img"
+  );
+
+  logoImage?.addEventListener(
+    "error",
+    () => {
+      const logoBox = content.querySelector(
+        ".small-group-detail-logo"
+      );
+
+      if (logoBox) {
+        logoBox.innerHTML =
+          `<span>${esc(logoFallback)}</span>`;
+      }
+    },
+    { once: true }
+  );
+
+
+  // 활동사진 클릭 시 전체화면 확대
+  content
+    .querySelectorAll(
+      ".small-group-gallery-button"
+    )
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        const photoUrl = String(
+          button.dataset.photoUrl || ""
+        );
+
+        if (!photoUrl) return;
+
+        openGisuPhotoZoom(photoUrl, 0);
+      });
+    });
+
+
+  pushNav("smallGroupDetail");
 }
