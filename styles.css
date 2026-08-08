@@ -4256,3 +4256,24 @@ background:#7ea4e8;
   padding: 0 8px;
   font-size: 11px;
 }
+
+
+/* 회원 상세 및 마이페이지 업종 */
+.modal-industry {
+  width: fit-content;
+  max-width: 90%;
+  margin: 8px auto 4px;
+  padding: 5px 10px;
+
+  border: 1px solid rgba(11, 78, 162, 0.2);
+  border-radius: 999px;
+
+  background: rgba(11, 78, 162, 0.08);
+  color: #0b4ea2;
+
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  white-space: normal;
+}

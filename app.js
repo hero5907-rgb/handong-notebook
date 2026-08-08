@@ -345,12 +345,34 @@ if (!g) {
   if (workplaceRaw) parts.push(workplaceRaw);
   if (title) parts.push(title);
 
-  el("myWorkplace").innerHTML =
-    `<div>${parts.join(" ")}</div>` +
-    `<div>${address}</div>`;
+el("myWorkplace").innerHTML =
+  `<div>${parts.join(" ")}</div>` +
+  `<div>${address}</div>`;
 
-  // 지도 버튼
-  const btnMap = el("myMap");
+
+// ===== 마이페이지 업종 표시 =====
+const myIndustryEl = el("myIndustry");
+const myIndustry = String(m.industry || "").trim();
+
+if (myIndustryEl) {
+  if (myIndustry) {
+    const myIndustryText = myIndustry
+      .split(",")
+      .map(v => v.trim())
+      .filter(Boolean)
+      .join(" · ");
+
+    myIndustryEl.textContent = `업종  ${myIndustryText}`;
+    myIndustryEl.hidden = false;
+  } else {
+    myIndustryEl.textContent = "";
+    myIndustryEl.hidden = true;
+  }
+}
+
+
+// 지도 버튼
+const btnMap = el("myMap");
   if(btnMap && address){
     const q = encodeURIComponent(address);
     btnMap.onclick = ()=> window.open(`https://map.naver.com/v5/search/${q}`,"_blank");
@@ -2512,6 +2534,28 @@ if (wEl) {
     `<div>${esc(line1 || "")}</div>` +
     `<div>${esc(line2 || "")}</div>`;
 }
+
+
+// ===== 회원 상세 업종 표시 =====
+const industryEl = el("modalIndustry");
+const industry = String(m.industry || "").trim();
+
+if (industryEl) {
+  if (industry) {
+    const industryText = industry
+      .split(",")
+      .map(v => v.trim())
+      .filter(Boolean)
+      .join(" · ");
+
+    industryEl.textContent = `업종  ${industryText}`;
+    industryEl.hidden = false;
+  } else {
+    industryEl.textContent = "";
+    industryEl.hidden = true;
+  }
+}
+
 
 const adBox = el("memberAdBox");
 
