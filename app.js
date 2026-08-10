@@ -1683,10 +1683,29 @@ try {
   // 🔥 data + popupEvents 동시에 호출
 console.time("DATA");
 
-const [json, popupRes] = await Promise.all([
-  apiJsonp({ action: "data", phone, code }),
-  apiJsonp({ action: "popupEvents", phone, code })
-]);
+// 팝업 일정은 동시에 요청하되,
+// 로그인 화면 표시를 막지 않도록 별도로 보관
+const popupPromise = apiJsonp({
+  action: "popupEvents",
+  phone,
+  code
+}).catch((error) => {
+  console.error(
+    "팝업 일정 불러오기 실패:",
+    error
+  );
+
+  return null;
+});
+
+// 로그인에 필수인 데이터만 기다림
+const json = await apiJsonp({
+  action: "data",
+  phone,
+  code
+});
+
+console.timeEnd("DATA");
 
 console.timeEnd("DATA");
 
@@ -1806,7 +1825,15 @@ state.navStack = ["home"];
 showScreen("home");
 console.timeEnd("LOGIN_TOTAL");
 
+// 홈 화면을 브라우저에 먼저 표시
+await new Promise(resolve => {
+  requestAnimationFrame(() => {
+    resolve();
+  });
+});
 
+// 이후 팝업 일정 결과를 기다림
+const popupRes = await popupPromise;
 
  
 
