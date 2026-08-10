@@ -1343,17 +1343,69 @@ for (const gisu of sortedGisu) {
   groupBox.appendChild(title);
 
 
-
-// 해당 기수의 슬로건과 단체사진 찾기
+// 해당 기수의 정보와 단체사진 찾기
 const classInfo = (state.classInfo || []).find(
   item => Number(item.gisu) === Number(gisu)
 );
 
-if (classInfo && (classInfo.slogan || classInfo.photoUrl)) {
-  const classIntro = document.createElement("div");
+if (
+  classInfo &&
+  (
+    classInfo.admissionDate ||
+    classInfo.completionDate ||
+    classInfo.monthlyMeeting ||
+    classInfo.slogan ||
+    classInfo.photoUrl
+  )
+) {
+  const classIntro =
+    document.createElement("div");
+
   classIntro.className = "gisu-intro";
 
   classIntro.innerHTML = `
+    ${
+      classInfo.admissionDate ||
+      classInfo.completionDate
+        ? `
+          <div class="gisu-date-info">
+            ${
+              classInfo.admissionDate
+                ? `
+                  <span>
+                    입학일자 :
+                    ${esc(classInfo.admissionDate)}
+                  </span>
+                `
+                : ""
+            }
+
+            ${
+              classInfo.completionDate
+                ? `
+                  <span>
+                    수료일자 :
+                    ${esc(classInfo.completionDate)}
+                  </span>
+                `
+                : ""
+            }
+          </div>
+        `
+        : ""
+    }
+
+    ${
+      classInfo.monthlyMeeting
+        ? `
+          <div class="gisu-meeting-info">
+            월례회일자 :
+            ${esc(classInfo.monthlyMeeting)}
+          </div>
+        `
+        : ""
+    }
+
     ${
       classInfo.slogan
         ? `
@@ -1380,22 +1432,24 @@ if (classInfo && (classInfo.slogan || classInfo.photoUrl)) {
 
   groupBox.appendChild(classIntro);
 
-
-const groupPhoto = classIntro.querySelector(
-  ".gisu-group-photo"
-);
-
-if (groupPhoto) {
-  groupPhoto.addEventListener("click", (e) => {
-    e.stopPropagation();
-
-    openGisuPhotoZoom(
-      classInfo.photoUrl,
-      gisu
+  const groupPhoto =
+    classIntro.querySelector(
+      ".gisu-group-photo"
     );
-  });
-}
 
+  if (groupPhoto) {
+    groupPhoto.addEventListener(
+      "click",
+      (e) => {
+        e.stopPropagation();
+
+        openGisuPhotoZoom(
+          classInfo.photoUrl,
+          gisu
+        );
+      }
+    );
+  }
 }
 
 
