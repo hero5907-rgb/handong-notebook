@@ -1986,11 +1986,10 @@ else if (target === "events") {
 
 
 
-currentEventDate = null;   // 🔥 이거 추가
+else if (target === "calendar") {
+  pushNav("calendar");
 
-  // 🔥 캐시 완전 초기화 (핵심)
-  calendarCache = {};
-  allEvents = [];
+  currentEventDate = null;
 
   __calendarReloading = false;
 
