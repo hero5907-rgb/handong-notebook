@@ -4877,3 +4877,50 @@ background:#7ea4e8;
   }
 }
 
+/* =================================
+   기수별 입학·수료·월례회 정보
+   ================================= */
+
+/* 55기 제목 아래 간격 줄이기 */
+.gisu-title{
+  margin-bottom:6px;
+}
+
+/* 기수 정보 전체 간격 */
+.gisu-intro{
+  margin-top:0;
+  padding-top:0;
+}
+
+/* 입학일자·수료일자 */
+.gisu-date-info{
+  margin:0 0 2px;
+  color:#64748b;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.55;
+  text-align:center;
+}
+
+/* 입학일자와 수료일자를 각각 한 줄로 */
+.gisu-date-info span{
+  display:block;
+  white-space:nowrap;
+}
+
+/* 월례회일자 */
+.gisu-meeting-info{
+  margin:2px 0 8px;
+  color:#315b8f;
+  font-size:12px;
+  font-weight:700;
+  line-height:1.5;
+  text-align:center;
+  word-break:keep-all;
+}
+
+/* 날짜 정보 다음 슬로건 간격 */
+.gisu-date-info + .gisu-slogan,
+.gisu-meeting-info + .gisu-slogan{
+  margin-top:8px;
+}
