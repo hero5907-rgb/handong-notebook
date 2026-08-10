@@ -1983,8 +1983,7 @@ else if (target === "events") {
   loadEvents();
 }
 
-else if (target === "calendar") {
-  pushNav("calendar");
+
 
 
 currentEventDate = null;   // 🔥 이거 추가
@@ -3449,16 +3448,13 @@ let currentEventDate = null;   // 🔥 추가
 
 function loadCalendar(yyyymm){
 
-
-  showLoading();
-
-  // 🔥 이거 추가 (핵심)
-  if (__calendarReloading){
-    hideLoading();   // ← 이거 없어서 무한로딩
+  // 이미 일정표를 불러오는 중이면 중복 실행하지 않음
+  if (__calendarReloading === true){
     return;
   }
 
   __calendarReloading = true;
+  showLoading();
 
   const base = yyyymm
     ? new Date(yyyymm.slice(0,4), Number(yyyymm.slice(4))-1, 1)
