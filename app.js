@@ -5612,7 +5612,11 @@ const officers = Array.isArray(item.officers)
               <div class="small-group-contact-person">
 
                 <div class="small-group-contact-avatar">
-                  ${esc(officerRole)}
+                  ${
+  officerRole.length === 4
+    ? `${esc(officerRole.slice(0, 2))}<br>${esc(officerRole.slice(2))}`
+    : esc(officerRole)
+}
                 </div>
 
                 <div>
