@@ -5541,24 +5541,21 @@ function openSmallGroupDetail(groupId) {
 const joinInfoHtml = esc(
   item.joinInfo || "총무에게 문의해 주세요."
 )
-  // 하이픈이 포함된 계좌번호를 자동으로 찾음
+  // 먼저 원래 안내문의 줄바꿈만 처리
+  .replace(/\r?\n/g, "<br>")
+
+  // 그다음 계좌번호를 복사 버튼으로 변경
   .replace(
     /\b(\d{2,6}(?:-\d{2,8}){1,5})\b/g,
-    (accountNumber) => {
-      return `
-        <button
-          type="button"
-          class="small-group-account-copy"
-          data-account="${accountNumber}"
-          aria-label="${accountNumber} 계좌번호 복사"
-        >
-          ${accountNumber}
-          <span>복사</span>
-        </button>
-      `;
-    }
-  )
-  .replace(/\r?\n/g, "<br>");
+    (accountNumber) => `
+      <button
+        type="button"
+        class="small-group-account-copy"
+        data-account="${accountNumber}"
+        aria-label="${accountNumber} 계좌번호 복사"
+      >${accountNumber}<span>복사</span></button>
+    `
+  );
 
   // 서버에서 받은 운영진 목록 사용
 // 기존 서버 응답도 작동하도록 회장·총무 방식도 남겨둠
