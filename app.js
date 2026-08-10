@@ -5719,6 +5719,20 @@ const officers = Array.isArray(item.officers)
               officer.phone || ""
             );
 
+
+// 전화번호로 회원명부에서 해당 운영진 찾기
+const officerMember = (state.members || []).find(
+  member =>
+    normalizePhone(member.phone || "") ===
+    officerPhone
+);
+
+// 회원명부의 기수
+const officerGisu = Number(
+  officerMember?.gisu || 0
+);
+
+
           return `
             <div class="small-group-contact-card">
               <div class="small-group-contact-person">
@@ -5732,9 +5746,14 @@ const officers = Array.isArray(item.officers)
                 </div>
 
                 <div>
-                  <strong>
-                    ${esc(officerName)}
-                  </strong>
+<strong>
+  ${esc(officerName)}
+  ${
+    officerGisu
+      ? `<span class="small-group-officer-gisu">(${officerGisu}기)</span>`
+      : ""
+  }
+</strong>
 
                   ${
                     officerPhone

@@ -4924,3 +4924,12 @@ background:#7ea4e8;
 .gisu-meeting-info + .gisu-slogan{
   margin-top:8px;
 }
+
+/* 소모임 운영진 이름 옆 기수 */
+.small-group-officer-gisu{
+  margin-left:3px;
+  color:#52739b;
+  font-size:12px;
+  font-weight:700;
+  white-space:nowrap;
+}
