@@ -3490,64 +3490,100 @@ if (!need.length) {
 }
 
 
-  Promise.all(
-    need.map(k =>
-  new Promise((resolve)=>{
-    api("events", {
-  ...getAuthSafe(),
-  yyyymm: k
-}, resolve);
-  }).then(res => {
+  // 필요한 달들을 서버에 한 번만 요청
+new Promise((resolve) => {
+  api(
+    "events",
+    {
+      ...getAuthSafe(),
 
-    const myGisu = Number(state.me?.gisu || 0);
+      // 예: 202607,202608,202609
+      yyyymm: need.join(",")
+    },
+    resolve
+  );
+})
 
-const list = (res?.events || [])
-  .filter(e => {
-    const g = Number(String(e.gisu || "0").trim());
-    return g === 0 || g === myGisu;   // 🔥 핵심
-  })
-  .map(e => ({
+.then((res) => {
+  const myGisu = Number(
+    state.me?.gisu || 0
+  );
 
-      id: e.id,
-      title: e.title,
-      start: e.date,
-      end: e.endTime ? `${e.date}T${e.endTime}` : null,
+  // 요청한 달의 캐시를 먼저 빈 배열로 준비
+  need.forEach(monthKey => {
+    calendarCache[monthKey] = [];
+  });
+
+  const list = (res?.events || [])
+    .filter(event => {
+      const eventGisu = Number(
+        String(event.gisu || "0").trim()
+      );
+
+      return (
+        eventGisu === 0 ||
+        eventGisu === myGisu
+      );
+    })
+
+    .map(event => ({
+      id: event.id,
+      title: event.title,
+      start: event.date,
+
+      end: event.endTime
+        ? `${event.date}T${event.endTime}`
+        : null,
+
       extendedProps: {
-  date: e.date,
-  startTime: e.startTime,
-  place: e.place,
-  desc: e.desc,
-  gisu: Number(e.gisu || 0),
-   popup: e.popup 
-
-
-
-}
+        date: event.date,
+        startTime: event.startTime,
+        place: event.place,
+        desc: event.desc,
+        gisu: Number(event.gisu || 0),
+        popup: event.popup
+      }
     }));
 
-    calendarCache[k] = list;
-  })
-)
+  // 받은 일정을 해당 월 캐시에 나누어 저장
+  list.forEach(event => {
+    const dateText = String(
+      event.extendedProps?.date ||
+      event.start ||
+      ""
+    );
 
+    const monthKey = dateText
+      .replace(/[^0-9]/g, "")
+      .slice(0, 6);
 
-
-
-  ).then(() => {
-  allEvents = keys.flatMap(k => calendarCache[k]);
-  initCalendar(allEvents);
-  __calendarReloading = false;
-
-
- hideLoading();   // 🔥 여기
-
-}).catch(e=>{
-    console.error(e);
-    toast("달력 일정 불러오기 실패");
-    __calendarReloading = false;   // ← 추가
-
-  hideLoading();   // 🔥 여기
-
+    if (calendarCache[monthKey]) {
+      calendarCache[monthKey].push(event);
+    }
   });
+
+  // 이전 달·현재 달·다음 달 일정을 합쳐 달력 표시
+  allEvents = keys.flatMap(
+    monthKey =>
+      calendarCache[monthKey] || []
+  );
+
+  initCalendar(allEvents);
+
+  __calendarReloading = false;
+  hideLoading();
+})
+
+.catch((error) => {
+  console.error(error);
+
+  toast(
+    "달력 일정 불러오기 실패"
+  );
+
+  __calendarReloading = false;
+  hideLoading();
+});
 }
 
 
