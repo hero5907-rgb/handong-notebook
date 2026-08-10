@@ -5538,9 +5538,27 @@ function openSmallGroupDetail(groupId) {
     "등록된 소모임 소개가 없습니다."
   ).replace(/\r?\n/g, "<br>");
 
-  const joinInfoHtml = esc(
-    item.joinInfo || "총무에게 문의해 주세요."
-  ).replace(/\r?\n/g, "<br>");
+const joinInfoHtml = esc(
+  item.joinInfo || "총무에게 문의해 주세요."
+)
+  // 하이픈이 포함된 계좌번호를 자동으로 찾음
+  .replace(
+    /\b(\d{2,6}(?:-\d{2,8}){1,5})\b/g,
+    (accountNumber) => {
+      return `
+        <button
+          type="button"
+          class="small-group-account-copy"
+          data-account="${accountNumber}"
+          aria-label="${accountNumber} 계좌번호 복사"
+        >
+          ${accountNumber}
+          <span>복사</span>
+        </button>
+      `;
+    }
+  )
+  .replace(/\r?\n/g, "<br>");
 
   // 서버에서 받은 운영진 목록 사용
 // 기존 서버 응답도 작동하도록 회장·총무 방식도 남겨둠
@@ -5844,6 +5862,83 @@ const officerGisu = Number(
         openGisuPhotoZoom(photoUrl, 0);
       });
     });
+
+
+// 계좌번호 터치 시 클립보드 복사
+content
+  .querySelectorAll(
+    ".small-group-account-copy"
+  )
+  .forEach((button) => {
+    button.addEventListener(
+      "click",
+      async () => {
+        const accountNumber = String(
+          button.dataset.account || ""
+        ).trim();
+
+        if (!accountNumber) return;
+
+        let copied = false;
+
+        // 최신 브라우저 복사 방식
+        try {
+          if (
+            navigator.clipboard &&
+            window.isSecureContext
+          ) {
+            await navigator.clipboard.writeText(
+              accountNumber
+            );
+
+            copied = true;
+          }
+        } catch (error) {
+          console.error(
+            "클립보드 복사 실패:",
+            error
+          );
+        }
+
+        // 구형 모바일 브라우저용 복사 방식
+        if (!copied) {
+          const textarea =
+            document.createElement("textarea");
+
+          textarea.value = accountNumber;
+          textarea.setAttribute(
+            "readonly",
+            ""
+          );
+
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+
+          document.body.appendChild(textarea);
+          textarea.select();
+
+          try {
+            copied =
+              document.execCommand("copy");
+          } catch (error) {
+            copied = false;
+          }
+
+          textarea.remove();
+        }
+
+        if (copied) {
+          toast(
+            `계좌번호 ${accountNumber}가 복사되었습니다.`
+          );
+        } else {
+          toast(
+            "계좌번호를 복사하지 못했습니다."
+          );
+        }
+      }
+    );
+  });
 
 
   pushNav("smallGroupDetail");

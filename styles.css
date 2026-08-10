@@ -4933,3 +4933,40 @@ background:#7ea4e8;
   font-weight:700;
   white-space:nowrap;
 }
+
+
+
+
+/* 소모임 가입안내 계좌번호 복사 */
+.small-group-account-copy{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+
+  margin:3px 1px;
+  padding:4px 8px;
+
+  border:1px solid #b9d4f7;
+  border-radius:8px;
+  background:#eef6ff;
+
+  color:#0756aa;
+  font:inherit;
+  font-weight:800;
+  line-height:1.2;
+
+  cursor:pointer;
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.small-group-account-copy span{
+  color:#5f7fa5;
+  font-size:10px;
+  font-weight:700;
+}
+
+.small-group-account-copy:active{
+  transform:scale(.96);
+  background:#dcecff;
+}
