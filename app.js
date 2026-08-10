@@ -5430,11 +5430,50 @@ function openSmallGroupDetail(groupId) {
     item.joinInfo || "총무에게 문의해 주세요."
   ).replace(/\r?\n/g, "<br>");
 
-  const presidentPhone =
-    normalizePhone(item.presidentPhone || "");
+  // 서버에서 받은 운영진 목록 사용
+// 기존 서버 응답도 작동하도록 회장·총무 방식도 남겨둠
+const officers = Array.isArray(item.officers)
+  ? item.officers
+      .map(officer => ({
+        role: String(
+          officer?.role || "운영진"
+        ).trim(),
 
-  const secretaryPhone =
-    normalizePhone(item.secretaryPhone || "");
+        name: String(
+          officer?.name || ""
+        ).trim(),
+
+        phone: normalizePhone(
+          officer?.phone || ""
+        )
+      }))
+      .filter(officer => {
+        return officer.name || officer.phone;
+      })
+      .slice(0, 5)
+
+  : [
+      {
+        role: "회장",
+        name: String(
+          item.presidentName || ""
+        ).trim(),
+        phone: normalizePhone(
+          item.presidentPhone || ""
+        )
+      },
+      {
+        role: "총무",
+        name: String(
+          item.secretaryName || ""
+        ).trim(),
+        phone: normalizePhone(
+          item.secretaryPhone || ""
+        )
+      }
+    ].filter(officer => {
+      return officer.name || officer.phone;
+    });
 
   content.innerHTML = `
     <!-- 상단 소모임 소개 -->
@@ -5554,112 +5593,84 @@ function openSmallGroupDetail(groupId) {
 
       <div class="small-group-contact-list">
 
-        ${
-          item.presidentName
-            ? `
-              <div class="small-group-contact-card">
-                <div class="small-group-contact-person">
-                  <div class="small-group-contact-avatar">
-                    회장
-                  </div>
+  ${
+    officers.length
+      ? officers.map(officer => {
+          const officerRole =
+            officer.role || "운영진";
 
-                  <div>
-                    <strong>
-                      ${esc(item.presidentName)}
-                    </strong>
+          const officerName =
+            officer.name || "";
 
-                    <p>
-                      ${esc(
-                        formatPhone(
-                          presidentPhone
-                        )
-                      )}
-                    </p>
-                  </div>
+          const officerPhone =
+            normalizePhone(
+              officer.phone || ""
+            );
+
+          return `
+            <div class="small-group-contact-card">
+              <div class="small-group-contact-person">
+
+                <div class="small-group-contact-avatar">
+                  ${esc(officerRole)}
                 </div>
 
-                ${
-                  presidentPhone
-                    ? `
-                      <div class="small-group-contact-actions">
-                        <a
-                          href="tel:${presidentPhone}"
-                          aria-label="${esc(item.presidentName)} 회장에게 전화"
-                        >
-                          📞
-                        </a>
+                <div>
+                  <strong>
+                    ${esc(officerName)}
+                  </strong>
 
-                        <a
-                          href="sms:${presidentPhone}"
-                          aria-label="${esc(item.presidentName)} 회장에게 문자"
-                        >
-                          💬
-                        </a>
-                      </div>
-                    `
-                    : ""
-                }
-              </div>
-            `
-            : ""
-        }
-
-        ${
-          item.secretaryName
-            ? `
-              <div class="small-group-contact-card">
-                <div class="small-group-contact-person">
-                  <div class="small-group-contact-avatar">
-                    총무
-                  </div>
-
-                  <div>
-                    <strong>
-                      ${esc(item.secretaryName)}
-                    </strong>
-
-                    <p>
-                      ${esc(
-                        formatPhone(
-                          secretaryPhone
-                        )
-                      )}
-                    </p>
-                  </div>
+                  ${
+                    officerPhone
+                      ? `
+                        <p>
+                          ${esc(
+                            formatPhone(officerPhone)
+                          )}
+                        </p>
+                      `
+                      : ""
+                  }
                 </div>
-
-                ${
-                  secretaryPhone
-                    ? `
-                      <div class="small-group-contact-actions">
-                        <a
-                          href="tel:${secretaryPhone}"
-                          aria-label="${esc(item.secretaryName)} 총무에게 전화"
-                        >
-                          📞
-                        </a>
-
-                        <a
-                          href="sms:${secretaryPhone}"
-                          aria-label="${esc(item.secretaryName)} 총무에게 문자"
-                        >
-                          💬
-                        </a>
-                      </div>
-                    `
-                    : ""
-                }
               </div>
-            `
-            : ""
-        }
 
-      </div>
-    </div>
+              ${
+                officerPhone
+                  ? `
+                    <div class="small-group-contact-actions">
+                      <a
+                        href="tel:${officerPhone}"
+                        aria-label="${esc(officerName)}에게 전화"
+                      >
+                        📞
+                      </a>
+
+                      <a
+                        href="sms:${officerPhone}"
+                        aria-label="${esc(officerName)}에게 문자"
+                      >
+                        💬
+                      </a>
+                    </div>
+                  `
+                  : ""
+              }
+            </div>
+          `;
+        }).join("")
+      : `
+          <div class="small-group-contact-empty">
+            등록된 운영진 정보가 없습니다.
+          </div>
+        `
+  }
+
+</div>
+</div>
 
 
-    <div class="small-group-detail-bottom-space"></div>
-  `;
+<div class="small-group-detail-bottom-space"></div>
+`;
 
   // 로고 오류 시 소모임 첫 글자로 대체
   const logoImage = content.querySelector(
