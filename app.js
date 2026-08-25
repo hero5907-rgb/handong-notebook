@@ -1508,13 +1508,24 @@ row.innerHTML = `
                 .map(v => v.trim())
                 .filter(Boolean);
 
-              arr.forEach(v => {
-                html += `
-                  <span class="badge ${v.includes("동문회") ? 'badge-exec' : ''}">
-                    ${esc(v)}
-                  </span>
-                `;
-              });
+arr.forEach(v => {
+
+  const cls =
+    (v === "회장" ||
+     v === "기수회장" ||
+     v === "초대회장")
+      ? "badge badge-president"
+      : (v.includes("동문회")
+          ? "badge badge-exec"
+          : "badge");
+
+  html += `
+    <span class="${cls}">
+      ${esc(v)}
+    </span>
+  `;
+
+});
             }
 
             if (m.group) {
