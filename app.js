@@ -312,7 +312,12 @@ function openMyPage(){
 
   const m = state.me;
 
-  el("myPhoto").src = m.photoUrl || "";
+  const DEFAULT_IMG =
+  "https://raw.githubusercontent.com/hero5907-rgb/handong-notebook/main/icons/icon-192.png";
+
+const myPhoto = el("myPhoto");
+myPhoto.src = m.photoUrl || DEFAULT_IMG;
+myPhoto.style.opacity = m.photoUrl ? "1" : ".25";
 
 // 🔵 이름 + 기수 표시
 const myNameEl = el("myName");
@@ -1480,7 +1485,14 @@ const memberAd = (state.ads || []).find((ad) => {
 });
 
 row.innerHTML = `
-      ${m.photoUrl ? `<img class="avatar" src="${esc(m.photoUrl)}" alt="사진">` : `<div class="avatar"></div>`}
+      ${
+  `<img
+      class="avatar"
+      src="${esc(m.photoUrl || "https://raw.githubusercontent.com/hero5907-rgb/handong-notebook/main/icons/icon-192.png")}"
+      alt="사진"
+      style="${m.photoUrl ? "" : "opacity:.25;"}"
+  >`
+}
       <div class="row-main">
 <div class="row-title">
   ${esc(m.name)}
