@@ -2900,10 +2900,7 @@ if (IS_IOS) {
   imgEl.style.opacity = m.photoUrl ? "1" : ".25";
 
 }
-}else{
-  // 🤖 안드로이드/PC 기존 빠른 방식 유지
-  imgEl.src = newSrc;
-}
+
 
   // 이름(굵게) + 직위(지금처럼)
 // 🔵 이름 + 기수 표시
