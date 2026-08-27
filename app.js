@@ -663,7 +663,7 @@ el("btnChangePw")?.addEventListener("click", () => {
 
 
 // ===== API (JSONP: doGet + callback) =====
-function apiJsonp(paramsObj) {
+function apiJsonp(paramsObj, { timeoutMs = 20000 } = {}) {
   return new Promise((resolve, reject) => {
     const cbName = "__cb_" + Math.random().toString(36).slice(2);
     const params = new URLSearchParams();
@@ -678,9 +678,11 @@ function apiJsonp(paramsObj) {
     const url = API_URL + "?" + params.toString();
 
     let done = false;
+    let timeoutId;
     const script = document.createElement("script");
 
     function cleanup() {
+      clearTimeout(timeoutId);
       if (script.parentNode) script.parentNode.removeChild(script);
       try { delete window[cbName]; } catch {}
     }
@@ -699,14 +701,15 @@ function apiJsonp(paramsObj) {
       reject(new Error("JSONP_LOAD_FAILED"));
     };
 
+    timeoutId = setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP_TIMEOUT"));
+    }, timeoutMs);
+
     script.src = url;
     document.body.appendChild(script);
-
-setTimeout(() => {
-  if (done) return;
-  console.warn("⏱ JSONP 지연중 (계속 대기):", url);
-  // ❌ 실패시키지 말고 그냥 기다림
-}, 20000);
   });
 }
 
@@ -1656,7 +1659,6 @@ async function handleLogin() {
 
 // 🔥 중복 로그인 차단 (핵심)
 if (window.__loginLock) return;
-window.__loginLock = true;
 
 
   const rawPhone = el("inputPhone")?.value || "";
@@ -1690,21 +1692,19 @@ window.__loginLock = true;
     return;
   }
 
+  window.__loginLock = true;
   const btn = el("btnLogin");
 if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
 
 try {
 
   if (!API_URL) {
-
-  console.time("LOGIN_TOTAL");
     throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
   }
 
 
 
   // 🔥 data + popupEvents 동시에 호출
-console.time("DATA");
 
 // 팝업 일정은 동시에 요청하되,
 // 로그인 화면 표시를 막지 않도록 별도로 보관
@@ -1712,7 +1712,7 @@ const popupPromise = apiJsonp({
   action: "popupEvents",
   phone,
   code
-}).catch((error) => {
+}, { timeoutMs: 10000 }).catch((error) => {
   console.error(
     "팝업 일정 불러오기 실패:",
     error
@@ -1727,13 +1727,6 @@ const json = await apiJsonp({
   phone,
   code
 });
-
-console.timeEnd("DATA");
-
-console.timeEnd("DATA");
-
-
-
 
     if (!json || json.ok !== true) {
       const msg = json?.error ? String(json.error) : "LOGIN_FAILED";
@@ -1846,22 +1839,15 @@ else localStorage.removeItem(LS_KEY);
 // 🔵 로그인 성공 → 홈 화면으로 이동
 state.navStack = ["home"];
 showScreen("home");
-console.timeEnd("LOGIN_TOTAL");
 
-// 홈 화면을 브라우저에 먼저 표시
-await new Promise(resolve => {
-  requestAnimationFrame(() => {
-    resolve();
-  });
-});
-
-// 이후 팝업 일정 결과를 기다림
-const popupRes = await popupPromise;
-
- 
-
-// 🔥 바로 팝업 실행 (지연 없음)
-if (popupRes && popupRes.ok === true){
+// 팝업 일정은 로그인 완료(버튼·잠금 해제)를 막지 않도록 분리한다.
+popupPromise.then((popupRes) => {
+if (
+  popupRes &&
+  popupRes.ok === true &&
+  document.body.classList.contains("logged-in") &&
+  state._authPhone === phone
+){
 
   const myGisu = Number(state.me?.gisu || 0);
 
@@ -1940,6 +1926,7 @@ if (popupRes && popupRes.ok === true){
 
   }
 }
+});
 
 
 
@@ -1958,12 +1945,18 @@ catch (err) {
   console.error("LOGIN ERROR:", err);
 
   const errBox = el("loginError");
+  const isNetworkError = [
+    "JSONP_LOAD_FAILED",
+    "JSONP_TIMEOUT"
+  ].includes(err?.message) || String(err?.message || "").startsWith("CONFIG_API_URL_EMPTY");
   if (errBox) {
     errBox.hidden = false;
-    errBox.textContent = "휴대폰번호 또는 접속코드가 올바르지 않습니다.";
+    errBox.textContent = isNetworkError
+      ? "서버와 연결하지 못했습니다. 잠시 후 다시 시도해 주세요."
+      : "휴대폰번호 또는 접속코드가 올바르지 않습니다.";
   }
 
-  toast("로그인 실패");
+  toast(isNetworkError ? "서버 통신 오류" : "로그인 실패");
 
 }
 finally {
@@ -2690,13 +2683,13 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
       const reg = await navigator.serviceWorker.register("./sw.js");
-
-      // ✅ 즉시 업데이트 체크
-      reg.update();
+      let updateAccepted = false;
 
       const askRefresh = () => {
-        const w = reg.waiting || reg.installing;
-        if (w) w.postMessage({ type: "SKIP_WAITING" });
+        const w = reg.waiting;
+        if (!w) return;
+        updateAccepted = true;
+        w.postMessage({ type: "SKIP_WAITING" });
       };
 
       // ✅ 이미 waiting 상태면 바로 토스트(컨트롤러 유무 상관없음)
@@ -2716,21 +2709,10 @@ if ("serviceWorker" in navigator) {
         });
       });
 
-      // ✅ 짧은 시간 동안 waiting 폴링(모바일에서 이벤트 놓치는 케이스 방지)
-      let tries = 0;
-      const iv = setInterval(() => {
-        tries++;
-        if (reg.waiting) {
-          
-          clearInterval(iv);
-        }
-        if (tries >= 20) clearInterval(iv); // 10초
-      }, 500);
-
       // ✅ 새 SW가 활성화되면 자동 새로고침
       let refreshing = false;
       navigator.serviceWorker.addEventListener("controllerchange", () => {
-        if (refreshing) return;
+        if (!updateAccepted || refreshing) return;
         refreshing = true;
         // 업데이트가 실제 적용됐으니 잠금 해제
         toast._lock = false;
