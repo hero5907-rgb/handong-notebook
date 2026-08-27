@@ -1,7 +1,7 @@
 // 한동회 수첩 PWA Service Worker
 // ✅ 캐시 갱신이 필요할 때는 CACHE_NAME만 올리면 됩니다 (v55 -> v56 ...)
 
-const CACHE_NAME = "handong-v2.5";
+const CACHE_NAME = "handong-v2.6";
 
 const ASSETS = [
   "./",
@@ -16,9 +16,8 @@ const ASSETS = [
   "./icons/icon-512.png",
 ];
 
-// ✅ install: 프리캐시(실패해도 설치는 진행) + 즉시 활성화 준비
+// ✅ install: 프리캐시(실패해도 설치는 진행)
 self.addEventListener("install", (event) => {
-  self.skipWaiting();
   event.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
     await Promise.allSettled(
@@ -54,11 +53,19 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(req)
         .then((res) => {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
+          }
           return res;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(async () => {
+          const cached = await caches.match("./index.html");
+          return cached || new Response("오프라인 상태입니다.", {
+            status: 503,
+            headers: { "Content-Type": "text/plain; charset=utf-8" },
+          });
+        })
     );
     return;
   }
