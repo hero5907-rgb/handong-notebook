@@ -2411,19 +2411,7 @@ showLoading();   // 🔥
 toast("등록 완료");
 closeEventSheet();
 
-const wait = setInterval(()=>{
-  if (!__calendarReloading){
-    clearInterval(wait);
-    openDayEvents(currentEventDate);
-  }
-}, 50);
-
-
-// 🔥 추가 (캐시 초기화)
-calendarCache = {};
-allEvents = [];
-
-loadCalendar();
+refreshCalendarAfterMutation(currentEventDate);
 
   
 
@@ -2469,10 +2457,7 @@ closeEventSheet();
 
 
 // 🔥 추가 (캐시 초기화)
-calendarCache = {};
-allEvents = [];
-
-loadCalendar();
+refreshCalendarAfterMutation(currentEventDate);
     } else {
       toast("삭제 실패");
     }
@@ -3491,16 +3476,39 @@ let allEvents = [];
 let editingEventId = null;   // 🔥 추가
 let calendarCache = {};
 let currentEventDate = null;   // 🔥 추가
+let calendarLoadPromise = null;
 
-function loadCalendar(yyyymm){
+function getDisplayedCalendarYM(){
+  const base = calendar?.getDate?.() || new Date();
+  return `${base.getFullYear()}${String(base.getMonth() + 1).padStart(2, "0")}`;
+}
+
+async function refreshCalendarAfterMutation(dateToReopen){
+  if (calendarLoadPromise) await calendarLoadPromise;
+
+  const yyyymm = getDisplayedCalendarYM();
+  calendarCache = {};
+
+  const refreshed = await loadCalendar(
+    yyyymm,
+    "일정은 저장되었지만 달력 갱신이 지연되고 있습니다. 새로고침해 주세요."
+  );
+
+  if (refreshed && dateToReopen) openDayEvents(dateToReopen);
+}
+
+async function loadCalendar(yyyymm, errorMessage = "일정을 불러오지 못했습니다. 다시 시도해 주세요."){
 
   // 이미 일정표를 불러오는 중이면 중복 실행하지 않음
   if (__calendarReloading === true){
-    return;
+    return calendarLoadPromise || false;
   }
 
   __calendarReloading = true;
   showLoading();
+
+  const request = (async () => {
+  try {
 
   const base = yyyymm
     ? new Date(yyyymm.slice(0,4), Number(yyyymm.slice(4))-1, 1)
@@ -3523,30 +3531,23 @@ function loadCalendar(yyyymm){
 if (!need.length) {
   allEvents = keys.flatMap(k => calendarCache[k]);
   initCalendar(allEvents);
-  __calendarReloading = false;   // 🔥 반드시 풀어준다
-
-
-    hideLoading();   // 🔥🔥🔥 이거 추가 (핵심)
-
-  return;
+  return true;
 }
 
 
   // 필요한 달들을 서버에 한 번만 요청
-new Promise((resolve) => {
-  api(
-    "events",
-    {
-      ...getAuthSafe(),
+  const res = await apiJsonp({
+    action: "events",
+    ...getAuthSafe(),
 
-      // 예: 202607,202608,202609
-      yyyymm: need.join(",")
-    },
-    resolve
-  );
-})
+    // 예: 202607,202608,202609
+    yyyymm: need.join(",")
+  }, { timeoutMs: 15000 });
 
-.then((res) => {
+  if (!res || res.ok !== true || !Array.isArray(res.events)) {
+    throw new Error(`EVENTS_API_ERROR:${String(res?.error || "INVALID_RESPONSE")}`);
+  }
+
   const myGisu = Number(
     state.me?.gisu || 0
   );
@@ -3612,20 +3613,24 @@ new Promise((resolve) => {
 
   initCalendar(allEvents);
 
-  __calendarReloading = false;
-  hideLoading();
-})
-
-.catch((error) => {
+  return true;
+  } catch (error) {
   console.error(error);
 
-  toast(
-    "달력 일정 불러오기 실패"
-  );
+  toast(errorMessage);
+  return false;
+  } finally {
+    __calendarReloading = false;
+    hideLoading();
+  }
+  })();
 
-  __calendarReloading = false;
-  hideLoading();
-});
+  calendarLoadPromise = request;
+  try {
+    return await request;
+  } finally {
+    if (calendarLoadPromise === request) calendarLoadPromise = null;
+  }
 }
 
 
@@ -4081,29 +4086,8 @@ let __calendarReloading = false;
 // 🗓️ 달력 새로고침 버튼 (완전 초기화)
 
 el("btnCalendarRefresh")?.addEventListener("click", () => {
-
-// 🔄 달력 새로고침 시작 → 로딩 표시
-const loading = document.getElementById("calendarLoading");
-if (loading) loading.style.display = "block";
-
-  // 🔥 강제로 락 해제
-  __calendarReloading = false;
-
-  // 🔥 캐시 완전 초기화
+  const yyyymm = getDisplayedCalendarYM();
   calendarCache = {};
-  allEvents = [];
-
-  // 🔥 달력 인스턴스 제거
-  if (calendar) {
-    calendar.destroy();
-    calendar = null;
-  }
-
-  // 🔥 현재 달 기준 재로딩
-  const now = new Date();
-  const yyyymm =
-    now.getFullYear() +
-    String(now.getMonth() + 1).padStart(2, "0");
 
   loadCalendar(yyyymm);
 });
@@ -4796,20 +4780,7 @@ api("adminDeleteEvent", {
     if (res && res.ok){
 toast("삭제 완료");
 
-
-
-calendarCache = {};
-allEvents = [];
-
-loadCalendar();
-
-// 🔥 달력 로딩 끝날때까지 기다렸다 열기
-const wait = setInterval(()=>{
-  if (!__calendarReloading){
-    clearInterval(wait);
-    openDayEvents(currentEventDate);
-  }
-}, 50);
+refreshCalendarAfterMutation(currentEventDate);
  
     } else {
       toast("삭제 실패");
