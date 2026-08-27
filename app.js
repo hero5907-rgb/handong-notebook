@@ -2878,16 +2878,28 @@ swipeCount = Number(localStorage.getItem("memberSwipeCount") || 0);
 // ✅ ⭐⭐⭐ 추가 (히스토리 쌓기)
   history.pushState({ modal: "profile" }, "", location.href);
 
-  // ✅ 멤버 데이터 주입
- const imgEl = el("modalPhoto");
-const newSrc = m.photoUrl || "";
+const imgEl = el("modalPhoto");
 
-if(IS_IOS){
-  // 🍎 아이폰만 repaint 강제
+const DEFAULT_IMG =
+  "https://raw.githubusercontent.com/hero5907-rgb/handong-notebook/main/icons/icon-192.png";
+
+const newSrc = m.photoUrl || DEFAULT_IMG;
+
+if (IS_IOS) {
+
   imgEl.src = "";
-  requestAnimationFrame(()=>{
+
+  requestAnimationFrame(() => {
     imgEl.src = newSrc;
+    imgEl.style.opacity = m.photoUrl ? "1" : ".25";
   });
+
+} else {
+
+  imgEl.src = newSrc;
+  imgEl.style.opacity = m.photoUrl ? "1" : ".25";
+
+}
 }else{
   // 🤖 안드로이드/PC 기존 빠른 방식 유지
   imgEl.src = newSrc;
@@ -2914,12 +2926,18 @@ if (wrap) {
       const span = document.createElement("span");
 
 
-if (v.includes("총동문")) {
-  span.className = "badge badge-exec";
+if (
+    v === "회장" ||
+    v === "기수회장" ||
+    v === "초대회장"
+) {
+    span.className = "badge badge-president";
+} else if (v.includes("총동문")) {
+    span.className = "badge badge-exec";
 } else if (v.includes("기")) {
-  span.className = "badge badge-gisu";
+    span.className = "badge badge-gisu";
 } else {
-  span.className = "badge";
+    span.className = "badge";
 }
 
       span.textContent = v;
