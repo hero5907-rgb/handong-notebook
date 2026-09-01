@@ -2533,6 +2533,185 @@ background:#7ea4e8;
   box-shadow:0 6px 14px rgba(59,130,246,.12);
 }
 
+/* ===============================
+   동문회 집행부 전용 목록
+   =============================== */
+.executive-section{
+  width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+  padding:0 10px 12px;
+  border:1.5px solid #a9c6e8;
+  border-radius:20px;
+  background:#f8fbff;
+  box-shadow:0 8px 20px rgba(11,78,162,.09);
+}
+
+.executive-photo-button{
+  display:block;
+  width:calc(100% + 20px);
+  margin:0 -10px;
+  padding:0;
+  overflow:hidden;
+  border:0;
+  border-radius:18px 18px 0 0;
+  background:#e9f1fa;
+  cursor:zoom-in;
+}
+
+.executive-photo-button[hidden]{
+  display:none;
+}
+
+.executive-photo{
+  display:block;
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  object-position:center;
+}
+
+.executive-heading{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:12px;
+  padding:16px 4px 12px;
+}
+
+.executive-heading h2{
+  margin:0;
+  color:#083a78;
+  font-size:20px;
+  font-weight:950;
+  letter-spacing:-.3px;
+}
+
+.executive-heading p{
+  margin:4px 0 0;
+  color:#64748b;
+  font-size:12px;
+  line-height:1.4;
+}
+
+.executive-count{
+  flex:0 0 auto;
+  padding:5px 10px;
+  border:1px solid #c9d9ec;
+  border-radius:999px;
+  color:#315f8f;
+  background:#fff;
+  font-size:12px;
+  font-weight:850;
+  white-space:nowrap;
+}
+
+.executive-list{
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  gap:10px;
+  min-width:0;
+}
+
+.executive-list .row{
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  margin:0;
+}
+
+.executive-list .profile-badges{
+  justify-content:flex-start;
+}
+
+.executive-list .badge{
+  max-width:100%;
+  box-sizing:border-box;
+  white-space:normal;
+  overflow-wrap:anywhere;
+}
+
+.executive-list .row.is-executive-president{
+  border:1.5px solid #d7aa45;
+  background:#fff9e8;
+  box-shadow:0 5px 13px rgba(215,170,69,.18);
+}
+
+.executive-list .row.is-executive-secretary{
+  border:1.5px solid #7c83d6;
+  background:#f5f4ff;
+  box-shadow:0 5px 13px rgba(92,83,190,.14);
+}
+
+.executive-empty{
+  padding:28px 12px;
+  color:#64748b;
+  text-align:center;
+  font-size:14px;
+}
+
+@media (max-width:430px){
+  .membersSticky .card-header .card-title{
+    min-width:0;
+    flex-wrap:wrap;
+  }
+
+  .membersSticky .class-filter-btn{
+    max-width:142px;
+    padding:4px 8px;
+    font-size:12px;
+    white-space:normal;
+    line-height:1.2;
+  }
+
+  .executive-photo{
+    height:150px;
+    object-position:center 35%;
+  }
+
+  .executive-heading{
+    align-items:flex-start;
+    padding-top:14px;
+  }
+
+  .executive-heading h2{
+    font-size:19px;
+  }
+
+  .executive-list .row{
+    padding:11px;
+  }
+}
+
+@media (max-width:360px){
+  .executive-section{
+    padding-right:8px;
+    padding-left:8px;
+  }
+
+  .executive-photo-button{
+    width:calc(100% + 16px);
+    margin-right:-8px;
+    margin-left:-8px;
+  }
+
+  .executive-photo{
+    height:140px;
+  }
+
+  .executive-heading{
+    gap:8px;
+  }
+
+  .executive-heading p{
+    font-size:11px;
+  }
+
+  .executive-count{
+    padding:4px 8px;
+  }
+}
+
 
 
 
