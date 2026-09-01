@@ -1252,12 +1252,217 @@ function closeGisuPhotoZoom() {
   document.body.classList.remove("modal-open");
 }
 
+function getMemberPositionValues(member) {
+  return String(member?.position || "")
+    .split(/[,/]/)
+    .map(value => value.trim())
+    .filter(Boolean);
+}
+
+function getCurrentExecutiveRole(member) {
+  const positions = getMemberPositionValues(member);
+
+  if (positions.includes("동문회 회장")) return "president";
+  if (positions.includes("동문회 사무총장")) return "secretary-general";
+
+  return "member";
+}
+
+function compareExecutiveMembers(a, b) {
+  const priority = {
+    president: 0,
+    "secretary-general": 1,
+    member: 2
+  };
+
+  const roleDiff =
+    priority[getCurrentExecutiveRole(a)] -
+    priority[getCurrentExecutiveRole(b)];
+
+  if (roleDiff) return roleDiff;
+
+  const gisuDiff =
+    Number(a.gisu || Number.MAX_SAFE_INTEGER) -
+    Number(b.gisu || Number.MAX_SAFE_INTEGER);
+
+  if (gisuDiff) return gisuDiff;
+
+  const sortDiff =
+    Number(a.sortOrder ?? 9999) -
+    Number(b.sortOrder ?? 9999);
+
+  if (sortDiff) return sortDiff;
+
+  return String(a.name || "").localeCompare(
+    String(b.name || ""),
+    "ko"
+  );
+}
+
+function createMemberRow(member, navigationList, index, executiveRole = null) {
+  const row = document.createElement("div");
+  let cls = "row";
+
+  if (executiveRole === "president") {
+    cls += " is-executive-president";
+  } else if (executiveRole === "secretary-general") {
+    cls += " is-executive-secretary";
+  } else if (executiveRole === null) {
+    if (Number(member.sortOrder) === 10) {
+      cls += " is-grand-president";
+    } else if (Number(member.sortOrder) === 100) {
+      cls += " is-class-president";
+    }
+  }
+
+  row.className = cls;
+
+  const memberAd = (state.ads || []).find((ad) => {
+    const memberPhone = normalizePhone(member.phone);
+    const adPhone = normalizePhone(ad.memberPhone);
+
+    return memberPhone && adPhone && memberPhone === adPhone;
+  });
+
+  row.innerHTML = `
+    <img
+      class="avatar"
+      src="${esc(member.photoUrl || "https://raw.githubusercontent.com/hero5907-rgb/handong-notebook/main/icons/icon-192.png")}"
+      alt="사진"
+      style="${member.photoUrl ? "" : "opacity:.25;"}"
+    >
+    <div class="row-main">
+      <div class="row-title">
+        ${esc(member.name)}
+        ${member.gisu ? `<span class="badge">${formatGisu(member.gisu)}기</span>` : ""}
+        ${memberAd ? `
+          <button
+            type="button"
+            class="member-ad-btn"
+            data-ad-id="${esc(memberAd.adId)}"
+          >
+            광고보기
+          </button>
+        ` : ""}
+      </div>
+
+      <div class="profile-badges">
+        ${(() => {
+          let html = "";
+
+          getMemberPositionValues(member).forEach(value => {
+            const badgeClass =
+              (value === "회장" || value === "기수회장" || value === "초대회장")
+                ? "badge badge-president"
+                : (value.includes("동문회") ? "badge badge-exec" : "badge");
+
+            html += `<span class="${badgeClass}">${esc(value)}</span>`;
+          });
+
+          if (member.group) {
+            html += `<span class="badge badge-group">${esc(member.group)}</span>`;
+          }
+
+          return html;
+        })()}
+      </div>
+
+      <div class="row-sub">${esc([
+        member.workplace,
+        member.title,
+        formatPhone(member.phone),
+        member.industry
+      ].filter(Boolean).join(" / "))}</div>
+
+      <div class="actions">
+        <a class="a-btn primary" href="tel:${esc(member.phone)}">📞 통화</a>
+        <a class="a-btn" href="sms:${esc(member.phone)}">💬 문자</a>
+      </div>
+    </div>
+  `;
+
+  row.addEventListener("click", () => {
+    openProfileAt(navigationList, index);
+  });
+
+  row.querySelector(".actions")?.addEventListener("click", (event) => {
+    event.stopPropagation();
+  });
+
+  row.querySelector(".member-ad-btn")?.addEventListener("click", (event) => {
+    event.stopPropagation();
+
+    const adId = event.currentTarget.dataset.adId;
+    if (adId) openAdModal(adId);
+  });
+
+  return row;
+}
+
+function renderExecutiveMembers(list, wrap) {
+  const members = [...list].sort(compareExecutiveMembers);
+  const section = document.createElement("section");
+  section.className = "executive-section";
+
+  const introPhoto = document.querySelector(
+    "#screenCeremony .intro-photo"
+  );
+  const photoUrl = introPhoto?.getAttribute("src") || "";
+
+  section.innerHTML = `
+    ${photoUrl ? `
+      <button type="button" class="executive-photo-button" aria-label="동문회 단체사진 확대">
+        <img
+          class="executive-photo"
+          src="${esc(photoUrl)}"
+          alt="동문회 단체사진"
+        >
+      </button>
+    ` : ""}
+    <div class="executive-heading">
+      <div>
+        <h2>동문회 집행부</h2>
+        <p>한동대학교 최고경영자과정 동문회</p>
+      </div>
+      <span class="executive-count">총 ${members.length}명</span>
+    </div>
+    <div class="executive-list"></div>
+  `;
+
+  const photoButton = section.querySelector(".executive-photo-button");
+  const photo = section.querySelector(".executive-photo");
+
+  photoButton?.addEventListener("click", () => openImgModal(photoUrl));
+  photo?.addEventListener("error", () => {
+    photoButton.hidden = true;
+  }, { once: true });
+
+  const memberList = section.querySelector(".executive-list");
+
+  if (!members.length) {
+    memberList.innerHTML = `<div class="executive-empty">검색 결과가 없습니다.</div>`;
+  } else {
+    members.forEach((member, index) => {
+      memberList.appendChild(
+        createMemberRow(
+          member,
+          members,
+          index,
+          getCurrentExecutiveRole(member)
+        )
+      );
+    });
+  }
+
+  wrap.appendChild(section);
+}
+
 function renderMembers(list) {
 
 // 🔵 필터 버튼 텍스트 동기화
 const btnClass = el("btnClassFilter");
 if (btnClass) {
-  if (execMode) btnClass.textContent = "동문.집행부 ▼";
+  if (execMode) btnClass.textContent = "동문회 집행부 ▼";
   else if (currentClassFilter === null) btnClass.textContent = "기수전체 ▼";
 else btnClass.textContent = `${formatGisu(currentClassFilter)}기 ▼`;
 }
@@ -1280,11 +1485,6 @@ if (btnMembersRefresh) {
   // 🔵 총동문 집행부 모드
   if (execMode) {
     list = list.filter(m => m.group === "동문회");
-
-    // H컬럼 정렬순서
-    list.sort((a,b)=>{
-      return Number(a.sortOrder||0) - Number(b.sortOrder||0);
-    });
   }
 
   // 🔵 기수 필터
@@ -1302,7 +1502,16 @@ if (btnMembersRefresh) {
 
   wrap.innerHTML = "";
   if (!list.length) {
-    wrap.innerHTML = `<div class="row-sub">검색 결과가 없습니다.</div>`;
+    if (execMode) {
+      renderExecutiveMembers([], wrap);
+    } else {
+      wrap.innerHTML = `<div class="row-sub">검색 결과가 없습니다.</div>`;
+    }
+    return;
+  }
+
+  if (execMode) {
+    renderExecutiveMembers(list, wrap);
     return;
   }
 
@@ -1327,17 +1536,7 @@ list.forEach(m => {
 });
 
 // 🔵 그룹별 출력
-let sortedGisu;
-
-if (execMode) {
-  sortedGisu = Object.keys(groups).sort((a, b) => {
-    const aMin = Math.min(...groups[a].map(m => Number(m.sortOrder || 9999)));
-    const bMin = Math.min(...groups[b].map(m => Number(m.sortOrder || 9999)));
-    return aMin - bMin;
-  });
-} else {
-  sortedGisu = Object.keys(groups).sort((a, b) => b - a);
-}
+const sortedGisu = Object.keys(groups).sort((a, b) => b - a);
 
 for (const gisu of sortedGisu) {
 
@@ -4294,7 +4493,7 @@ const wheelItems = [
       if(label === "동문회 집행부"){
         execMode = true;
         currentClassFilter = null;
-        if(btnClass) btnClass.textContent = "동문.집행부 ▼";
+        if(btnClass) btnClass.textContent = "동문회 집행부 ▼";
       }
       else if(label === "기수전체"){
         execMode = false;
@@ -4411,7 +4610,7 @@ else{
       if(label === "동문회 집행부"){
         execMode = true;
         currentClassFilter = null;
-        if(btnClass) btnClass.textContent = "동문.집행부 ▼";
+        if(btnClass) btnClass.textContent = "동문회 집행부 ▼";
       }
       else if(label === "기수전체"){
         execMode = false;
