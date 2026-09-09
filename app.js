@@ -1537,6 +1537,8 @@ list.forEach(m => {
 
 // 🔵 그룹별 출력
 const sortedGisu = Object.keys(groups).sort((a, b) => b - a);
+const navigationList = sortedGisu.flatMap(gisu => groups[gisu]);
+let navigationIndex = 0;
 
 for (const gisu of sortedGisu) {
 
@@ -1660,7 +1662,9 @@ if (
 }
 
 
-  groups[gisu].forEach((m, i) => {
+  groups[gisu].forEach((m) => {
+
+  const memberNavigationIndex = navigationIndex++;
 
   const row = document.createElement("div");
 
@@ -1764,7 +1768,7 @@ arr.forEach(v => {
       </div>
     `;
 
-row.addEventListener("click", () => openProfileAt(groups[gisu], i));
+row.addEventListener("click", () => openProfileAt(navigationList, memberNavigationIndex));
 
 row.querySelector(".actions")?.addEventListener("click", (e) => {
   e.stopPropagation();
