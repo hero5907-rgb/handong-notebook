@@ -5118,7 +5118,6 @@ const list =
 currentAdBrowseList = list;
 
   console.timeEnd("광고목록");
-  console.log("광고목록(로컬)", list);
 
   const box = el("adCompanyList");
 
@@ -5518,15 +5517,24 @@ function startFeaturedAds(){
 
   clearInterval(featuredAdTimer);
 
-  featuredAds = [...(state.ads || [])];
+  const tierRank = { VIP: 0, DIAMOND: 1, GOLD: 2, BASIC: 3 };
+  const byTier = [[], [], [], []];
+  (state.ads || []).forEach(ad => {
+    const rank = tierRank[String(ad.tier || "BASIC").toUpperCase()] ?? 3;
+    byTier[rank].push(ad);
+  });
+  byTier.forEach(group => {
+    // 기존 추천 광고의 무작위 순환은 같은 등급 안에서만 유지한다.
+    for (let i = group.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [group[i], group[j]] = [group[j], group[i]];
+    }
+  });
+  featuredAds = byTier.flat();
 
   if(!featuredAds.length){
     return;
   }
-
-  featuredAds.sort(
-    ()=>Math.random()-0.5
-  );
 
   featuredAdIndex = 0;
 
