@@ -49,6 +49,8 @@ function resetAppSameAsLongTouch() {
 function hardResetApp() {
   if (!confirm("앱을 초기화하고 로그인 화면으로 이동합니다.\n계속할까요?")) return;
 
+  loginSessionVersion += 1;
+
   // 🔹 로그인 정보 제거
   localStorage.removeItem(LS_KEY);
 
@@ -576,6 +578,8 @@ btnLogout?.addEventListener("click", async () => {
 
   const ok = await appConfirm("로그아웃 하시겠습니까?");
   if (!ok) return;
+
+  loginSessionVersion += 1;
 
   setAdminButton(false);
 
@@ -1858,6 +1862,90 @@ function renderLatest() {
   }
 }
 
+let loginSessionVersion = 0;
+
+async function loadPopupEventsAfterLogin({ phone, code, sessionId }) {
+  try {
+    const popupRes = await apiJsonp({
+      action: "popupEvents",
+      phone,
+      code
+    }, { timeoutMs: 10000 });
+
+    if (
+      !popupRes ||
+      popupRes.ok !== true ||
+      sessionId !== loginSessionVersion ||
+      !document.body.classList.contains("logged-in") ||
+      state._authPhone !== phone
+    ) {
+      return;
+    }
+
+    const myGisu = Number(state.me?.gisu || 0);
+    const list = (popupRes.events || []).filter((event) => {
+      const eventGisu = Number(String(event.gisu || "0").trim());
+      return eventGisu === 0 || eventGisu === myGisu;
+    });
+
+    if (!list.length) return;
+
+    list.sort((a, b) => {
+      const dateA = new Date(`${a.date || ""} ${a.startTime || "00:00"}`);
+      const dateB = new Date(`${b.date || ""} ${b.startTime || "00:00"}`);
+      return dateA - dateB;
+    });
+
+    requestAnimationFrame(() => {
+      if (
+        sessionId !== loginSessionVersion ||
+        !document.body.classList.contains("logged-in") ||
+        state._authPhone !== phone
+      ) {
+        return;
+      }
+
+      openModal(`
+        <div class="day-wrap">
+          <div class="day-header">
+            <h3>중요 일정 안내</h3>
+          </div>
+          <div class="day-scroll">
+            ${list.map((event) => {
+              const date = event.date || "";
+              const time = event.startTime || "";
+              return `
+                <div class="event-item">
+                  <div class="event-title">
+                    <span style="
+                      width:8px;
+                      height:8px;
+                      border-radius:50%;
+                      display:inline-block;
+                      background:${Number(event.gisu || 0) === 0 ? '#e53935' : '#111'};
+                    "></span>
+                    ${event.title || ""}
+                  </div>
+                  <div class="event-meta">
+                    ${date} ${time}
+                    ${event.place ? " / " + event.place : ""}
+                  </div>
+                  ${event.desc ? `<div class="event-desc">${event.desc}</div>` : ""}
+                </div>
+              `;
+            }).join("")}
+          </div>
+          <div class="day-footer">
+            <button onclick="closeModal()" class="btn primary">닫기</button>
+          </div>
+        </div>
+      `);
+    });
+  } catch (error) {
+    console.error("팝업 일정 불러오기 실패:", error);
+  }
+}
+
 async function handleLogin() {
 
 // 🔥 중복 로그인 차단 (핵심)
@@ -1895,9 +1983,11 @@ if (window.__loginLock) return;
     return;
   }
 
-  window.__loginLock = true;
+window.__loginLock = true;
   const btn = el("btnLogin");
 if (btn) { btn.disabled = true; btn.textContent = "확인중..."; }
+
+let popupAfterLogin = null;
 
 try {
 
@@ -1905,26 +1995,7 @@ try {
     throw new Error("CONFIG_API_URL_EMPTY (config.js의 apiUrl을 확인하세요)");
   }
 
-
-
-  // 🔥 data + popupEvents 동시에 호출
-
-// 팝업 일정은 동시에 요청하되,
-// 로그인 화면 표시를 막지 않도록 별도로 보관
-const popupPromise = apiJsonp({
-  action: "popupEvents",
-  phone,
-  code
-}, { timeoutMs: 10000 }).catch((error) => {
-  console.error(
-    "팝업 일정 불러오기 실패:",
-    error
-  );
-
-  return null;
-});
-
-// 로그인에 필수인 데이터만 기다림
+// 로그인에 필수인 data 요청을 먼저 완료한다.
 const json = await apiJsonp({
   action: "data",
   phone,
@@ -2043,93 +2114,8 @@ else localStorage.removeItem(LS_KEY);
 state.navStack = ["home"];
 showScreen("home");
 
-// 팝업 일정은 로그인 완료(버튼·잠금 해제)를 막지 않도록 분리한다.
-popupPromise.then((popupRes) => {
-if (
-  popupRes &&
-  popupRes.ok === true &&
-  document.body.classList.contains("logged-in") &&
-  state._authPhone === phone
-){
-
-  const myGisu = Number(state.me?.gisu || 0);
-
-  const list = (popupRes.events || []).filter(e=>{
-    const g = Number(String(e.gisu || "0").trim());
-    return g === 0 || g === myGisu;
-  });
-
-  if (list.length){
-
-    list.sort((a, b) => {
-      const dA = new Date(`${a.date||""} ${a.startTime||"00:00"}`);
-      const dB = new Date(`${b.date||""} ${b.startTime||"00:00"}`);
-      return dA - dB;
-    });
-
-    requestAnimationFrame(()=>{
-
-      openModal(`
-        <div class="day-wrap">
-
-          <div class="day-header">
-            <h3>중요 일정 안내</h3>
-          </div>
-
-          <div class="day-scroll">
-
-            ${
-              list.map(e=>{
-
-                const d = e.date || "";
-                const t = e.startTime || "";
-
-                return `
-                  <div class="event-item">
-
-                    <div class="event-title">
-                      <span style="
-                        width:8px;
-                        height:8px;
-                        border-radius:50%;
-                        display:inline-block;
-                        background:${Number(e.gisu||0) === 0 ? '#e53935' : '#111'};
-                      "></span>
-                      ${e.title || ""}
-                    </div>
-
-                    <div class="event-meta">
-                      ${d} ${t}
-                      ${e.place ? " / " + e.place : ""}
-                    </div>
-
-                    ${
-                      e.desc
-                      ? `<div class="event-desc">${e.desc}</div>`
-                      : ""
-                    }
-
-                  </div>
-                `;
-              }).join("")
-            }
-
-          </div>
-
-          <div class="day-footer">
-            <button onclick="closeModal()" class="btn primary">
-              닫기
-            </button>
-          </div>
-
-        </div>
-      `);
-
-    });
-
-  }
-}
-});
+const sessionId = ++loginSessionVersion;
+popupAfterLogin = { phone, code, sessionId };
 
 
 
@@ -2165,6 +2151,7 @@ catch (err) {
 finally {
   window.__loginLock = false;   // 🔥 이거 추가
   if (btn) { btn.disabled = false; btn.textContent = "로그인"; }
+  if (popupAfterLogin) void loadPopupEventsAfterLogin(popupAfterLogin);
 }
 }
 
@@ -2867,6 +2854,58 @@ if (state.navStack.length > 1) {
 
 
 
+function showUpdateToast(onApply) {
+  if (document.getElementById("swUpdateToast")) return;
+
+  const box = document.createElement("div");
+  box.id = "swUpdateToast";
+  box.setAttribute("role", "status");
+  box.style.cssText = [
+    "position:fixed",
+    "left:50%",
+    "bottom:84px",
+    "transform:translateX(-50%)",
+    "z-index:31000",
+    "display:flex",
+    "align-items:center",
+    "gap:10px",
+    "max-width:calc(100% - 28px)",
+    "padding:12px 14px",
+    "border-radius:16px",
+    "background:rgba(15,23,42,.96)",
+    "color:#fff",
+    "box-shadow:0 12px 30px rgba(0,0,0,.28)",
+    "font-size:14px"
+  ].join(";");
+
+  const message = document.createElement("span");
+  message.textContent = "새 버전이 준비되었습니다.";
+
+  const applyButton = document.createElement("button");
+  applyButton.type = "button";
+  applyButton.textContent = "업데이트 적용";
+  applyButton.style.cssText = [
+    "border:0",
+    "border-radius:10px",
+    "padding:8px 10px",
+    "background:#2563eb",
+    "color:#fff",
+    "font-weight:700",
+    "white-space:nowrap",
+    "cursor:pointer"
+  ].join(";");
+
+  applyButton.addEventListener("click", () => {
+    if (applyButton.disabled) return;
+    applyButton.disabled = true;
+    applyButton.textContent = "적용 중...";
+    onApply();
+  }, { once: true });
+
+  box.append(message, applyButton);
+  document.body.appendChild(box);
+}
+
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
@@ -2902,6 +2941,7 @@ if ("serviceWorker" in navigator) {
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (!updateAccepted || refreshing) return;
         refreshing = true;
+        document.getElementById("swUpdateToast")?.remove();
         // 업데이트가 실제 적용됐으니 잠금 해제
         toast._lock = false;
         location.reload();
