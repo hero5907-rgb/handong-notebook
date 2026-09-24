@@ -5558,15 +5558,28 @@ function startFeaturedAds(){
 
   clearInterval(featuredAdTimer);
 
-  featuredAds = [...(state.ads || [])];
+  const tierRank = { VIP: 0, DIAMOND: 1, GOLD: 2, BASIC: 3 };
+  const byTier = [[], [], [], []];
+
+  (state.ads || []).forEach(ad => {
+    const tier = String(ad?.tier || "BASIC").trim().toUpperCase();
+    const rank = tierRank[tier] ?? tierRank.BASIC;
+    byTier[rank].push(ad);
+  });
+
+  byTier.forEach(group => {
+    // 광고 노출 기회는 같은 등급 안에서만 무작위로 순환한다.
+    for(let i = group.length - 1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i + 1));
+      [group[i], group[j]] = [group[j], group[i]];
+    }
+  });
+
+  featuredAds = byTier.flat();
 
   if(!featuredAds.length){
     return;
   }
-
-  featuredAds.sort(
-    ()=>Math.random()-0.5
-  );
 
   featuredAdIndex = 0;
 
