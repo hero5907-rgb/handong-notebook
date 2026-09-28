@@ -2400,25 +2400,109 @@ button:active{
 
 /* ===== 총동문회 소개 ===== */
 
+.alumni-intro-card{
+  overflow:hidden;
+  border:1px solid #dbe7f5;
+  border-radius:20px;
+  background:#fff;
+}
+
+.alumni-intro-heading{
+  min-width:0;
+  display:flex;
+  align-items:baseline;
+  flex-wrap:wrap;
+  gap:4px 12px;
+}
+
+.alumni-intro-generated-title{
+  color:#315f8f;
+  font-size:15px;
+  font-weight:800;
+  line-height:1.4;
+  overflow-wrap:anywhere;
+}
+
+.alumni-intro-tabs{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:4px;
+  padding:4px;
+  margin:4px 0 14px;
+  border-radius:12px;
+  background:#eef3f9;
+}
+
+.alumni-intro-tab{
+  min-height:44px;
+  padding:9px 12px;
+  border:0;
+  border-radius:9px;
+  background:transparent;
+  color:#526175;
+  font-size:15px;
+  font-weight:800;
+}
+
+.alumni-intro-tab.active{
+  color:#fff;
+  background:#0b4ea2;
+  box-shadow:0 3px 9px rgba(11,78,162,.2);
+}
+
+.alumni-intro-panel[hidden]{
+  display:none;
+}
+
 .intro-photo-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:clamp(210px,48vw,360px);
+  padding:0;
   margin-top:12px;
+  border:1px solid #e2e8f0;
   border-radius:16px;
   overflow:hidden;
+  background:#f8fafc;
   box-shadow:0 8px 20px rgba(0,0,0,.08);
+  cursor:zoom-in;
 }
 
 .intro-photo{
   width:100%;
+  height:100%;
   display:block;
-  object-fit:cover;
+  object-fit:contain;
+  background:#f8fafc;
 }
 
 .intro-text{
   margin-top:16px;
+  padding:0 2px 4px;
   font-size:15px;
   line-height:1.7;
   color:#374151;
-  white-space:pre-line;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+
+@media (max-width:430px){
+  .alumni-intro-heading{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:2px;
+  }
+
+  .alumni-intro-generated-title{
+    width:100%;
+    font-size:14px;
+  }
+
+  .intro-photo-wrap{
+    height:clamp(200px,64vw,280px);
+  }
 }
 
 

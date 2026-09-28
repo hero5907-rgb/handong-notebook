@@ -763,20 +763,33 @@ content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no,
 
 
 <section id="screenCeremony" class="screen" hidden>
-
-  <div class="card">
-    <div class="intro-header">
-      <div class="card-title">동문회 소개</div>
-      <button class="intro-close" onclick="popNav()">✕</button>
-    </div>
-    <!-- ✅ 단체사진 -->
-    <div class="intro-photo-wrap">
-      <img src="./group.jpg" class="intro-photo" onclick="openImgModal('./group.jpg')" />
+  <div class="card alumni-intro-card">
+    <div class="intro-header alumni-intro-header">
+      <div class="alumni-intro-heading">
+        <div class="card-title">동문회 소개</div>
+        <div id="alumniIntroGeneratedTitle" class="alumni-intro-generated-title"></div>
+      </div>
+      <button class="intro-close" type="button" aria-label="동문회 소개 닫기" onclick="popNav()">✕</button>
     </div>
 
-    <!-- ✅ 소개글 -->
-<div class="intro-text" id="introText"></div>
+    <div class="alumni-intro-tabs" role="tablist" aria-label="동문회 소개 항목">
+      <button id="alumniIntroExecutiveTab" class="alumni-intro-tab active" type="button" role="tab" aria-selected="true" data-intro-tab="executive">집행부 소개</button>
+      <button id="alumniIntroOrganizationTab" class="alumni-intro-tab" type="button" role="tab" aria-selected="false" data-intro-tab="organization">조직도</button>
+    </div>
 
+    <section id="alumniIntroExecutivePanel" class="alumni-intro-panel active" role="tabpanel" aria-labelledby="alumniIntroExecutiveTab">
+      <button id="alumniIntroExecutivePhotoButton" class="intro-photo-wrap" type="button" aria-label="집행부 소개 사진 확대">
+        <img id="alumniIntroExecutivePhoto" src="./group.jpg" class="intro-photo" alt="동문회 집행부 소개 사진" />
+      </button>
+      <div class="intro-text" id="alumniIntroExecutiveText"></div>
+    </section>
+
+    <section id="alumniIntroOrganizationPanel" class="alumni-intro-panel" role="tabpanel" aria-labelledby="alumniIntroOrganizationTab" hidden>
+      <button id="alumniIntroOrganizationPhotoButton" class="intro-photo-wrap" type="button" aria-label="조직도 사진 확대" hidden>
+        <img id="alumniIntroOrganizationPhoto" class="intro-photo" alt="한동CEO동문회 조직도" />
+      </button>
+      <div class="intro-text" id="alumniIntroOrganizationText"></div>
+    </section>
   </div>
 
 </section>
