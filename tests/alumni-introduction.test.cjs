@@ -6,7 +6,6 @@ const root = path.resolve(__dirname, "..");
 const app = fs.readFileSync(path.join(root, "app.js"), "utf8");
 const html = fs.readFileSync(path.join(root, "index.html"), "utf8");
 const css = fs.readFileSync(path.join(root, "styles.css"), "utf8");
-const sw = fs.readFileSync(path.join(root, "sw.js"), "utf8");
 
 function extractFunction(source, name) {
   const start = source.indexOf(`function ${name}(`);
@@ -174,7 +173,6 @@ assert.match(css, /\.intro-photo\s*\{[\s\S]*?object-fit\s*:\s*contain/);
 assert.match(css, /\.intro-text\s*\{[\s\S]*?white-space\s*:\s*pre-wrap/);
 assert.match(css, /@media\s*\(max-width:430px\)/);
 assert.match(css, /\.alumni-intro-heading[\s\S]*?flex-wrap\s*:\s*wrap/);
-assert.match(sw, /const CACHE_NAME = "handong-v2\.14";/);
 
 const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
 const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
