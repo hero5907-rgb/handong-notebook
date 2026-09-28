@@ -209,13 +209,16 @@ function setAdminButton(isAdmin) {
   const btnAdmin = document.getElementById("btnAdmin");
   if (!btnAdmin) return;
 
-  if (isAdmin === true) {
-    btnAdmin.style.display = "flex";   // 보이기
-    btnAdmin.onclick = openAdminPage;  // 클릭 연결
-  } else {
-    btnAdmin.style.display = "none";   // 숨기기
-    btnAdmin.onclick = null;           // 클릭 제거
-  }
+  const loggedIn = Boolean(state?.me);
+  btnAdmin.style.display = loggedIn ? "flex" : "none";
+  btnAdmin.setAttribute("aria-label", "설정");
+  btnAdmin.setAttribute("aria-expanded", "false");
+
+  const adminMenuItem = document.getElementById("btnAdminPageMenu");
+  if (adminMenuItem) adminMenuItem.hidden = isAdmin !== true;
+
+  if (!loggedIn) closeSettingsMenu();
+  updatePwaInstallEntryVisibility();
 }
 
 
@@ -2192,6 +2195,7 @@ else localStorage.removeItem(LS_KEY);
 // 🔵 로그인 성공 → 홈 화면으로 이동
 state.navStack = ["home"];
 showScreen("home");
+scheduleAutoPwaInstall(true);
 
 const sessionId = ++loginSessionVersion;
 popupAfterLogin = { phone, code, sessionId };
@@ -2461,57 +2465,7 @@ bindNav();
 bindSearch();
 bindHomeMemberSearch();
 
-const installBar = el("installBar");
-const btnInstallBar = el("btnInstallBar");
-
-if (installBar && btnInstallBar) {
-
-  // 🔥 기본 숨김 (이미 HTML에서 했지만 안전하게)
-  installBar.style.display = "none";
-
-  // 🔥 Android + 설치 가능할 때만 표시
-  window.addEventListener("beforeinstallprompt", (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-
-    installBar.style.display = "block";
-  });
-
-  btnInstallBar.addEventListener("click", async () => {
-
-    // 🤖 안드로이드 + 크롬
-    if (isRealChromeOnAndroid()) {
-
-      if (!deferredPrompt) {
-        toast("설치 준비중입니다. 잠시 후 다시 시도하세요.");
-        return;
-      }
-
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      deferredPrompt = null;
-
-      if (choice?.outcome === "accepted") {
-        installBar.style.display = "none";
-      }
-
-    } else if (IS_IOS) {
-
-      // 🍎 아이폰 안내
-      showHint(`
-        <b>아이폰 설치 방법</b><br><br>
-        1) 사파리로 접속<br>
-        2) 하단 공유버튼(⬆️)<br>
-        3) 홈 화면에 추가
-      `);
-
-    } else {
-
-      toast("이 브라우저에서는 설치가 지원되지 않습니다.");
-    }
-
-  });
-}
+initPwaInstallController();
 
   // 🔥 여기다 붙여넣는다 (정확히 이 위치)
  const btnSelectAll = document.getElementById("btnSelectAll");
@@ -2936,6 +2890,11 @@ if (state.navStack.length > 1) {
 function showUpdateToast(onApply) {
   if (document.getElementById("swUpdateToast")) return;
 
+  // 업데이트 안내가 설치 안내보다 우선하며 두 UI를 겹치지 않는다.
+  if (el("pwaInstallDialog")?.hidden === false) {
+    closePwaInstallDialog({ defer: false });
+  }
+
   const box = document.createElement("div");
   box.id = "swUpdateToast";
   box.setAttribute("role", "status");
@@ -3033,104 +2992,364 @@ if ("serviceWorker" in navigator) {
 }
 
 
-// ===== PWA Install buttons =====
+// ===== PWA 설치 컨트롤러 =====
+
+const PWA_APP_URL = "https://handong.khanreal.kr/";
+const PWA_INSTALL_DISMISS_KEY = "handongPwaInstallDismissedUntil";
+const PWA_INSTALL_DISMISS_MS = 7 * 24 * 60 * 60 * 1000;
 
 let deferredPrompt = null;
-
-function isRealChromeOnAndroid(){
-  const ua = navigator.userAgent || "";
-  const isAndroid = /Android/i.test(ua);
-
-  // 크롬(Chromium) 기반 브라우저 제외
-  const isEdge = /EdgA|EdgiOS|Edg\//i.test(ua);
-  const isSamsung = /SamsungBrowser/i.test(ua);
-  const isOpera = /OPR\//i.test(ua);
-  const isWhale = /Whale/i.test(ua);
-
-  // 인앱 제외
-  const isKakao = /KAKAOTALK/i.test(ua);
-  const isNaver = /NAVER/i.test(ua);
-  const isDaum = /Daum/i.test(ua);
-
-  // ✅ “진짜 크롬” 조건
-  const isChrome = /Chrome\/\d+/i.test(ua) && /Google/i.test(navigator.vendor || "");
-
-  return isAndroid && isChrome && !isEdge && !isSamsung && !isOpera && !isWhale && !isKakao && !isNaver && !isDaum;
-}
-
-
-
-const btnA = el("btnInstallAndroid");
-const btnI = el("btnInstallIOS");
-const hint = el("installHint");
+let pwaInstallControllerReady = false;
+let pwaInstallMode = "";
+let pwaAutoPromptShown = false;
+let pwaAutoPromptTimer = null;
+let pwaAutoPromptRetryCount = 0;
+let pwaInstalledThisSession = false;
 
 function isStandalone() {
-  return window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true; // iOS
+  return window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
 }
 
-function showHint(html) {
-  if (!hint) return;
-  hint.innerHTML = html;
-  hint.hidden = false;
+function getPwaPlatform(userAgent = navigator.userAgent) {
+  const ua = String(userAgent || "");
+  if (/iPhone|iPad|iPod/i.test(ua)) return "ios";
+  if (/Android/i.test(ua)) return "android";
+  return "desktop";
 }
 
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (btnA) {
-    btnA.disabled = false;
-    btnA.style.opacity = "1";
+function parsePwaDismissedUntil(value) {
+  const timestamp = Number(value);
+  return Number.isFinite(timestamp) && timestamp > 0 ? timestamp : 0;
+}
+
+function shouldShowAutomaticPwaInstall({
+  platform,
+  standalone,
+  hasPrompt,
+  loggedIn,
+  homeVisible,
+  blockingUiOpen,
+  dismissedUntil,
+  now
+}) {
+  return platform === "android" &&
+    standalone === false &&
+    hasPrompt === true &&
+    loggedIn === true &&
+    homeVisible === true &&
+    blockingUiOpen === false &&
+    parsePwaDismissedUntil(dismissedUntil) <= now;
+}
+
+function getPwaDismissedUntil() {
+  try {
+    return parsePwaDismissedUntil(localStorage.getItem(PWA_INSTALL_DISMISS_KEY));
+  } catch {
+    return 0;
   }
-});
-
-window.addEventListener("appinstalled", () => {
-  deferredPrompt = null;
-  if (btnA) btnA.style.display = "none";
-  if (btnI) btnI.style.display = "none";
-  if (hint) hint.hidden = true;
-});
-
-
-
-if (isStandalone()) {
-  if (btnA) btnA.style.display = "none";
-  if (btnI) btnI.style.display = "none";
-  if (hint) hint.hidden = true;
 }
 
+function deferPwaInstallPrompt() {
+  try {
+    localStorage.setItem(
+      PWA_INSTALL_DISMISS_KEY,
+      String(Date.now() + PWA_INSTALL_DISMISS_MS)
+    );
+  } catch {}
+}
 
-btnA?.addEventListener("click", async () => {
+function isPwaBlockingUiOpen() {
+  if (document.getElementById("swUpdateToast")) return true;
+  return Boolean(document.querySelector(
+    ".modal:not([hidden]), .confirm-modal:not([hidden]), " +
+    ".event-sheet:not([hidden]), .class-slide:not([hidden])"
+  ));
+}
 
-  // ✅ 진짜 크롬이 아니면 무조건 안내
-  if (!isRealChromeOnAndroid()) {
-    showHint(`
-      ⚠️ 이 브라우저에서는 앱 설치가 불가능합니다.<br><br>
-      <b>반드시 'Chrome'에서 열어 설치</b>해 주세요.<br>
-      (카톡/밴드/네이버앱 안에서는 설치가 안 됩니다)
-    `);
+function updatePwaInstallEntryVisibility() {
+  const hidden = isStandalone() || pwaInstalledThisSession;
+  const androidButton = el("btnInstallAndroid");
+  const iosButton = el("btnInstallIOS");
+  const menuButton = el("btnPwaInstallMenu");
+  const settingsButton = el("btnAdmin");
+  const adminMenuButton = el("btnAdminPageMenu");
+
+  if (androidButton) androidButton.hidden = hidden;
+  if (iosButton) iosButton.hidden = hidden;
+  if (menuButton) menuButton.hidden = hidden;
+  if (settingsButton && state?.me) {
+    settingsButton.style.display = hidden && adminMenuButton?.hidden ? "none" : "flex";
+  }
+}
+
+function closeSettingsMenu() {
+  const menu = el("appSettingsMenu");
+  const button = el("btnAdmin");
+  if (menu) menu.hidden = true;
+  if (button) button.setAttribute("aria-expanded", "false");
+}
+
+function toggleSettingsMenu() {
+  const menu = el("appSettingsMenu");
+  const button = el("btnAdmin");
+  if (!menu || !button || !state?.me) return;
+  const willOpen = menu.hidden;
+  menu.hidden = !willOpen;
+  button.setAttribute("aria-expanded", String(willOpen));
+  if (willOpen) menu.querySelector("button:not([hidden])")?.focus();
+}
+
+function setPwaDialogAddressVisible(visible) {
+  const addressBox = el("pwaInstallAddressBox");
+  if (addressBox) addressBox.hidden = !visible;
+  const status = el("pwaCopyStatus");
+  if (status) status.textContent = "";
+}
+
+function configurePwaInstallDialog(mode) {
+  const title = el("pwaInstallTitle");
+  const description = el("pwaInstallDescription");
+  const details = el("pwaInstallDetails");
+  const installButton = el("btnPwaInstallNow");
+  const laterButton = el("btnPwaInstallLater");
+  if (!title || !description || !details || !installButton || !laterButton) return;
+
+  pwaInstallMode = mode;
+  installButton.disabled = false;
+  installButton.textContent = "앱 설치";
+  laterButton.textContent = mode === "prompt" ? "나중에" : "닫기";
+  details.hidden = true;
+  details.textContent = "";
+  setPwaDialogAddressVisible(false);
+
+  if (mode === "prompt") {
+    title.textContent = "한동회 앱을 설치하시겠습니까?";
+    description.textContent = "홈 화면에서 더 빠르고 편리하게 이용할 수 있습니다.";
+    installButton.hidden = false;
     return;
   }
 
-  // ✅ 설치 트리거가 아직 안 잡힘
-  if (!deferredPrompt) {
-    showHint(`
-      ⚠️ 아직 설치 준비가 안 됐습니다.<br>
-      <b>5초 뒤 다시 눌러보세요.</b><br><br>
-      그래도 안 뜨면:<br>
-      크롬 우측상단 <b>⋮ 메뉴</b> → <b>앱 설치</b>를 눌러주세요.
-    `);
+  installButton.hidden = true;
+  setPwaDialogAddressVisible(true);
+
+  if (mode === "ios") {
+    title.textContent = "아이폰 설치방법";
+    description.textContent = "Safari에서 아래 순서대로 홈 화면에 추가해 주세요.";
+    details.textContent =
+      "1. Safari에서 공식 주소 열기\n" +
+      "2. 공유 버튼 누르기\n" +
+      "3. ‘홈 화면에 추가’ 선택\n" +
+      "4. ‘웹 앱으로 열기’ 활성화\n" +
+      "5. ‘추가’ 선택";
+  } else if (mode === "android-help") {
+    title.textContent = "앱 설치 안내";
+    description.textContent =
+      "현재 브라우저에서 자동 설치창을 열 수 없습니다. 브라우저 메뉴의 ‘앱 설치’ 또는 ‘홈 화면에 추가’를 이용해 주세요.";
+    details.textContent =
+      "공식 주소를 설치를 지원하는 브라우저에서 연 뒤 브라우저 메뉴를 확인해 주세요.";
+  } else {
+    title.textContent = "앱 설치 안내";
+    description.textContent =
+      "지원 브라우저의 주소창 또는 메뉴에 있는 설치 기능을 이용해 주세요.";
+    details.textContent =
+      "설치 메뉴가 보이지 않으면 공식 주소를 열어 브라우저 메뉴를 다시 확인해 주세요.";
+  }
+  details.hidden = false;
+}
+
+function openPwaInstallDialog(mode) {
+  if (isStandalone() || pwaInstalledThisSession) return false;
+  if (document.getElementById("swUpdateToast")) {
+    toast("앱 업데이트 안내를 먼저 처리해 주세요.");
+    return false;
+  }
+
+  const dialog = el("pwaInstallDialog");
+  if (!dialog) return false;
+  closeSettingsMenu();
+  configurePwaInstallDialog(mode);
+  dialog.hidden = false;
+  document.body.classList.add("pwa-install-open");
+  el("btnPwaInstallNow")?.focus();
+  return true;
+}
+
+function closePwaInstallDialog({ defer = false } = {}) {
+  const dialog = el("pwaInstallDialog");
+  if (!dialog || dialog.hidden) return;
+  if (defer) deferPwaInstallPrompt();
+  dialog.hidden = true;
+  document.body.classList.remove("pwa-install-open");
+  el("btnPwaInstallNow")?.removeAttribute("disabled");
+}
+
+function openPwaInstallGuide(preferredPlatform = "") {
+  if (isStandalone() || pwaInstalledThisSession) return;
+  if (deferredPrompt) {
+    openPwaInstallDialog("prompt");
+    return;
+  }
+  const platform = preferredPlatform || getPwaPlatform();
+  if (platform === "ios") openPwaInstallDialog("ios");
+  else if (platform === "android") openPwaInstallDialog("android-help");
+  else openPwaInstallDialog("desktop-help");
+}
+
+async function copyPwaInstallAddress() {
+  const input = el("pwaInstallAddress");
+  const status = el("pwaCopyStatus");
+  let copied = false;
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("CLIPBOARD_UNAVAILABLE");
+    await navigator.clipboard.writeText(PWA_APP_URL);
+    copied = true;
+  } catch {
+    input?.focus();
+    input?.select();
+    input?.setSelectionRange?.(0, input.value.length);
+    try {
+      copied = document.execCommand?.("copy") === true;
+    } catch {
+      copied = false;
+    }
+  }
+
+  if (status) {
+    status.textContent = copied
+      ? "주소가 복사되었습니다."
+      : "자동 복사가 차단되었습니다. 주소를 길게 눌러 복사해 주세요.";
+  }
+  return copied;
+}
+
+async function requestPwaInstall() {
+  const installEvent = deferredPrompt;
+  const installButton = el("btnPwaInstallNow");
+  if (!installEvent || pwaInstallMode !== "prompt") {
+    openPwaInstallGuide();
     return;
   }
 
-  // ✅ 정상 설치 진행
-  deferredPrompt.prompt();
-  const choice = await deferredPrompt.userChoice;
   deferredPrompt = null;
-
-  if (choice?.outcome !== "accepted") {
-    showHint("설치를 취소했습니다. 필요하면 다시 설치할 수 있습니다.");
+  if (installButton) {
+    installButton.disabled = true;
+    installButton.textContent = "설치창 여는 중...";
   }
-});
+
+  try {
+    await installEvent.prompt();
+    const choice = await installEvent.userChoice;
+    closePwaInstallDialog({ defer: choice?.outcome !== "accepted" });
+  } catch (error) {
+    console.error("PWA_INSTALL_PROMPT_FAILED:", error);
+    configurePwaInstallDialog(
+      getPwaPlatform() === "ios" ? "ios" : "android-help"
+    );
+  }
+}
+
+function maybeShowAutomaticPwaInstall() {
+  if (pwaAutoPromptShown) return;
+  const blockingUiOpen = isPwaBlockingUiOpen();
+  const allowed = shouldShowAutomaticPwaInstall({
+    platform: getPwaPlatform(),
+    standalone: isStandalone(),
+    hasPrompt: Boolean(deferredPrompt),
+    loggedIn: Boolean(state?.me),
+    homeVisible: el("screenHome")?.hidden === false,
+    blockingUiOpen,
+    dismissedUntil: getPwaDismissedUntil(),
+    now: Date.now()
+  });
+
+  if (allowed) {
+    pwaAutoPromptShown = openPwaInstallDialog("prompt");
+    return;
+  }
+
+  if (blockingUiOpen && pwaAutoPromptRetryCount < 15) {
+    pwaAutoPromptRetryCount += 1;
+    scheduleAutoPwaInstall(false, 1000);
+  }
+}
+
+function scheduleAutoPwaInstall(reset = false, delay = 800) {
+  if (reset) {
+    pwaAutoPromptRetryCount = 0;
+    pwaAutoPromptShown = false;
+  }
+  window.clearTimeout(pwaAutoPromptTimer);
+  pwaAutoPromptTimer = window.setTimeout(maybeShowAutomaticPwaInstall, delay);
+}
+
+function initPwaInstallController() {
+  if (pwaInstallControllerReady) return;
+  pwaInstallControllerReady = true;
+
+  el("btnAdmin")?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    toggleSettingsMenu();
+  });
+  el("btnAdminPageMenu")?.addEventListener("click", () => {
+    closeSettingsMenu();
+    openAdminPage();
+  });
+  el("btnPwaInstallMenu")?.addEventListener("click", () => {
+    closeSettingsMenu();
+    openPwaInstallGuide();
+  });
+  el("btnInstallAndroid")?.addEventListener("click", () => {
+    openPwaInstallGuide("android");
+  });
+  el("btnInstallIOS")?.addEventListener("click", () => {
+    openPwaInstallGuide("ios");
+  });
+  el("btnPwaInstallNow")?.addEventListener("click", requestPwaInstall);
+  el("btnPwaInstallLater")?.addEventListener("click", () => {
+    closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+  });
+  el("btnPwaInstallClose")?.addEventListener("click", () => {
+    closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+  });
+  el("pwaInstallBackdrop")?.addEventListener("click", () => {
+    closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+  });
+  el("btnPwaCopyAddress")?.addEventListener("click", copyPwaInstallAddress);
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest("#appSettingsMenu, #btnAdmin")) return;
+    closeSettingsMenu();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    if (el("pwaInstallDialog")?.hidden === false) {
+      closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+      return;
+    }
+    closeSettingsMenu();
+  });
+
+  window.addEventListener("beforeinstallprompt", (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    updatePwaInstallEntryVisibility();
+    scheduleAutoPwaInstall();
+  });
+
+  window.addEventListener("appinstalled", () => {
+    deferredPrompt = null;
+    pwaInstalledThisSession = true;
+    closePwaInstallDialog({ defer: false });
+    closeSettingsMenu();
+    try {
+      localStorage.removeItem(PWA_INSTALL_DISMISS_KEY);
+    } catch {}
+    updatePwaInstallEntryVisibility();
+  });
+
+  updatePwaInstallEntryVisibility();
+}
 
 
 
@@ -3138,15 +3357,7 @@ btnA?.addEventListener("click", async () => {
 
 
 
-btnI?.addEventListener("click", () => {
-  showHint(`
-    <b>아이폰 설치 방법(사파리)</b><br/>
-    1) 사파리로 이 페이지 열기<br/>
-    2) 아래 <b>공유(⬆️)</b> 버튼 누르기<br/>
-    3) <b>홈 화면에 추가</b> 선택<br/>
-    4) 추가 → 홈화면 아이콘으로 실행
-  `);
-});
+
 
 
 
