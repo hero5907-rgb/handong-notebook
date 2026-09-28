@@ -1,0 +1,247 @@
+:root {
+  color-scheme: light;
+  --page-bg: #eff6ff;
+  --card-bg: #ffffff;
+  --primary: #0b4ea2;
+  --primary-pressed: #083d80;
+  --text: #111827;
+  --muted: #64748b;
+  --border: #dbe4ef;
+  --soft: #f8fafc;
+  --success: #16794b;
+  --danger: #b42318;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-width: 0;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans KR", sans-serif;
+  color: var(--text);
+  background: var(--page-bg);
+  overflow-x: hidden;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.install-page {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: max(24px, env(safe-area-inset-top)) 16px max(24px, env(safe-area-inset-bottom));
+}
+
+.install-card {
+  width: min(100%, 520px);
+  padding: 30px 24px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 28px;
+  background: var(--card-bg);
+  box-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+  text-align: center;
+}
+
+.app-icon {
+  display: block;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 16px;
+  border-radius: 22px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(26px, 7vw, 32px);
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+}
+
+.lead {
+  margin: 12px auto 22px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.address-card {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--soft);
+  text-align: left;
+}
+
+.address-card label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.address-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+#officialAddress {
+  min-width: 0;
+  height: 48px;
+  padding: 0 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  background: #fff;
+  color: #1e293b;
+  font-size: 16px;
+}
+
+#officialAddress:focus-visible,
+.button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.25);
+  outline-offset: 2px;
+}
+
+.status {
+  min-height: 20px;
+  margin: 8px 2px 0;
+  color: var(--success);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.status.is-error {
+  color: var(--danger);
+}
+
+.primary-actions {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.button {
+  min-height: 48px;
+  padding: 11px 16px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button.primary,
+.button.android {
+  color: #fff;
+  background: var(--primary);
+}
+
+.button.primary:active,
+.button.android:active {
+  background: var(--primary-pressed);
+}
+
+.button.secondary {
+  border-color: var(--border);
+  color: #1e293b;
+  background: #fff;
+}
+
+.button.compact {
+  min-width: 98px;
+  white-space: nowrap;
+}
+
+.guide,
+.browser-notice {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 18px;
+  background: #f1f5f9;
+  text-align: left;
+}
+
+.guide h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+}
+
+.guide ol {
+  margin: 0;
+  padding-left: 22px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.browser-notice {
+  color: #7c2d12;
+  background: #fff7ed;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.privacy-note {
+  margin: 18px 0 0;
+  color: #94a3b8;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+@media (max-width: 430px) {
+  .install-page {
+    align-items: start;
+    padding-inline: 12px;
+  }
+
+  .install-card {
+    padding: 24px 16px;
+    border-radius: 22px;
+  }
+
+  .address-row {
+    grid-template-columns: 1fr;
+  }
+
+  .button.compact {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
