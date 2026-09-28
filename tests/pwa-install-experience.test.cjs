@@ -330,8 +330,8 @@ function makeCopyHarness({ clipboard, execResult }) {
   await test("safe area 고려", () => {
     assert.match(goCss + css, /env\(safe-area-inset-bottom\)/);
   });
-  await test("PWA 캐시 v2.16", () => {
-    assert.match(sw, /const CACHE_NAME = "handong-v2\.16";/);
+  await test("PWA 캐시 v2.18", () => {
+    assert.match(sw, /const CACHE_NAME = "handong-v2\.18";/);
   });
   await test("go 설치 파일은 서비스워커 ASSETS에 추가하지 않음", () => {
     assert.doesNotMatch(sw, /go\.html|go\.css|go\.js/);
