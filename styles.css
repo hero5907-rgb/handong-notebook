@@ -5458,3 +5458,21 @@ body.pwa-install-open{
     transition:none!important;
   }
 }
+
+/* 회원명부 헤더의 긴 필터와 인원수 배지를 안전하게 분리 */
+.membersSticky .card-header{
+  gap:8px;
+}
+
+.membersSticky .card-header > .card-title{
+  flex:1 1 auto;
+  min-width:0;
+  flex-wrap:wrap;
+}
+
+#memberCountPill{
+  flex:0 0 auto;
+  min-width:max-content;
+  white-space:nowrap;
+  word-break:keep-all;
+}
