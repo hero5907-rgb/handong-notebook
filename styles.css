@@ -4101,6 +4101,10 @@ background:#7ea4e8;
   margin:14px 0 18px;
 }
 
+#bylawsTabs[hidden]{
+  display:none !important;
+}
+
 #bylawsTabs button{
   border:none;
   border-radius:999px;

@@ -2285,14 +2285,14 @@ if (target === "members") {
   if (btn) btn.onclick = reloadAnnouncements;
 }else if (target === "purpose") {
         pushNav("text");
+        const bylawsTabs = el("bylawsTabs");
+        if (bylawsTabs) bylawsTabs.hidden = true;
         if (el("textTitle")) el("textTitle").textContent = "목적";
         if (el("textBody")) el("textBody").textContent = state.settings?.purpose || "내용 준비중";
         // pdfBtn은 위에서 이미 hidden=true 처리됨
 
       } else if (target === "bylaws") {
-  pushNav("text");
-  if (el("textTitle")) el("textTitle").textContent = "회칙";
-  renderBylawsView();
+  openMainBylaws();
 } 
 else if (target === "events") {
   pushNav("events");
