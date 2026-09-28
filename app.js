@@ -1059,6 +1059,11 @@ const gisuPhotoPointers = new Map();
 let gisuPhotoPinchDistance = 0;
 let gisuPhotoPinchScale = 1;
 let gisuPhotoDragStart = null;
+let gisuPhotoSwipeStart = null;
+let gisuPhotoHadMultiplePointers = false;
+let gisuPhotoGallery = [];
+let gisuPhotoGalleryIndex = 0;
+let gisuPhotoClosePending = false;
 
 
 // 숫자를 최솟값과 최댓값 사이로 제한
@@ -1091,8 +1096,55 @@ function resetGisuPhotoZoom() {
   gisuPhotoPinchDistance = 0;
   gisuPhotoPinchScale = 1;
   gisuPhotoDragStart = null;
+  gisuPhotoSwipeStart = null;
+  gisuPhotoHadMultiplePointers = false;
 
   applyGisuPhotoTransform();
+}
+
+
+function getAdPhotoGallery(ad) {
+  const storeName = String(ad?.storeName || "광고");
+
+  return [
+    {
+      url: ad?.mainPhoto,
+      alt: `${storeName} 대표사진 확대`,
+      isMain: true
+    },
+    {
+      url: ad?.photo2,
+      alt: `${storeName} 추가사진 1 확대`,
+      isMain: false
+    },
+    {
+      url: ad?.photo3,
+      alt: `${storeName} 추가사진 2 확대`,
+      isMain: false
+    },
+    {
+      url: ad?.photo4,
+      alt: `${storeName} 추가사진 3 확대`,
+      isMain: false
+    },
+    {
+      url: ad?.photo5,
+      alt: `${storeName} 추가사진 4 확대`,
+      isMain: false
+    }
+  ]
+    .map((photo) => ({
+      url: String(photo.url || "").trim(),
+      alt: photo.alt,
+      isMain: photo.isMain
+    }))
+    .filter((photo) => photo.url);
+}
+
+
+function getWrappedPhotoIndex(index, delta, length) {
+  if (!Number.isInteger(length) || length <= 0) return 0;
+  return (index + delta + length) % length;
 }
 
 
@@ -1121,6 +1173,7 @@ function bindGisuPhotoGestures(image) {
 
   image.addEventListener("pointerdown", (e) => {
     e.preventDefault();
+    e.stopPropagation();
 
     try {
       image.setPointerCapture(e.pointerId);
@@ -1132,6 +1185,8 @@ function bindGisuPhotoGestures(image) {
     });
 
     if (gisuPhotoPointers.size === 2) {
+      gisuPhotoHadMultiplePointers = true;
+      gisuPhotoSwipeStart = null;
       gisuPhotoPinchDistance =
         getGisuPhotoPointerDistance();
 
@@ -1144,6 +1199,14 @@ function bindGisuPhotoGestures(image) {
         imageX: gisuPhotoX,
         imageY: gisuPhotoY
       };
+
+      gisuPhotoSwipeStart = gisuPhotoScale <= 1.01
+        ? {
+            x: e.clientX,
+            y: e.clientY,
+            time: Date.now()
+          }
+        : null;
     }
   });
 
@@ -1154,6 +1217,7 @@ function bindGisuPhotoGestures(image) {
     }
 
     e.preventDefault();
+    e.stopPropagation();
 
     gisuPhotoPointers.set(e.pointerId, {
       x: e.clientX,
@@ -1208,7 +1272,32 @@ function bindGisuPhotoGestures(image) {
   });
 
 
-  function endGisuPhotoPointer(e) {
+  function endGisuPhotoPointer(e, allowSwipe) {
+    const wasOnlyPointer =
+      gisuPhotoPointers.size === 1 &&
+      gisuPhotoPointers.has(e.pointerId);
+
+    if (
+      allowSwipe &&
+      wasOnlyPointer &&
+      !gisuPhotoHadMultiplePointers &&
+      gisuPhotoScale <= 1.01 &&
+      gisuPhotoSwipeStart &&
+      gisuPhotoGallery.length > 1
+    ) {
+      const dx = e.clientX - gisuPhotoSwipeStart.x;
+      const dy = e.clientY - gisuPhotoSwipeStart.y;
+      const elapsed = Date.now() - gisuPhotoSwipeStart.time;
+
+      if (
+        elapsed <= 700 &&
+        Math.abs(dx) >= 60 &&
+        Math.abs(dx) > Math.abs(dy) * 1.5
+      ) {
+        moveGisuPhoto(dx < 0 ? 1 : -1);
+      }
+    }
+
     gisuPhotoPointers.delete(e.pointerId);
 
     if (gisuPhotoPointers.size === 1) {
@@ -1228,21 +1317,26 @@ function bindGisuPhotoGestures(image) {
     if (gisuPhotoScale <= 1.01) {
       resetGisuPhotoZoom();
     }
+
+    if (!gisuPhotoPointers.size) {
+      gisuPhotoSwipeStart = null;
+      gisuPhotoHadMultiplePointers = false;
+    }
   }
 
   image.addEventListener(
     "pointerup",
-    endGisuPhotoPointer
+    (e) => endGisuPhotoPointer(e, true)
   );
 
   image.addEventListener(
     "pointercancel",
-    endGisuPhotoPointer
+    (e) => endGisuPhotoPointer(e, false)
   );
 
   image.addEventListener(
     "lostpointercapture",
-    endGisuPhotoPointer
+    (e) => endGisuPhotoPointer(e, false)
   );
 
   // 사진을 두 번 누르면 초기 크기로 복원
@@ -1253,11 +1347,88 @@ function bindGisuPhotoGestures(image) {
 }
 
 
+function normalizeGisuPhotoGallery(photoUrl, gisu, altText, photos) {
+  const fallbackAlt = altText || (gisu
+    ? `${formatGisu(gisu)}기 단체사진 확대`
+    : "소모임 활동사진 확대");
+
+  const source = Array.isArray(photos) && photos.length
+    ? photos
+    : [{ url: photoUrl, alt: fallbackAlt }];
+
+  return source
+    .map((photo) => {
+      if (typeof photo === "string") {
+        return {
+          url: photo.trim(),
+          alt: fallbackAlt
+        };
+      }
+
+      return {
+        url: String(photo?.url || "").trim(),
+        alt: String(photo?.alt || fallbackAlt)
+      };
+    })
+    .filter((photo) => photo.url);
+}
+
+
+function showGisuPhotoAt(index) {
+  const zoom = el("gisuPhotoZoom");
+  if (!zoom || !gisuPhotoGallery.length) return;
+
+  gisuPhotoGalleryIndex = getWrappedPhotoIndex(
+    Number(index) || 0,
+    0,
+    gisuPhotoGallery.length
+  );
+
+  const photo = gisuPhotoGallery[gisuPhotoGalleryIndex];
+  const image = zoom.querySelector(".gisu-photo-zoom-image");
+  const previous = zoom.querySelector(".gisu-photo-zoom-prev");
+  const next = zoom.querySelector(".gisu-photo-zoom-next");
+  const counter = zoom.querySelector(".gisu-photo-zoom-counter");
+  const hasMultiple = gisuPhotoGallery.length > 1;
+
+  resetGisuPhotoZoom();
+
+  if (image) {
+    image.src = photo.url;
+    image.alt = photo.alt;
+  }
+
+  if (previous) previous.hidden = !hasMultiple;
+  if (next) next.hidden = !hasMultiple;
+
+  if (counter) {
+    counter.hidden = !hasMultiple;
+    counter.textContent = hasMultiple
+      ? `${gisuPhotoGalleryIndex + 1} / ${gisuPhotoGallery.length}`
+      : "";
+  }
+}
+
+
+function moveGisuPhoto(delta) {
+  if (gisuPhotoGallery.length <= 1) return;
+
+  showGisuPhotoAt(
+    getWrappedPhotoIndex(
+      gisuPhotoGalleryIndex,
+      delta,
+      gisuPhotoGallery.length
+    )
+  );
+}
+
+
 // 확대창 열기
-function openGisuPhotoZoom(photoUrl, gisu, altText) {
+function openGisuPhotoZoom(photoUrl, gisu, altText, photos, startIndex = 0) {
   if (!photoUrl) return;
 
   let zoom = el("gisuPhotoZoom");
+  const wasOpen = zoom?.hidden === false;
 
   // 확대 화면이 없으면 처음 한 번만 생성
   if (!zoom) {
@@ -1275,11 +1446,35 @@ function openGisuPhotoZoom(photoUrl, gisu, altText) {
         ×
       </button>
 
+      <button
+        type="button"
+        class="gisu-photo-zoom-nav gisu-photo-zoom-prev"
+        aria-label="이전 사진"
+        hidden
+      >
+        ‹
+      </button>
+
       <img
         class="gisu-photo-zoom-image"
         alt="기수 단체사진 확대"
         draggable="false"
       />
+
+      <button
+        type="button"
+        class="gisu-photo-zoom-nav gisu-photo-zoom-next"
+        aria-label="다음 사진"
+        hidden
+      >
+        ›
+      </button>
+
+      <div
+        class="gisu-photo-zoom-counter"
+        aria-live="polite"
+        hidden
+      ></div>
     `;
 
     document.body.appendChild(zoom);
@@ -1295,6 +1490,20 @@ function openGisuPhotoZoom(photoUrl, gisu, altText) {
       .querySelector(".gisu-photo-zoom-close")
       ?.addEventListener("click", closeGisuPhotoZoom);
 
+    zoom
+      .querySelector(".gisu-photo-zoom-prev")
+      ?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        moveGisuPhoto(-1);
+      });
+
+    zoom
+      .querySelector(".gisu-photo-zoom-next")
+      ?.addEventListener("click", (e) => {
+        e.stopPropagation();
+        moveGisuPhoto(1);
+      });
+
     // 검은 배경을 누르면 닫기
     zoom.addEventListener("click", (e) => {
       if (e.target === zoom) {
@@ -1303,26 +1512,32 @@ function openGisuPhotoZoom(photoUrl, gisu, altText) {
     });
   }
 
-  const image = zoom.querySelector(
-    ".gisu-photo-zoom-image"
+  gisuPhotoGallery = normalizeGisuPhotoGallery(
+    photoUrl,
+    gisu,
+    altText,
+    photos
   );
 
-  resetGisuPhotoZoom();
+  if (!gisuPhotoGallery.length) return;
 
-  if (image) {
-    image.src = photoUrl;
-    image.alt = altText || (gisu
-      ? `${formatGisu(gisu)}기 단체사진 확대`
-      : "소모임 활동사진 확대");
-  }
+  showGisuPhotoAt(startIndex);
 
   zoom.hidden = false;
+  gisuPhotoClosePending = false;
   document.body.classList.add("modal-open");
+
+  if (!wasOpen && history.state?.modal !== "image") {
+    history.pushState(
+      { modal: "image" },
+      "",
+      location.href
+    );
+  }
 }
 
 
-// 확대창 닫기
-function closeGisuPhotoZoom() {
+function hideGisuPhotoZoomFromHistory() {
   const zoom = el("gisuPhotoZoom");
 
   if (!zoom) return;
@@ -1338,8 +1553,51 @@ function closeGisuPhotoZoom() {
     image.src = "";
   }
 
-  document.body.classList.remove("modal-open");
+  gisuPhotoGallery = [];
+  gisuPhotoGalleryIndex = 0;
+  gisuPhotoClosePending = false;
+
+  if (el("adModal")?.hidden === false) {
+    document.body.classList.add("modal-open");
+  } else {
+    document.body.classList.remove("modal-open");
+  }
 }
+
+
+// 확대창 닫기
+function closeGisuPhotoZoom() {
+  const zoom = el("gisuPhotoZoom");
+
+  if (!zoom || zoom.hidden || gisuPhotoClosePending) return;
+
+  if (history.state?.modal === "image") {
+    gisuPhotoClosePending = true;
+    history.back();
+    return;
+  }
+
+  hideGisuPhotoZoomFromHistory();
+}
+
+
+window.addEventListener("keydown", (e) => {
+  if (el("gisuPhotoZoom")?.hidden !== false) return;
+
+  if (e.key === "ArrowLeft") {
+    e.preventDefault();
+    e.stopPropagation();
+    moveGisuPhoto(-1);
+  } else if (e.key === "ArrowRight") {
+    e.preventDefault();
+    e.stopPropagation();
+    moveGisuPhoto(1);
+  } else if (e.key === "Escape") {
+    e.preventDefault();
+    e.stopPropagation();
+    closeGisuPhotoZoom();
+  }
+});
 
 function getMemberPositionValues(member) {
   return String(member?.position || "")
@@ -2831,7 +3089,18 @@ if (document.getElementById("modal")?.hidden === false) {
 
   // 1️⃣ 모달 열려 있으면 → 모달 닫기
 
-// 광고모달 우선
+// 사진 확대창을 광고 상세보다 먼저 닫아 뒤로가기 순서를 보존
+if (el("gisuPhotoZoom")?.hidden === false) {
+  hideGisuPhotoZoomFromHistory();
+  return;
+}
+
+if (el("imgModal")?.hidden === false) {
+  closeImgModal();
+  return;
+}
+
+// 광고모달
 if (el("adModal")?.hidden === false) {
   closeAdModal();
   return;
@@ -2846,12 +3115,6 @@ if (el("adModal")?.hidden === false) {
   if (el("annModal")?.hidden === false) {
     closeAnnModal();
 
-    return;
-  }
-
-  if (el("imgModal")?.hidden === false) {
-    closeImgModal();
-  
     return;
   }
 
@@ -5581,17 +5844,21 @@ el("adModalAddress").innerHTML = `
   }
 
   const img = el("adModalMainPhoto");
+  const adPhotos = getAdPhotoGallery(ad);
+  const mainPhoto = adPhotos.find((photo) => photo.isMain);
 
-if(ad.mainPhoto){
+if(mainPhoto){
 
-  img.src = ad.mainPhoto;
+  img.src = mainPhoto.url;
   img.style.display = "";
 
   img.onclick = ()=>{
     openGisuPhotoZoom(
-      ad.mainPhoto,
+      mainPhoto.url,
       0,
-      `${ad.storeName || "광고"} 대표사진 확대`
+      mainPhoto.alt,
+      adPhotos,
+      adPhotos.indexOf(mainPhoto)
     );
   };
 
@@ -5602,30 +5869,28 @@ if(ad.mainPhoto){
 
   img.style.display =
     "none";
+  img.onclick = null;
 
 }
 
   const gallery = el("adModalGallery");
 
-  const photos = [
-    ad.photo2,
-    ad.photo3,
-    ad.photo4,
-    ad.photo5
-  ].filter(Boolean);
+  const photos = adPhotos.filter((photo) => !photo.isMain);
 
   gallery.replaceChildren();
 
-  photos.forEach((url, index) => {
+  photos.forEach((photo) => {
     const galleryImage = document.createElement("img");
-    galleryImage.src = url;
-    galleryImage.alt = `${ad.storeName || "광고"} 추가사진 ${index + 1}`;
+    galleryImage.src = photo.url;
+    galleryImage.alt = photo.alt.replace(/ 확대$/, "");
     galleryImage.className = "ad-modal-gallery-image";
     galleryImage.addEventListener("click", () => {
       openGisuPhotoZoom(
-        url,
+        photo.url,
         0,
-        `${ad.storeName || "광고"} 추가사진 ${index + 1} 확대`
+        photo.alt,
+        adPhotos,
+        adPhotos.indexOf(photo)
       );
     });
     gallery.appendChild(galleryImage);
@@ -5699,6 +5964,10 @@ function closeAdModal(){
   );
 
   el("adModal").hidden = true;
+
+  gisuPhotoGallery = [];
+  gisuPhotoGalleryIndex = 0;
+  gisuPhotoClosePending = false;
 
   document.body.classList.remove("modal-open");
 
