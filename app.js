@@ -501,6 +501,91 @@ function hideLoading(){
   if(el) el.style.display = "none";
 }
 
+function getAlumniIntroductionSettings() {
+  const settings = state.settings || {};
+  const rawTerm = String(settings.alumniIntroTerm ?? "").trim();
+  const term = /^\d+$/.test(rawTerm) && Number(rawTerm) > 0
+    ? String(Number(rawTerm))
+    : "11";
+
+  return {
+    term,
+    executivePhotoUrl:
+      String(settings.alumniIntroExecutivePhotoUrl || "").trim() || "./group.jpg",
+    executiveText:
+      String(settings.alumniIntroExecutiveText || "").trim() ||
+      String(window.APP_CONFIG?.introText || ""),
+    organizationPhotoUrl:
+      String(settings.alumniIntroOrganizationPhotoUrl || "").trim(),
+    organizationText:
+      String(settings.alumniIntroOrganizationText || "").trim() ||
+      "조직도 내용이 준비되지 않았습니다."
+  };
+}
+
+function setAlumniIntroductionTab(tabName) {
+  const selected = tabName === "organization" ? "organization" : "executive";
+
+  document.querySelectorAll("[data-intro-tab]").forEach((button) => {
+    const active = button.dataset.introTab === selected;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-selected", String(active));
+  });
+
+  const executivePanel = el("alumniIntroExecutivePanel");
+  const organizationPanel = el("alumniIntroOrganizationPanel");
+  if (executivePanel) {
+    executivePanel.hidden = selected !== "executive";
+    executivePanel.classList.toggle("active", selected === "executive");
+  }
+  if (organizationPanel) {
+    organizationPanel.hidden = selected !== "organization";
+    organizationPanel.classList.toggle("active", selected === "organization");
+  }
+}
+
+function renderAlumniIntroduction() {
+  const intro = getAlumniIntroductionSettings();
+  const title = el("alumniIntroGeneratedTitle");
+  if (title) title.textContent = `제${intro.term}대 한동CEO동문회 집행부`;
+
+  const executivePhoto = el("alumniIntroExecutivePhoto");
+  const executivePhotoButton = el("alumniIntroExecutivePhotoButton");
+  if (executivePhoto) executivePhoto.src = intro.executivePhotoUrl;
+  if (executivePhotoButton) {
+    executivePhotoButton.hidden = false;
+    executivePhotoButton.onclick = () => openImgModal(intro.executivePhotoUrl);
+  }
+
+  const executiveText = el("alumniIntroExecutiveText");
+  if (executiveText) executiveText.textContent = intro.executiveText;
+
+  const organizationPhoto = el("alumniIntroOrganizationPhoto");
+  const organizationPhotoButton = el("alumniIntroOrganizationPhotoButton");
+  if (organizationPhotoButton) {
+    organizationPhotoButton.hidden = !intro.organizationPhotoUrl;
+    organizationPhotoButton.onclick = intro.organizationPhotoUrl
+      ? () => openImgModal(intro.organizationPhotoUrl)
+      : null;
+  }
+  if (organizationPhoto) {
+    if (intro.organizationPhotoUrl) {
+      organizationPhoto.src = intro.organizationPhotoUrl;
+    } else {
+      organizationPhoto.removeAttribute("src");
+    }
+  }
+
+  const organizationText = el("alumniIntroOrganizationText");
+  if (organizationText) organizationText.textContent = intro.organizationText;
+
+  document.querySelectorAll("[data-intro-tab]").forEach((button) => {
+    button.onclick = () => setAlumniIntroductionTab(button.dataset.introTab);
+  });
+
+  setAlumniIntroductionTab("executive");
+}
+
 
 function showScreen(name) {
 
@@ -516,10 +601,7 @@ stopCeremony();   // 🔥 화면 이동시 무조건 정지
 
   // 🔥 추가
   if (name === "ceremony") {
-    const elIntro = document.getElementById("introText");
-    if (elIntro && window.APP_CONFIG?.introText) {
-      elIntro.innerText = window.APP_CONFIG.introText;
-    }
+    renderAlumniIntroduction();
   }
 
 
@@ -1408,10 +1490,7 @@ function renderExecutiveMembers(list, wrap) {
   const section = document.createElement("section");
   section.className = "executive-section";
 
-  const introPhoto = document.querySelector(
-    "#screenCeremony .intro-photo"
-  );
-  const photoUrl = introPhoto?.getAttribute("src") || "";
+  const photoUrl = getAlumniIntroductionSettings().executivePhotoUrl;
 
   section.innerHTML = `
     ${photoUrl ? `
