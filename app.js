@@ -4016,6 +4016,33 @@ function getDisplayedCalendarYM(){
   return `${base.getFullYear()}${String(base.getMonth() + 1).padStart(2, "0")}`;
 }
 
+function isNeutralCalendarObservanceTitle(title){
+  return String(title || "").replace(/\s+/g, "") === "국군의날";
+}
+
+function hasCalendarEventGisu(event){
+  return Object.prototype.hasOwnProperty.call(
+    event?.extendedProps || {},
+    "gisu"
+  );
+}
+
+function getCalendarEventTitleColor(event){
+  if (isNeutralCalendarObservanceTitle(event?.title)) {
+    return "#1f2937";
+  }
+
+  if (hasCalendarEventGisu(event)) {
+    return Number(event.extendedProps.gisu) === 0
+      ? "#d60000"
+      : "#111";
+  }
+
+  return event?.source?.googleCalendarId
+    ? "#d60000"
+    : "#111";
+}
+
 async function refreshCalendarAfterMutation(dateToReopen){
   if (calendarLoadPromise) await calendarLoadPromise;
 
@@ -4222,12 +4249,12 @@ calendar.addEventSource({
 
     // 달력 칸에는 제목만  전체일정 빨간색 처리 포함
 eventContent(arg) {
+  const titleColor = getCalendarEventTitleColor(arg.event);
+  const isGlobalEvent = hasCalendarEventGisu(arg.event) &&
+    Number(arg.event.extendedProps.gisu) === 0;
 
-  const gisu = Number(arg.event.extendedProps?.gisu || 0);
-
-  const colorStyle = (gisu === 0)
-    ? 'style="color:#d60000;font-weight:700;"'
-    : '';
+  const colorStyle =
+    `style="color:${titleColor};${isGlobalEvent ? "font-weight:700;" : ""}"`;
 
   return {
     html: `<span class="fc-title-only" ${colorStyle}>
@@ -4350,7 +4377,7 @@ const holidays = (state.announcements || []).filter(a=>{
           title = `${name} 대체공휴일`;
         }
 
-        return `<div class="holiday-item">${title}</div>`;
+        return `<div class="holiday-item" style="color:${getCalendarEventTitleColor(e)}">${title}</div>`;
       })
       .join("")
   }
