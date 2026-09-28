@@ -4115,7 +4115,7 @@ background:#7ea4e8;
 
   height:180px;
 
-  object-fit:cover;
+  object-fit:contain;
 
   border:1px solid #e5e7eb;
 
@@ -4127,6 +4127,24 @@ background:#7ea4e8;
 
   background:#f8fafc;
 
+}
+
+#adModalMainPhoto,
+#adModalGallery .ad-modal-gallery-image{
+  display:block;
+  width:100%;
+  max-width:100%;
+  height:auto;
+  max-height:65vh;
+  object-fit:contain;
+  border-radius:12px;
+  background:#f8fafc;
+  cursor:zoom-in;
+  box-sizing:border-box;
+}
+
+#adModalGallery .ad-modal-gallery-image{
+  max-height:360px;
 }
 
 #featuredAdName{

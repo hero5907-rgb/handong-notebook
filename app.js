@@ -1169,7 +1169,7 @@ function bindGisuPhotoGestures(image) {
 
 
 // 확대창 열기
-function openGisuPhotoZoom(photoUrl, gisu) {
+function openGisuPhotoZoom(photoUrl, gisu, altText) {
   if (!photoUrl) return;
 
   let zoom = el("gisuPhotoZoom");
@@ -1226,9 +1226,9 @@ function openGisuPhotoZoom(photoUrl, gisu) {
 
   if (image) {
     image.src = photoUrl;
-    image.alt = gisu
-  ? `${formatGisu(gisu)}기 단체사진 확대`
-  : "소모임 활동사진 확대";
+    image.alt = altText || (gisu
+      ? `${formatGisu(gisu)}기 단체사진 확대`
+      : "소모임 활동사진 확대");
   }
 
   zoom.hidden = false;
@@ -5298,9 +5298,10 @@ if(ad.mainPhoto){
   img.style.display = "";
 
   img.onclick = ()=>{
-    window.open(
+    openGisuPhotoZoom(
       ad.mainPhoto,
-      "_blank"
+      0,
+      `${ad.storeName || "광고"} 대표사진 확대`
     );
   };
 
@@ -5323,17 +5324,22 @@ if(ad.mainPhoto){
     ad.photo5
   ].filter(Boolean);
 
-  gallery.innerHTML =
-    photos.map(url => `
-      <img
-        src="${url}"
-        style="
-          width:100%;
-          border-radius:12px;
-          cursor:pointer;
-        "
-        onclick="window.open('${url}','_blank')">
-    `).join("");
+  gallery.replaceChildren();
+
+  photos.forEach((url, index) => {
+    const galleryImage = document.createElement("img");
+    galleryImage.src = url;
+    galleryImage.alt = `${ad.storeName || "광고"} 추가사진 ${index + 1}`;
+    galleryImage.className = "ad-modal-gallery-image";
+    galleryImage.addEventListener("click", () => {
+      openGisuPhotoZoom(
+        url,
+        0,
+        `${ad.storeName || "광고"} 추가사진 ${index + 1} 확대`
+      );
+    });
+    gallery.appendChild(galleryImage);
+  });
 
   document.body.classList.add("modal-open");
 
