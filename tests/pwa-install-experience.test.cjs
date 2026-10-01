@@ -57,24 +57,38 @@ function extractFunction(source, name) {
   throw new Error(name + " 함수 끝을 찾지 못했습니다.");
 }
 
-const parseSource = extractFunction(app, "parsePwaDismissedUntil");
 const shouldSource = extractFunction(app, "shouldShowAutomaticPwaInstall");
 const pureFactory = new Function(
-  parseSource + "\n" + shouldSource +
-  "\nreturn { parsePwaDismissedUntil, shouldShowAutomaticPwaInstall };"
+  shouldSource + "\nreturn { shouldShowAutomaticPwaInstall };"
 );
 const pure = pureFactory();
-const now = 2_000_000_000_000;
 const allowedBase = {
   platform: "android",
   standalone: false,
-  hasPrompt: true,
   loggedIn: true,
   homeVisible: true,
-  blockingUiOpen: false,
-  dismissedUntil: 0,
-  now
+  blockingUiOpen: false
 };
+
+function makeAutomaticHarness(hasPrompt) {
+  const modes = [];
+  const factory = new Function("modes", `
+    let deferredPrompt = ${hasPrompt ? "{}" : "null"};
+    let pwaAutoPromptShown = false;
+    let pwaAutoPromptRetryCount = 0;
+    const state = { me: {} };
+    const el = id => id === "screenHome" ? { hidden: false } : null;
+    const getPwaPlatform = () => "android";
+    const isStandalone = () => false;
+    const isPwaBlockingUiOpen = () => false;
+    const openPwaInstallDialog = mode => { modes.push(mode); return true; };
+    const scheduleAutoPwaInstall = () => {};
+    ${shouldSource}
+    ${extractFunction(app, "maybeShowAutomaticPwaInstall")}
+    return maybeShowAutomaticPwaInstall;
+  `);
+  return { run: factory(modes), modes };
+}
 
 function makeRequestHarness(outcome) {
   const requestSource = extractFunction(app, "requestPwaInstall");
@@ -150,11 +164,22 @@ function makeCopyHarness({ clipboard, execResult }) {
   await test("appinstalled 리스너는 정확히 1개", () => {
     assert.equal((app.match(/addEventListener\(\s*["']appinstalled["']/g) || []).length, 1);
   });
-  await test("설치 이벤트 전 자동 안내 없음", () => {
-    assert.equal(pure.shouldShowAutomaticPwaInstall({ ...allowedBase, hasPrompt: false }), false);
-  });
-  await test("Android 설치 가능 로그인 홈에서 자동 안내", () => {
+  await test("Android 로그인 홈에서 자동 안내", () => {
     assert.equal(pure.shouldShowAutomaticPwaInstall(allowedBase), true);
+  });
+  await test("새 로그인에서 자동 안내 횟수 초기화", () => {
+    const schedule = extractFunction(app, "scheduleAutoPwaInstall");
+    const run = new Function(`
+      let pwaAutoPromptRetryCount = 3;
+      let pwaAutoPromptShown = true;
+      let pwaAutoPromptTimer = null;
+      const window = { clearTimeout() {}, setTimeout() { return 1; } };
+      const maybeShowAutomaticPwaInstall = () => {};
+      ${schedule}
+      scheduleAutoPwaInstall(true);
+      return [pwaAutoPromptRetryCount, pwaAutoPromptShown];
+    `);
+    assert.deepEqual(run(), [0, false]);
   });
   await test("로그인 전 자동 안내 없음", () => {
     assert.equal(pure.shouldShowAutomaticPwaInstall({ ...allowedBase, loggedIn: false }), false);
@@ -174,32 +199,40 @@ function makeCopyHarness({ clipboard, execResult }) {
   await test("PC 자동 설치창 없음", () => {
     assert.equal(pure.shouldShowAutomaticPwaInstall({ ...allowedBase, platform: "desktop" }), false);
   });
-  await test("7일 유예 중 자동 안내 없음", () => {
-    assert.equal(pure.shouldShowAutomaticPwaInstall({ ...allowedBase, dismissedUntil: now + 1 }), false);
+  await test("설치 이벤트가 있으면 중앙 설치창", () => {
+    const harness = makeAutomaticHarness(true);
+    harness.run();
+    assert.deepEqual(harness.modes, ["prompt"]);
   });
-  await test("7일 유예 경과 후 자동 안내 가능", () => {
-    assert.equal(pure.shouldShowAutomaticPwaInstall({ ...allowedBase, dismissedUntil: now - 1 }), true);
+  await test("설치 이벤트가 없으면 수동 설치 안내", () => {
+    const harness = makeAutomaticHarness(false);
+    harness.run();
+    assert.deepEqual(harness.modes, ["android-help"]);
   });
-  await test("손상된 유예 값은 0", () => {
-    assert.equal(pure.parsePwaDismissedUntil("broken"), 0);
+  await test("한 접속에서 자동 안내는 한 번만", () => {
+    const harness = makeAutomaticHarness(true);
+    harness.run();
+    harness.run();
+    assert.deepEqual(harness.modes, ["prompt"]);
   });
-  await test("음수 유예 값은 0", () => {
-    assert.equal(pure.parsePwaDismissedUntil("-10"), 0);
+  await test("7일 유예 저장과 검사 제거", () => {
+    assert.doesNotMatch(app, /PWA_INSTALL_DISMISS_KEY|PWA_INSTALL_DISMISS_MS|handongPwaInstallDismissedUntil/);
+    assert.doesNotMatch(app, /getPwaDismissedUntil|deferPwaInstallPrompt/);
   });
   await test("설치 클릭에서 prompt 1회", async () => {
     const harness = makeRequestHarness("accepted");
     await harness.run();
     assert.equal(harness.promptEvent.promptCalls, 1);
   });
-  await test("accepted는 유예 없이 닫힘", async () => {
+  await test("accepted는 안내를 닫음", async () => {
     const harness = makeRequestHarness("accepted");
     await harness.run();
-    assert.deepEqual(harness.closes, [{ defer: false }]);
+    assert.deepEqual(harness.closes, [undefined]);
   });
-  await test("dismissed는 7일 유예로 닫힘", async () => {
+  await test("dismissed는 이번 접속에서 닫음", async () => {
     const harness = makeRequestHarness("dismissed");
     await harness.run();
-    assert.deepEqual(harness.closes, [{ defer: true }]);
+    assert.deepEqual(harness.closes, [undefined]);
   });
   await test("사용한 deferred event 재사용 금지", async () => {
     const harness = makeRequestHarness("accepted");
@@ -215,9 +248,9 @@ function makeCopyHarness({ clipboard, execResult }) {
   await test("ESC 닫기 지원", () => {
     assert.match(app, /event\.key !== "Escape"[\s\S]*?closePwaInstallDialog/);
   });
-  await test("설정 메뉴는 유예 값을 검사하지 않고 수동 안내", () => {
+  await test("수동 설치 안내 경로 유지", () => {
     const source = extractFunction(app, "openPwaInstallGuide");
-    assert.doesNotMatch(source, /getPwaDismissedUntil|PWA_INSTALL_DISMISS_KEY/);
+    assert.match(source, /openPwaInstallDialog/);
   });
   await test("Android 비지원 브라우저 안내", () => {
     assert.match(app, /현재 브라우저에서 자동 설치창을 열 수 없습니다/);
@@ -232,7 +265,7 @@ function makeCopyHarness({ clipboard, execResult }) {
   });
   await test("업데이트 안내가 설치 안내보다 우선", () => {
     const source = extractFunction(app, "showUpdateToast");
-    assert.match(source, /closePwaInstallDialog\(\{ defer: false \}\)/);
+    assert.match(source, /closePwaInstallDialog\(\)/);
   });
   await test("로그인 성공 후에만 자동 안내 예약", () => {
     const login = extractFunction(app, "handleLogin");
@@ -330,8 +363,8 @@ function makeCopyHarness({ clipboard, execResult }) {
   await test("safe area 고려", () => {
     assert.match(goCss + css, /env\(safe-area-inset-bottom\)/);
   });
-  await test("PWA 캐시 v2.19", () => {
-    assert.match(sw, /const CACHE_NAME = "handong-v2\.19";/);
+  await test("PWA 캐시 v2.20", () => {
+    assert.match(sw, /const CACHE_NAME = "handong-v2\.20";/);
   });
   await test("go 설치 파일은 서비스워커 ASSETS에 추가하지 않음", () => {
     assert.doesNotMatch(sw, /go\.html|go\.css|go\.js/);
