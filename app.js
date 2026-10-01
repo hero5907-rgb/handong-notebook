@@ -3155,7 +3155,7 @@ function showUpdateToast(onApply) {
 
   // 업데이트 안내가 설치 안내보다 우선하며 두 UI를 겹치지 않는다.
   if (el("pwaInstallDialog")?.hidden === false) {
-    closePwaInstallDialog({ defer: false });
+    closePwaInstallDialog();
   }
 
   const box = document.createElement("div");
@@ -3258,9 +3258,6 @@ if ("serviceWorker" in navigator) {
 // ===== PWA 설치 컨트롤러 =====
 
 const PWA_APP_URL = "https://handong.khanreal.kr/";
-const PWA_INSTALL_DISMISS_KEY = "handongPwaInstallDismissedUntil";
-const PWA_INSTALL_DISMISS_MS = 7 * 24 * 60 * 60 * 1000;
-
 let deferredPrompt = null;
 let pwaInstallControllerReady = false;
 let pwaInstallMode = "";
@@ -3281,49 +3278,23 @@ function getPwaPlatform(userAgent = navigator.userAgent) {
   return "desktop";
 }
 
-function parsePwaDismissedUntil(value) {
-  const timestamp = Number(value);
-  return Number.isFinite(timestamp) && timestamp > 0 ? timestamp : 0;
-}
-
 function shouldShowAutomaticPwaInstall({
   platform,
   standalone,
-  hasPrompt,
   loggedIn,
   homeVisible,
-  blockingUiOpen,
-  dismissedUntil,
-  now
+  blockingUiOpen
 }) {
   return platform === "android" &&
     standalone === false &&
-    hasPrompt === true &&
     loggedIn === true &&
     homeVisible === true &&
-    blockingUiOpen === false &&
-    parsePwaDismissedUntil(dismissedUntil) <= now;
-}
-
-function getPwaDismissedUntil() {
-  try {
-    return parsePwaDismissedUntil(localStorage.getItem(PWA_INSTALL_DISMISS_KEY));
-  } catch {
-    return 0;
-  }
-}
-
-function deferPwaInstallPrompt() {
-  try {
-    localStorage.setItem(
-      PWA_INSTALL_DISMISS_KEY,
-      String(Date.now() + PWA_INSTALL_DISMISS_MS)
-    );
-  } catch {}
+    blockingUiOpen === false;
 }
 
 function isPwaBlockingUiOpen() {
   if (document.getElementById("swUpdateToast")) return true;
+  if (el("pwaInstallDialog")?.hidden === false) return true;
   return Boolean(document.querySelector(
     ".modal:not([hidden]), .confirm-modal:not([hidden]), " +
     ".event-sheet:not([hidden]), .class-slide:not([hidden])"
@@ -3433,15 +3404,15 @@ function openPwaInstallDialog(mode) {
   closeSettingsMenu();
   configurePwaInstallDialog(mode);
   dialog.hidden = false;
+  pwaAutoPromptShown = true;
   document.body.classList.add("pwa-install-open");
   el("btnPwaInstallNow")?.focus();
   return true;
 }
 
-function closePwaInstallDialog({ defer = false } = {}) {
+function closePwaInstallDialog() {
   const dialog = el("pwaInstallDialog");
   if (!dialog || dialog.hidden) return;
-  if (defer) deferPwaInstallPrompt();
   dialog.hidden = true;
   document.body.classList.remove("pwa-install-open");
   el("btnPwaInstallNow")?.removeAttribute("disabled");
@@ -3502,8 +3473,8 @@ async function requestPwaInstall() {
 
   try {
     await installEvent.prompt();
-    const choice = await installEvent.userChoice;
-    closePwaInstallDialog({ defer: choice?.outcome !== "accepted" });
+    await installEvent.userChoice;
+    closePwaInstallDialog();
   } catch (error) {
     console.error("PWA_INSTALL_PROMPT_FAILED:", error);
     configurePwaInstallDialog(
@@ -3518,16 +3489,15 @@ function maybeShowAutomaticPwaInstall() {
   const allowed = shouldShowAutomaticPwaInstall({
     platform: getPwaPlatform(),
     standalone: isStandalone(),
-    hasPrompt: Boolean(deferredPrompt),
     loggedIn: Boolean(state?.me),
     homeVisible: el("screenHome")?.hidden === false,
-    blockingUiOpen,
-    dismissedUntil: getPwaDismissedUntil(),
-    now: Date.now()
+    blockingUiOpen
   });
 
   if (allowed) {
-    pwaAutoPromptShown = openPwaInstallDialog("prompt");
+    pwaAutoPromptShown = openPwaInstallDialog(
+      deferredPrompt ? "prompt" : "android-help"
+    );
     return;
   }
 
@@ -3537,7 +3507,7 @@ function maybeShowAutomaticPwaInstall() {
   }
 }
 
-function scheduleAutoPwaInstall(reset = false, delay = 800) {
+function scheduleAutoPwaInstall(reset = false, delay = 2500) {
   if (reset) {
     pwaAutoPromptRetryCount = 0;
     pwaAutoPromptShown = false;
@@ -3570,13 +3540,13 @@ function initPwaInstallController() {
   });
   el("btnPwaInstallNow")?.addEventListener("click", requestPwaInstall);
   el("btnPwaInstallLater")?.addEventListener("click", () => {
-    closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+    closePwaInstallDialog();
   });
   el("btnPwaInstallClose")?.addEventListener("click", () => {
-    closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+    closePwaInstallDialog();
   });
   el("pwaInstallBackdrop")?.addEventListener("click", () => {
-    closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+    closePwaInstallDialog();
   });
   el("btnPwaCopyAddress")?.addEventListener("click", copyPwaInstallAddress);
 
@@ -3587,7 +3557,7 @@ function initPwaInstallController() {
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") return;
     if (el("pwaInstallDialog")?.hidden === false) {
-      closePwaInstallDialog({ defer: pwaInstallMode === "prompt" });
+      closePwaInstallDialog();
       return;
     }
     closeSettingsMenu();
@@ -3603,11 +3573,8 @@ function initPwaInstallController() {
   window.addEventListener("appinstalled", () => {
     deferredPrompt = null;
     pwaInstalledThisSession = true;
-    closePwaInstallDialog({ defer: false });
+    closePwaInstallDialog();
     closeSettingsMenu();
-    try {
-      localStorage.removeItem(PWA_INSTALL_DISMISS_KEY);
-    } catch {}
     updatePwaInstallEntryVisibility();
   });
 
